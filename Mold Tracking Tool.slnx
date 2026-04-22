@@ -7,11 +7,11 @@
     <BuildDependency Project="CAPA_DATOS/CAPA_DATOS.csproj" />
     <BuildDependency Project="CAPA_ENTITY/CAPA_ENTITY.csproj" />
   </Project>
-  <Project Path="CAPA_PRESENTACION/CAPA_PRESENTACION.csproj" Id="4d9adaa1-2b8f-4d28-9903-2d3771988a9e">
+  <Project Path="CAPA_WEB_API/CAPA_WEB_API.csproj" Id="0bfa66d6-8def-4d09-b9ff-7b334f522ee2">
     <BuildDependency Project="CAPA_ENTITY/CAPA_ENTITY.csproj" />
     <BuildDependency Project="CAPA_NEGOCIO/CAPA_NEGOCIO.csproj" />
   </Project>
-  <Project Path="CAPA_WEB_API/CAPA_WEB_API.csproj" Id="0bfa66d6-8def-4d09-b9ff-7b334f522ee2">
+  <Project Path="Tracking Tool System/Tracking Tool System.csproj" Id="5f727171-cc36-4d5c-898d-d703efb51aaf">
     <BuildDependency Project="CAPA_ENTITY/CAPA_ENTITY.csproj" />
     <BuildDependency Project="CAPA_NEGOCIO/CAPA_NEGOCIO.csproj" />
   </Project>
