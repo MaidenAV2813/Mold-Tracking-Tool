@@ -1,0 +1,18 @@
+﻿body {
+    body {
+        background-color: #f4f6f9;
+    }
+
+    .login-box {
+        width: 360px;
+        margin: 7% auto;
+    }
+
+    .login-card-body {
+        padding: 20px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
