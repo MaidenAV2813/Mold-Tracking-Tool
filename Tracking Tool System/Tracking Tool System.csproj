@@ -7,4 +7,9 @@
     <RootNamespace>Tracking_Tool_System</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.DirectoryServices" Version="10.0.7" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="10.0.7" />
+  </ItemGroup>
+
 </Project>

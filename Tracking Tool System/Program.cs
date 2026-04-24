@@ -9,18 +9,13 @@ builder.Services.AddRazorPages();
 // 🔐 Auth
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-
     .AddCookie(options =>
-
     {
-
         options.LoginPath = "/Login";
-
-        options.LogoutPath = "/Logout";
-
     });
 
 builder.Services.AddAuthorization();
+
 
 var app = builder.Build();
 
