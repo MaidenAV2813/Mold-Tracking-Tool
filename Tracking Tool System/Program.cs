@@ -37,6 +37,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapStaticAssets();
