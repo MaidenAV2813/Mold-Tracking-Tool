@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -9,6 +9,11 @@
   <ItemGroup>
     <PackageReference Include="System.DirectoryServices" Version="10.0.7" />
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="10.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <ProjectReference Include="..\CAPA_ENTITY\CAPA_ENTITY.csproj" />
+	  <ProjectReference Include="..\CAPA_DATOS\CAPA_DATOS.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,50 +1,49 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Tracking_Tool_System.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Razor Pages
+builder.Services.AddHttpClient<ApiService>();
 
+// Razor Pages
 builder.Services.AddRazorPages();
 
-// 🔐 Auth
+// 🔐 Auth + Session
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Login";
+        options.LoginPath = "/Login";   // ajustado a controller
+        options.LogoutPath = "/Logout";
+        options.AccessDeniedPath = "/Denied";
     });
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddHttpClient<ApiService>();
 
 var app = builder.Build();
 
+// Pipeline
 if (!app.Environment.IsDevelopment())
-
 {
-
     app.UseExceptionHandler("/Error");
-
     app.UseHsts();
-
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseRouting();
 
-// 🔥 ORDEN CORRECTO
+app.UseSession();
 
+// 🔥 ORDEN CRÍTICO
 app.UseAuthentication();
-
-app.UseAuthentication();
-
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
-app.MapRazorPages()
-
-   .WithStaticAssets();
+app.MapRazorPages();
 
 app.Run();

@@ -1,12 +1,9 @@
 ﻿using Dapper;
 using Dapper.Mapper;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
+using CAPA_ENTITY;
+
 
 namespace CAPA_DATOS
 {
@@ -23,9 +20,8 @@ namespace CAPA_DATOS
 
 
         public SqlConnection DbConnection => new SqlConnection(
-            new SqlConnectionStringBuilder(config.GetConnectionString("Conn")).ConnectionString
-
-            );
+            config.GetConnectionString("DefaultConnection")
+        );
 
 
         public async Task<IEnumerable<T>> QueryAsync<T>(string sp, object Param = null, int? Timeout = null)
@@ -269,9 +265,4 @@ namespace CAPA_DATOS
         }
     }
 
-    public class DBEntity
-    {
-        public int CodeError { get; internal set; }
-        public string MsgError { get; internal set; }
-    }
 }
