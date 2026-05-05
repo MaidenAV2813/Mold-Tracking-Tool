@@ -1,0 +1,56 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Rol.EditModel
+
+@{
+    ViewData["Title"] = "Editar Rol";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Modificar Rol</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Modificar</h3>
+            </div>
+
+            <form method="post">
+                <div class="card-body">
+
+                    <input type="hidden" asp-for="RolID" />
+
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <input asp-for="RolDescription" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <input asp-for="RolType" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select asp-for="Status" class="form-control">
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-warning">Actualizar</button>
+                    <a asp-page="/Rol/Index" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</section>

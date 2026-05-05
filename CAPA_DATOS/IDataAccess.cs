@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CAPA_ENTITY;
 
 
 namespace CAPA_DATOS

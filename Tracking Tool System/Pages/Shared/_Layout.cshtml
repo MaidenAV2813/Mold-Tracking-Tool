@@ -33,18 +33,24 @@
         <link rel="stylesheet" href="~/Template/plugins/dropzone/min/dropzone.min.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="~/Template/dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="~/css/site.css">
         @await RenderSectionAsync("styles", required: false)
     </head>
-    <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-        <!-- Site wrapper -->
-        <div class="wrapper">
-            <partial name="_navbar" />
-            <partial name="_Sidebar" />
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+
+        <partial name="_navbar" />
+        <partial name="_Sidebar" />
+
+        <div class="content-wrapper">
             @RenderBody()
-            <partial name="_Footer" />
-            <!-- REQUIRED SCRIPTS -->
         </div>
-        @await RenderSectionAsync("Scripts", required: false)
-    </body>
+
+        <partial name="_Footer" />
+
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
 </html>
  

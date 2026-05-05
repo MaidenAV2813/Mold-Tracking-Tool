@@ -29,3 +29,64 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+/* 🔧 Sidebar más ancho */
+body:not(.sidebar-collapse) .main-sidebar {
+    width: 250px;
+}
+
+.nav-sidebar .nav-link p {
+    white-space: nowrap;
+}
+
+
+/* 🔧 Permitir salto de línea SOLO en el título */
+.brand-text {
+    white-space: normal; /* permite múltiples líneas */
+    display: block;
+    line-height: 1.2;
+}
+
+/* 🔧 Ajustar TODO el contenido */
+body:not(.sidebar-collapse) .main-header,
+body:not(.sidebar-collapse) .content-wrapper,
+body:not(.sidebar-collapse) .main-footer {
+    margin-left: 300px;
+}
+
+/* 🔧 Separar el usuario del título (bajar un poco) */
+.user-panel {
+    margin-top: 25px;
+    padding-top: 10px;
+}
+
+/* 🔧 Caja base */
+.small-box {
+    position: relative;
+    height: 160px; /* sube de 150 a 155 o 160 */
+    overflow: hidden;
+}
+
+    /* 🔧 Área de texto uniforme */
+    .small-box .inner p {
+        min-height: 40px;
+        margin-bottom: 0;
+        line-height: 1.2;
+    }
+
+    /* 🔧 Número 
+    .small-box .inner h3 {
+        margin-bottom: 8px;
+    }*/
+
+    /* 🔧 Espacio para el footer */
+    .small-box .inner {
+        padding-bottom: 30px;
+    }
+
+/* 🔧 Footer siempre abajo */
+.small-box-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}

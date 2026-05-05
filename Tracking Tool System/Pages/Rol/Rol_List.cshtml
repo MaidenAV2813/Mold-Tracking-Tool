@@ -1,0 +1,80 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Rol.Rol_ListModel
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Roles</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Lista de roles</h3>
+
+                <div class="card-tools">
+                    <a asp-page="/Rol/Create" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Agregar nuevo rol
+                    </a>
+                    <a id="editBtn" class="btn btn-warning btn-sm disabled">
+                        <i class="fas fa-edit"></i> Editar Rol
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            @*<th>ID</th>*@
+                            <th>Descripción</th>
+                            <th>Tipo</th>
+                            <th>Estado</th>
+                            <th>Fecha de creación</th>
+                            
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        
+                            @foreach (var role in Model.GridList)
+                            {
+                                <tr onclick="selectRow(@role.RolID)" style="cursor:pointer;">
+                                    @*<td>@role.RolID</td>*@
+                                    <td>@role.RolDescription</td>
+                                    <td>@role.RolType</td>
+                                   @*  <td>@(role.Status ? "Active" : "Inactive")</td>
+                                    <td>@role.DateCreation.ToString("yyyy-MM-dd")</td> *@
+                                    
+                                </tr>
+                            }
+                        
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+<script> @* Remarca la linea seleccionada en la lista a modificar de roles*@
+    function selectRow(id) {
+
+        document.querySelectorAll("tr").forEach(r => r.classList.remove("table-primary"));
+
+        event.currentTarget.classList.add("table-primary");
+
+        let editBtn = document.getElementById("editBtn");
+
+        editBtn.classList.remove("disabled");
+        editBtn.href = "/Rol/Edit?id=" + id;
+    }
+</script>
