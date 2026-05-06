@@ -112,14 +112,10 @@ namespace CAPA_NEGOCIO
                 {
 
                     entity.RolID,
-
                     entity.RolDescription,
-
+                    entity.RolType,
                     entity.Status,
-
                     entity.DateCreation
-
-                    
                 });
 
                 return await result;

@@ -27,5 +27,17 @@ namespace Tracking_Tool_System.Services
         {
             return await _httpClient.PostAsJsonAsync(endpoint, data);
         }
+
+        // PUT
+        public async Task<HttpResponseMessage> PutAsync<T>(string endpoint, T data)
+        {
+            return await _httpClient.PutAsJsonAsync(endpoint, data);
+        }
+
+        // GET Single
+        public async Task<T?> GetSingleAsync<T>(string endpoint)
+        {
+            return await _httpClient.GetFromJsonAsync<T>(endpoint);
+        }
     }
 }

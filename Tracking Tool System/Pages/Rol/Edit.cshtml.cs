@@ -1,77 +1,65 @@
+using CAPA_ENTITY;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
-using System.Data;
+using Tracking_Tool_System.Services;
 
 namespace Tracking_Tool_System.Pages.Rol
 {
     public class EditModel : PageModel
     {
-        private readonly IConfiguration _configuration;
+        private readonly ApiService _apiService;
 
-        public EditModel(IConfiguration configuration)
+        public EditModel(ApiService apiService)
         {
-            _configuration = configuration;
+            _apiService = apiService;
         }
 
         [BindProperty]
-        public int RolID { get; set; }
+        public int? RolID { get; set; }
 
         [BindProperty]
-        public string RolDescription { get; set; }
+        public string? RolDescription { get; set; }
 
         [BindProperty]
-        public string RolType { get; set; }
+        public string? RolType { get; set; }
 
         [BindProperty]
-        public bool Status { get; set; }
+        public bool? Status { get; set; }
 
-        public void OnGet(int id)
+        public async Task<IActionResult> OnGet(int id)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var role = await _apiService.GetSingleAsync<RolEntity>($"roles/{id}");
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
+            if (role == null)
+                return NotFound();
 
-                SqlCommand cmd = new SqlCommand("sp_Rol_SelectById", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+            RolID = role.RolID;
+            RolDescription = role.RolDescription;
+            RolType = role.RolType;
+            Status = role.Status;
 
-                cmd.Parameters.AddWithValue("@RolID", id);
-
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    RolID = Convert.ToInt32(reader["RolID"]);
-                    RolDescription = reader["RolDescription"].ToString();
-                    RolType = reader["RolType"].ToString();
-                    Status = Convert.ToBoolean(reader["Status"]);
-                }
-            }
+            return Page();
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            var entity = new RolEntity
             {
-                conn.Open();
+                RolID = RolID,
+                RolDescription = RolDescription,
+                RolType = RolType,
+                Status = Status
+            };
 
-                SqlCommand cmd = new SqlCommand("sp_Rol_Update", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+            var response = await _apiService.PutAsync("roles", entity);
 
-                cmd.Parameters.AddWithValue("@RolID", RolID);
-                cmd.Parameters.AddWithValue("@RolDescription", RolDescription);
-                cmd.Parameters.AddWithValue("@RolType", RolType);
-                cmd.Parameters.AddWithValue("@Status", Status);
-                cmd.Parameters.AddWithValue("@ModifiedBy", User.Identity?.Name ?? "System");
-
-                cmd.ExecuteNonQuery();
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                return Content(error);
             }
 
-            return RedirectToPage("/Rol/Index");
+            return RedirectToPage("/Rol/Rol_List");
         }
     }
 }

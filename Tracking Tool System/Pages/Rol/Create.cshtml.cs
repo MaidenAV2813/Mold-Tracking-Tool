@@ -1,67 +1,59 @@
+using CAPA_ENTITY;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
-using System.Data;
+using Tracking_Tool_System.Services;
 
 namespace Tracking_Tool_System.Pages.Rol
 {
     public class CreateModel : PageModel
     {
-        private readonly IConfiguration _configuration;
+        private readonly ApiService _apiService;
 
-        public CreateModel(IConfiguration configuration)
+        public CreateModel(ApiService apiService)
         {
-            _configuration = configuration;
+            _apiService = apiService;
         }
 
-        // 🔹 Campos del formulario
         [BindProperty]
-        public string RolDescription { get; set; }
+        public string? RolDescription { get; set; }
 
         [BindProperty]
-        public string RolType { get; set; }
+        public string? RolType { get; set; }
 
         [BindProperty]
-        public bool Status { get; set; } = true;
+        public bool? Status { get; set; } = true;
 
-        // 🔹 Cargar página
         public void OnGet()
         {
         }
 
-        // 🔹 Guardar datos
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
             try
             {
-                string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                var entity = new RolEntity
                 {
-                    conn.Open();
+                    RolDescription = RolDescription,
+                    RolType = RolType,
+                    Status = Status
+                };
 
-                    SqlCommand cmd = new SqlCommand("sp_Rol_Insert", conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
+                var response = await _apiService.PostAsync("roles", entity);
 
-                    cmd.Parameters.AddWithValue("@RolDescription", RolDescription);
-                    cmd.Parameters.AddWithValue("@RolType", RolType);
-                    cmd.Parameters.AddWithValue("@Status", Status);
-                    cmd.Parameters.AddWithValue("@CreatedBy", User.Identity?.Name ?? "System");
-
-                    cmd.ExecuteNonQuery();
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    ModelState.AddModelError(string.Empty, error);
+                    return Page();
                 }
 
-                // 🔹 Redirige al listado
-                return RedirectToPage("/Rol/Index");
+                return RedirectToPage("/Rol/Rol_List");
             }
             catch (Exception ex)
             {
-                // 🔴 Muestra error en pantalla
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return Page();
             }
