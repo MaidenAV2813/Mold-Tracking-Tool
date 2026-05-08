@@ -22,6 +22,11 @@ namespace Tracking_Tool_System.Services
             return await _httpClient.GetFromJsonAsync<List<T>>(endpoint);
         }
 
+        public async Task<T?> GetByIdAsync<T>(string endpoint)
+        {
+            return await _httpClient.GetFromJsonAsync<T>(endpoint);
+        }
+
         // POST
         public async Task<HttpResponseMessage> PostAsync<T>(string endpoint, T data)
         {

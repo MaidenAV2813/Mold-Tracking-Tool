@@ -34,8 +34,8 @@
                     <thead>
                         <tr>
                             @*<th>ID</th>*@
+                            <th>Rol</th>
                             <th>Descripción</th>
-                            <th>Tipo</th>
                             <th>Estado</th>
                             <th>Fecha de creación</th>
                             
@@ -48,10 +48,10 @@
                             {
                                 <tr onclick="selectRow(@role.RolID)" style="cursor:pointer;">
                                     @*<td>@role.RolID</td>*@
-                                    <td>@role.RolDescription</td>
                                     <td>@role.RolType</td>
-                                   @*  <td>@(role.Status ? "Active" : "Inactive")</td>
-                                    <td>@role.DateCreation.ToString("yyyy-MM-dd")</td> *@
+                                    <td>@role.RolDescription</td>
+                                    <td>@(role.RolStatus ? "Active" : "Inactive")</td>
+                                    <td>@role.DateCreation?.ToString("yyyy-MM-dd")</td> 
                                     
                                 </tr>
                             }

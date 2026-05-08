@@ -2,6 +2,7 @@ using CAPA_ENTITY;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Tracking_Tool_System.Services;
+using System.Security.Claims;
 
 namespace Tracking_Tool_System.Pages.Rol
 {
@@ -21,7 +22,13 @@ namespace Tracking_Tool_System.Pages.Rol
         public string? RolType { get; set; }
 
         [BindProperty]
-        public bool? Status { get; set; } = true;
+        public bool RolStatus { get; set; } = true;
+
+        [BindProperty]
+        public DateTime DateCreation { get; set; }
+
+        [BindProperty]
+        public DateTime DateModification { get; set; } = DateTime.Now;
 
         public void OnGet()
         {
@@ -34,11 +41,19 @@ namespace Tracking_Tool_System.Pages.Rol
 
             try
             {
+                var user = User.Identity?.Name ?? "System";
+                var now = DateTime.Now;
+
                 var entity = new RolEntity
                 {
                     RolDescription = RolDescription,
                     RolType = RolType,
-                    Status = Status
+                    RolStatus = RolStatus,
+                    CreatedBy = user,
+                    ModifiedBy = user,
+                    DateCreation = now,
+                    DateModification = now
+
                 };
 
                 var response = await _apiService.PostAsync("roles", entity);

@@ -11,13 +11,13 @@ using CAPA_DATOS;
 
 namespace CAPA_NEGOCIO
 {
-    public class Roles_Services : IRoles_Services
+    public class Users_Services : IUsers_Services
 
     {
 
         private readonly IDataAccess sql;
 
-        public Roles_Services(IDataAccess _sql)
+        public Users_Services(IDataAccess _sql)
 
         {
 
@@ -30,7 +30,7 @@ namespace CAPA_NEGOCIO
         //Metodo Get
 
 
-        public async Task<IEnumerable<RolEntity>> Get()
+        public async Task<IEnumerable<UserEntity>> Get()
 
         {
 
@@ -38,7 +38,7 @@ namespace CAPA_NEGOCIO
 
             {
 
-                var result = sql.QueryAsync<RolEntity>("sp_Rol_SelectAll");
+                var result = sql.QueryAsync<UserEntity>("sp_User_List");
 
                 return await result;
 
@@ -57,7 +57,7 @@ namespace CAPA_NEGOCIO
 
         //Metodo GetById
 
-        public async Task<RolEntity> GetById(RolEntity entity)
+        public async Task<UserEntity> GetById(UserEntity entity)
 
         {
 
@@ -65,9 +65,9 @@ namespace CAPA_NEGOCIO
 
             {
 
-                var result = sql.QueryFirstAsync<RolEntity>("sp_Rol_SelectById", new
+                var result = sql.QueryFirstAsync<UserEntity>("sp_User_GetById", new
 
-                { entity.RolID });
+                { entity.IdNumber });
 
                 return await result;
 
@@ -85,13 +85,14 @@ namespace CAPA_NEGOCIO
 
         //Metodo Create
 
-        public async Task<DBEntity> Create(RolEntity entity)
+        public async Task<DBEntity> Create(UserEntity entity)
         {
-            var result = sql.ExecuteAsync("sp_Rol_Insert", new
+            var result = sql.ExecuteAsync("sp_User_Insert", new
             {
-                entity.RolDescription,
-                entity.RolType,
-                entity.RolStatus,
+                entity.RolID,
+                entity.IdNumber,
+                entity.EmpName,
+                entity.UserStatus,
                 entity.CreatedBy,
                 entity.DateCreation,
                 entity.DateModification,
@@ -103,7 +104,7 @@ namespace CAPA_NEGOCIO
 
         //Metodo Update
 
-        public async Task<DBEntity> Update(RolEntity entity)
+        public async Task<DBEntity> Update(UserEntity entity)
 
         {
 
@@ -111,14 +112,13 @@ namespace CAPA_NEGOCIO
 
             {
 
-                var result = sql.ExecuteAsync("sp_Rol_Update", new
+                var result = sql.ExecuteAsync("sp_User_Update", new
 
                 {
-
                     entity.RolID,
-                    entity.RolDescription,
-                    entity.RolType,
-                    entity.RolStatus,
+                    entity.IdNumber,
+                    entity.EmpName,
+                    entity.UserStatus,
                     entity.DateModification,
                     entity.ModifiedBy
                 });
@@ -139,7 +139,7 @@ namespace CAPA_NEGOCIO
 
         //Metodo Delete
 
-        public async Task<DBEntity> Delete(RolEntity entity)
+        public async Task<DBEntity> Delete(UserEntity entity)
 
         {
 

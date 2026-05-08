@@ -12,7 +12,7 @@ namespace CAPA_ENTITY
         public int? GateID { get; set; }
         public int? CastingID { get; set; }
         public int? ActuatorID { get; set; }
-        public string ActiveNumber { get; set; }
+        public string ActiveNumber { get; set; } = "";
         public string? MoldNumber { get; set; }
         public DateTime? DateCreation { get; set; }
         public DateTime DateModification { get; set; }

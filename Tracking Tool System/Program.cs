@@ -8,7 +8,7 @@ builder.Services.AddHttpClient<ApiService>();
 // Razor Pages
 builder.Services.AddRazorPages();
 
-// 🔐 Auth + Session
+// Auth + Session
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 
@@ -40,7 +40,7 @@ app.UseRouting();
 
 app.UseSession();
 
-// 🔥 ORDEN CRÍTICO
+// ORDEN CRÍTICO
 app.UseAuthentication();
 app.UseAuthorization();
 

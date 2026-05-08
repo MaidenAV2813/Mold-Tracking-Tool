@@ -37,7 +37,10 @@
  
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" 
+                        data-widget="treeview" 
+                        role="menu" 
+                        data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
 
                      with font-awesome or any other icon font library -->
@@ -251,12 +254,12 @@
                         </li>
                         
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
+                            <a href="#" class="nav-link" role="button">
+                                <i class="nav-icon fas fa-tools"></i>
                                 <p>
 
                                     Mantenimientos
-                                    <i class="fas fa-angle-left right"></i>
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -269,15 +272,15 @@
 
                                 <li class="nav-item">
                                     <a asp-page="/Rol/Rol_List" class="nav-link">
-                                        <i class="nav-icon fas fa-user-shield"></i>
+                                        <i class="fas fa-user-shield nav-icon"></i>
                                         <p>Roles</p>
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a asp-page="pages/tables/data.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Accesos</p>
+                                    <a asp-page="/User/User_List" class="nav-link">
+                                        <i class="fas fa-user nav-icon"></i>
+                                        <p>Usuarios</p>
                                     </a>
                                 </li>
                                 @*<li class="nav-item">
@@ -287,7 +290,7 @@
                                     </a>
                                 </li>*@
                                 <li class="nav-item">
-                                    <a asp-page="pages/tables/jsgrid.html" class="nav-link">
+                                        <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Reportes</p>
                                     </a>

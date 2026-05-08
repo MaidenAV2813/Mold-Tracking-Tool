@@ -9,7 +9,7 @@ namespace CAPA_ENTITY
         public int? StatusID { get; set; }
         public string? StatusType { get; set; }
         public DateTime? DateCreation { get; set; }
-        public DateTime DateModification { get; set; }
+        public DateTime? DateModification { get; set; }
 
     }
 }

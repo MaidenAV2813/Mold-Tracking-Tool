@@ -19,6 +19,8 @@ namespace CAPA_WEB_API
 
             services.AddTransient<IRoles_Services, Roles_Services>();
 
+            services.AddTransient<IUsers_Services, Users_Services>();
+
             return services;
 
         }

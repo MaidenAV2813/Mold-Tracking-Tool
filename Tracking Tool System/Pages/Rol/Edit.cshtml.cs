@@ -24,7 +24,7 @@ namespace Tracking_Tool_System.Pages.Rol
         public string? RolType { get; set; }
 
         [BindProperty]
-        public bool? Status { get; set; }
+        public bool RolStatus { get; set; }
 
         public async Task<IActionResult> OnGet(int id)
         {
@@ -36,19 +36,23 @@ namespace Tracking_Tool_System.Pages.Rol
             RolID = role.RolID;
             RolDescription = role.RolDescription;
             RolType = role.RolType;
-            Status = role.Status;
+            RolStatus = role.RolStatus;
 
             return Page();
         }
 
         public async Task<IActionResult> OnPost()
         {
+            var user = User.Identity?.Name ?? "System";
+            var now = DateTime.Now;
             var entity = new RolEntity
             {
                 RolID = RolID,
                 RolDescription = RolDescription,
                 RolType = RolType,
-                Status = Status
+                RolStatus = RolStatus,
+                ModifiedBy = user,
+                DateModification = now
             };
 
             var response = await _apiService.PutAsync("roles", entity);

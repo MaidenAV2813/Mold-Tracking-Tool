@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Registrar servicios
 builder.Services.AddScoped<IDataAccess, DataAccess>();
 builder.Services.AddScoped<IRoles_Services, Roles_Services>();
+builder.Services.AddScoped<IUsers_Services, Users_Services>();
 
 
 // Controllers

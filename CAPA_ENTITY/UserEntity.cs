@@ -4,16 +4,17 @@ using System.Text;
 
 namespace CAPA_ENTITY
 {
-    internal class UserEntity
+    public class UserEntity : DBEntity
     {
-        public int? UserID { get; set; }
         public int? RolID { get; set; }
-        public string? User { get; set; }
-        public int? ID { get; set; }
-        public string? Name { get; set; }
-        public string? Status { get; set; }
-        public string? Rol { get; set; }
-        public DateTime? DateCreation { get; set; }
-        public DateTime DateModification { get; set; }
-    }
+
+        public string? RolDescription { get; set; }
+
+        public int? IdNumber { get; set; }
+
+        public string? EmpName { get; set; }
+
+        public Boolean UserStatus { get; set; }
+
+      }
 }
