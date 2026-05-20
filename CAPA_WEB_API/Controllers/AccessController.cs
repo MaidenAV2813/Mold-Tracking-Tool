@@ -6,28 +6,28 @@ namespace CAPA_WEB_API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class AccessController : ControllerBase
     {
-        private readonly IUsers_Services _UsersServices;
+        private readonly IAccess_Services _AccessServices;
 
-        public UsersController(IUsers_Services UsersServices)
+        public AccessController(IAccess_Services AccessServices)
         {
-            _UsersServices = UsersServices;
+            _AccessServices = AccessServices;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await _UsersServices.Get();
+            var result = await _AccessServices.Get();
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] UserEntity entity)
+        public async Task<IActionResult> Create([FromBody] AccessEntity entity)
         {
             try
             {
-                var result = await _UsersServices.Create(entity);
+                var result = await _AccessServices.Create(entity);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -47,9 +47,9 @@ namespace CAPA_WEB_API.Controllers
         {
             try
             {
-                var result = await _UsersServices.GetById(new UserEntity
+                var result = await _AccessServices.GetById(new AccessEntity
                 {
-                    UserID = id
+                    AccessID = id
                 });
 
                 if (result == null)
@@ -68,11 +68,11 @@ namespace CAPA_WEB_API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UserEntity entity)
+        public async Task<IActionResult> Update([FromBody] AccessEntity entity)
         {
             try
             {
-                var result = await _UsersServices.Update(entity);
+                var result = await _AccessServices.Update(entity);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -84,6 +84,11 @@ namespace CAPA_WEB_API.Controllers
                 });
             }
         }
-
+        [HttpPost("deletebyrol")]
+        public async Task<IActionResult> DeleteByRol([FromBody] AccessEntity entity)
+        {
+            var result = await _AccessServices.DeleteByRol(entity);
+            return Ok(result);
+        }
     }
 }

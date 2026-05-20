@@ -1,49 +1,109 @@
 ﻿@page
 @model Tracking_Tool_System.Pages.User.CreateModel
 
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Crear Usuario</h3>
+@{
+    ViewData["Title"] = "Crear Usuario";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Crear Usuario</h1>
     </div>
+</section>
 
-    <div class="card-body">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<section class="content">
+    <div class="container-fluid">
 
-            <div class="form-group">
-                <label># Gafete</label>
-                <input asp-for="IdNumber" class="form-control" />
+        <div class="card card-primary">
+
+            <div class="card-header">
+                <h3 class="card-title">
+                    Configuración de usuarios
+                </h3>
             </div>
 
-            <div class="form-group">
-                <label>Nombre</label>
-                <input asp-for="EmpName" class="form-control" />
-            </div>
+            <form method="post">
 
-            <div class="form-group">
-                <label>Rol</label>
+                <div class="card-body">
 
-                <select asp-for="RolID" class="form-control">
-                    <option value="">Seleccione un Rol</option>
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger">
+                    </div>
 
-                    @foreach (var rol in Model.Roles)
-                    {
-                        <option value="@rol.RolID">
-                            @rol.RolDescription
-                        </option>
-                    }
-                </select>
-            </div>
+                    <div class="form-group">
+                        <label># Usuario</label>
 
-            <div class="form-check">
-                <input asp-for="UserStatus" class="form-check-input" />
-                <label class="form-check-label">Active</label>
-            </div>
+                        <input asp-for="Username"
+                               class="form-control"
+                               placeholder="Ingrese el username" />
+                    </div>
 
-            <br />
+                    <div class="form-group">
+                        <label>Nombre</label>
 
-            <button type="submit" class="btn btn-primary">Guardar</button>
-            <a asp-page="/User/User_List" class="btn btn-secondary">Cancelar</a>
-        </form>
+                        <input asp-for="EmpName"
+                               class="form-control"
+                               placeholder="Ingrese el nombre" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de Rol</label>
+
+                        <select asp-for="RolID"
+                                class="form-control">
+
+                            <option value="">
+                                Seleccione un Rol
+                            </option>
+
+                            @foreach (var rol in Model.Roles)
+                            {
+                                <option value="@rol.RolID">
+                                    @rol.RolType
+                                </option>
+                            }
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="form-check">
+
+                            <input asp-for="UserStatus"
+                                   class="form-check-input" />
+
+                            <label class="form-check-label">
+                                Active
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        Guardar
+
+                    </button>
+
+                    <a asp-page="/User/User_List"
+                           class="btn btn-secondary">
+
+                        Cancelar
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
-</div>
+</section>

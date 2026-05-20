@@ -1,44 +1,87 @@
 ﻿@page
 @model Tracking_Tool_System.Pages.User.User_ListModel
 
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">User List</h3>
-        <div class="card-tools">
-            <a asp-page="/User/Create" class="btn btn-primary btn-sm">New User</a>
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Usuarios</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Lista de usuarios</h3>
+            <div class="card-tools">
+                <a asp-page="/User/Create" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Agregar nuevo usuario
+                </a>
+                    <a id="editBtn"
+                           class="btn btn-warning btn-sm @(Model.SelectedUserID.HasValue ? "" : "disabled")"
+                           href="@(Model.SelectedUserID.HasValue ? $"/User/Edit?id={Model.SelectedUserID}" : "#")">
+                        <i class="fas fa-edit"></i> Editar Usuario
+                    </a>
+            </div>
+        </div>
+            @*<p>Total usuarios: @Model.Users.Count</p>*@
+        <div class="card-body">
+                <form method="get" id="filterForm" class="mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Filtrar por Usuario</label>
+
+                            <select asp-for="SelectedUsername"
+                                    class="form-control"
+                                    onchange="document.getElementById('filterForm').submit();">
+
+                                <option value="">Todos los usuarios</option>
+
+                                @foreach (var user in Model.UserFilterList)
+                                {
+                                    <option value="@user.Username">
+                                        @user.Username
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th>Tipo de Rol</th>
+                        <th>Fecha de Creación</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            
+                            <td>@user.Username</td>
+                            <td>@user.EmpName</td>
+                                <td>@(user.UserStatus == true ? "Active" : "Inactive")</td>
+                                <td>
+
+                                    @user.RolType
+
+                                </td>
+                                <td>@(user.DateCreation?.ToString("MM-dd-yyyy") ?? "")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
-
-    <div class="card-body">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>                 
-                    <th>Rol</th>
-                    <th>Estado</th>
-                    <th>Fecha de Creación</th>
-
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach (var user in Model.Users)
-                {
-                    <tr>
-                        <td>@user.IdNumber</td>
-                        <td>@user.EmpName</td>
-                        <td>@user.RolDescription</td>
-                        <td>@(user.UserStatus == true ? "Active" : "Inactive")</td>
-                        <td>@(user.DateCreation?.ToString("yyyy-MM-dd") ?? "")</td>
-@*                         <td>
-                            <a asp-page="/User/Edit" asp-route-id="@user.IdNumber" class="btn btn-warning btn-sm">
-                                Edit
-                            </a>
-                        </td> *@
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
 </div>
+</section>

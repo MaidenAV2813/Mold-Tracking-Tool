@@ -33,10 +33,13 @@
         <link rel="stylesheet" href="~/Template/plugins/dropzone/min/dropzone.min.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="~/Template/dist/css/adminlte.min.css">
-        <link rel="stylesheet" href="~/css/site.css">
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
+        
         @await RenderSectionAsync("styles", required: false)
+        <link rel="stylesheet" href="~/Template/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+       
     </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
 
         <partial name="_navbar" />
@@ -58,6 +61,8 @@
 
     <!-- AdminLTE -->
     <script src="~/Template/dist/js/adminlte.min.js"></script>
+
+    <script src="~/Template/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

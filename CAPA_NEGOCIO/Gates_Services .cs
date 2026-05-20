@@ -11,13 +11,13 @@ using CAPA_DATOS;
 
 namespace CAPA_NEGOCIO
 {
-    public class Roles_Services : IRoles_Services
+    public class Gates_Services : IGates_Services
 
     {
 
         private readonly IDataAccess sql;
 
-        public Roles_Services(IDataAccess _sql)
+        public Gates_Services(IDataAccess _sql)
 
         {
 
@@ -25,15 +25,13 @@ namespace CAPA_NEGOCIO
 
         }
 
-        #region MetodosCrud
-
         //Metodo Get
 
-        public async Task<IEnumerable<RolEntity>> Get()
+        public async Task<IEnumerable<GateTypeEntity>> Get()
         {
             try
             {
-                var result = sql.QueryAsync<RolEntity>("sp_Rol_SelectAll");
+                var result = sql.QueryAsync<GateTypeEntity>("sp_Gates_List");
 
                 return await result;
             }
@@ -45,15 +43,15 @@ namespace CAPA_NEGOCIO
 
         //Metodo GetById
 
-        public async Task<RolEntity> GetById(RolEntity entity)
+        public async Task<GateTypeEntity> GetById(GateTypeEntity entity)
 
         {
             try
 
             {
-                var result = sql.QueryFirstAsync<RolEntity>("sp_Rol_SelectById", new
+                var result = sql.QueryFirstAsync<GateTypeEntity>("sp_Gates_GetById", new
 
-                { entity.RolID });
+                { entity.GateID });
 
                 return await result;
             }
@@ -65,13 +63,11 @@ namespace CAPA_NEGOCIO
 
         //Metodo Create
 
-        public async Task<DBEntity> Create(RolEntity entity)
+        public async Task<DBEntity> Create(GateTypeEntity entity)
         {
-            var result = sql.ExecuteAsync("sp_Rol_Insert", new
+            var result = sql.ExecuteAsync("sp_Gates_Insert", new
             {
-                entity.RolDescription,
-                entity.RolType,
-                entity.RolStatus,
+                entity.GateType,
                 entity.CreatedBy,
                 entity.DateCreation,
                 entity.DateModification,
@@ -83,19 +79,17 @@ namespace CAPA_NEGOCIO
 
         //Metodo Update
 
-        public async Task<DBEntity> Update(RolEntity entity)
+        public async Task<DBEntity> Update(GateTypeEntity entity)
 
         {
             try
 
             {
-                var result = sql.ExecuteAsync("sp_Rol_Update", new
+                var result = sql.ExecuteAsync("sp_Gates_Update", new
 
                 {
-                    entity.RolID,
-                    entity.RolDescription,
-                    entity.RolType,
-                    entity.RolStatus,
+                    entity.GateID,
+                    entity.GateType,
                     entity.DateModification,
                     entity.ModifiedBy
                 });
@@ -110,7 +104,7 @@ namespace CAPA_NEGOCIO
         }
 
         //Metodo Delete
-        public async Task<DBEntity> Delete(RolEntity entity)
+        public async Task<DBEntity> Delete(GateTypeEntity entity)
 
         {
             try
@@ -118,7 +112,7 @@ namespace CAPA_NEGOCIO
             {
                 var result = sql.ExecuteAsync("", new
                 {
-                    entity.RolID,
+                    entity.GateID,
                 });
 
                 return await result;
@@ -128,7 +122,7 @@ namespace CAPA_NEGOCIO
                 throw;
             }
         }
-        #endregion
+        
     }
 
 }

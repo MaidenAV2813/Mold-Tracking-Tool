@@ -11,13 +11,13 @@ using CAPA_DATOS;
 
 namespace CAPA_NEGOCIO
 {
-    public class Roles_Services : IRoles_Services
+    public class Access_Services : IAccess_Services
 
     {
 
         private readonly IDataAccess sql;
 
-        public Roles_Services(IDataAccess _sql)
+        public Access_Services(IDataAccess _sql)
 
         {
 
@@ -29,52 +29,71 @@ namespace CAPA_NEGOCIO
 
         //Metodo Get
 
-        public async Task<IEnumerable<RolEntity>> Get()
+
+        public async Task<IEnumerable<AccessEntity>> Get()
+
         {
+
             try
+
             {
-                var result = sql.QueryAsync<RolEntity>("sp_Rol_SelectAll");
+
+                var result = sql.QueryAsync<AccessEntity>("sp_Access_List");
 
                 return await result;
+
             }
+
             catch (Exception)
+
             {
+
                 throw;
+
             }
+
+
         }
 
         //Metodo GetById
 
-        public async Task<RolEntity> GetById(RolEntity entity)
+        public async Task<AccessEntity> GetById(AccessEntity entity)
 
         {
+
             try
 
             {
-                var result = sql.QueryFirstAsync<RolEntity>("sp_Rol_SelectById", new
 
-                { entity.RolID });
+                var result = sql.QueryFirstAsync<AccessEntity>("sp_Access_GetById", new
+
+                { entity.AccessID });
 
                 return await result;
+
             }
+
             catch (Exception)
+
             {
+
                 throw;
+
             }
+
         }
 
         //Metodo Create
 
-        public async Task<DBEntity> Create(RolEntity entity)
+        public async Task<DBEntity> Create(AccessEntity entity)
         {
-            var result = sql.ExecuteAsync("sp_Rol_Insert", new
+            var result = sql.ExecuteAsync("sp_Access_Insert", new
             {
-                entity.RolDescription,
-                entity.RolType,
-                entity.RolStatus,
-                entity.CreatedBy,
+                entity.RolID,
+                entity.AccessDescription,
                 entity.DateCreation,
                 entity.DateModification,
+                entity.CreatedBy,
                 entity.ModifiedBy
             });
 
@@ -83,52 +102,59 @@ namespace CAPA_NEGOCIO
 
         //Metodo Update
 
-        public async Task<DBEntity> Update(RolEntity entity)
+        public async Task<DBEntity> Update(AccessEntity entity)
 
         {
+
             try
 
             {
-                var result = sql.ExecuteAsync("sp_Rol_Update", new
+
+                var result = sql.ExecuteAsync("sp_Access_Update", new
 
                 {
+
                     entity.RolID,
-                    entity.RolDescription,
-                    entity.RolType,
-                    entity.RolStatus,
+                    entity.AccessDescription,
                     entity.DateModification,
                     entity.ModifiedBy
                 });
 
                 return await result;
+
             }
 
             catch (Exception)
+
             {
+
                 throw;
+
             }
+
         }
 
         //Metodo Delete
-        public async Task<DBEntity> Delete(RolEntity entity)
 
+        public async Task<DBEntity> DeleteByRol(AccessEntity entity)
         {
-            try
-
+            var result = sql.ExecuteAsync("sp_Access_DeleteByRol", new
             {
-                var result = sql.ExecuteAsync("", new
-                {
-                    entity.RolID,
-                });
+                entity.RolID
+            });
 
-                return await result;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return await result;
         }
+
+        public async Task<DBEntity> Delete(AccessEntity entity)
+        {
+            return await Task.FromResult(new DBEntity());
+        }
+
+
         #endregion
+
     }
+
 
 }

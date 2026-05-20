@@ -1,0 +1,95 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Access.CreateAccessModel
+
+@{
+    ViewData["Title"] = "Crear Acceso";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Crear Acceso</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-primary">
+
+            <div class="card-header">
+                <h3 class="card-title">Configuración de accesos</h3>
+            </div>
+
+            <form method="post">
+
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label>Tipo de Rol</label>
+
+                        <select asp-for="RolID" class="form-control">
+                            <option value="">Seleccione un tipo de rol</option>
+
+                            @foreach (var rol in Model.Roles)
+                            {
+                                <option value="@rol.RolID">
+                                    @rol.RolType
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Accesos / Módulos</label>
+
+                        <select asp-for="SelectedModules"
+                                class="duallistbox"
+                                multiple="multiple">
+
+                            @foreach (var module in Model.Modules)
+                            {
+                                <option value="@module">@module</option>
+                            }
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+
+                    <button type="submit" class="btn btn-primary">
+                        Guardar
+                    </button>
+
+                    <a asp-page="/Access/Access_List"
+                           class="btn btn-secondary">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('.duallistbox').bootstrapDualListbox({
+                nonSelectedListLabel: 'Módulos disponibles',
+                selectedListLabel: 'Módulos asignados al rol',
+                moveOnSelect: false,
+                filterTextClear: 'Mostrar todos',
+                filterPlaceHolder: 'Buscar',
+                infoText: 'Mostrando {0}',
+                infoTextEmpty: 'Lista vacía'
+            });
+        });
+    </script>
+}

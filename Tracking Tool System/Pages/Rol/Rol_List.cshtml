@@ -33,29 +33,23 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            @*<th>ID</th>*@
-                            <th>Rol</th>
+                            <th>Tipo de Rol</th>
                             <th>Descripción</th>
                             <th>Estado</th>
-                            <th>Fecha de creación</th>
-                            
+                            <th>Fecha de creación</th>                           
                         </tr>
                     </thead>
 
-                    <tbody>
-                        
+                    <tbody>                       
                             @foreach (var role in Model.GridList)
                             {
                                 <tr onclick="selectRow(@role.RolID)" style="cursor:pointer;">
-                                    @*<td>@role.RolID</td>*@
                                     <td>@role.RolType</td>
                                     <td>@role.RolDescription</td>
                                     <td>@(role.RolStatus ? "Active" : "Inactive")</td>
-                                    <td>@role.DateCreation?.ToString("yyyy-MM-dd")</td> 
-                                    
+                                <td>@role.DateCreation?.ToString("MM-dd-yyyy")</td>
                                 </tr>
-                            }
-                        
+                            }                        
                     </tbody>
 
                 </table>
@@ -68,7 +62,7 @@
 <script> @* Remarca la linea seleccionada en la lista a modificar de roles*@
     function selectRow(id) {
 
-        document.querySelectorAll("tr").forEach(r => r.classList.remove("table-primary"));
+        document.querySelectorAll("tbody tr").forEach(r => r.classList.remove("table-primary"));
 
         event.currentTarget.classList.add("table-primary");
 

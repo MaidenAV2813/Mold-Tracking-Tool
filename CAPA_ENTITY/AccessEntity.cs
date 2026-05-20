@@ -4,12 +4,19 @@ using System.Text;
 
 namespace CAPA_ENTITY
 {
-    public class RolEntity : DBEntity
+    public class AccessEntity : DBEntity
     {
-        public int? RolID { get; set; }
-        public string? RolDescription { get; set; }
-        public string? RolType { get; set; }
-        public Boolean RolStatus { get; set; }
 
+        public int? AccessID { get; set; }
+
+        public int? RolID { get; set; }
+
+        public string? RolDescription { get; set; }
+
+        public string? AccessDescription { get; set; }
+
+        public string? RolType { get; set; }
+
+        public bool? RolStatus { get; set; }
     }
 }

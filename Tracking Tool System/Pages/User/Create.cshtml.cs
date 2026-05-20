@@ -15,7 +15,7 @@ namespace Tracking_Tool_System.Pages.User
         }
 
         [BindProperty]
-        public int? IdNumber { get; set; }
+        public string? Username { get; set; }
 
         [BindProperty]
         public string? EmpName { get; set; }
@@ -30,13 +30,27 @@ namespace Tracking_Tool_System.Pages.User
 
         public async Task OnGet()
         {
-            Roles = await _apiService.GetAsync<RolEntity>("roles");
+            Roles = (await _apiService.GetAsync<RolEntity>("roles"))
+                .Where(x => x.RolStatus == true)
+                .ToList();
         }
         
         public async Task<IActionResult> OnPost()
         {
+            Roles = (await _apiService.GetAsync<RolEntity>("roles"))
+        .Where(x => x.RolStatus == true)
+        .ToList();
+
             if (!ModelState.IsValid)
                 return Page();
+
+            if (RolID == null)
+            {
+                ModelState.AddModelError(string.Empty, "Debe seleccionar un rol.");
+                return Page();
+            }
+
+
 
             var user = User.Identity?.Name ?? "System";
             var now = DateTime.Now;
@@ -44,10 +58,9 @@ namespace Tracking_Tool_System.Pages.User
             var entity = new UserEntity
             {
                 RolID = RolID,
-                IdNumber = IdNumber,
+                Username = Username,
                 EmpName = EmpName?.Trim(),
                 UserStatus = UserStatus,
-
                 CreatedBy = user,
                 ModifiedBy = user,
                 DateCreation = now,
@@ -56,10 +69,16 @@ namespace Tracking_Tool_System.Pages.User
 
             var response = await _apiService.PostAsync("users", entity);
 
-            if (!response.IsSuccessStatusCode)
+
+            var result = await response.Content.ReadFromJsonAsync<DBEntity>();
+
+            if (result != null && result.CodeError != 0)
             {
-                var error = await response.Content.ReadAsStringAsync();
-                ModelState.AddModelError(string.Empty, error);
+                Roles = (await _apiService.GetAsync<RolEntity>("roles"))
+                    .Where(x => x.RolStatus == true)
+                    .ToList();
+
+                ModelState.AddModelError(string.Empty, result.MsgError);
                 return Page();
             }
 

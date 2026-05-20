@@ -6,28 +6,28 @@ namespace CAPA_WEB_API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class GatesController : ControllerBase
     {
-        private readonly IUsers_Services _UsersServices;
+        private readonly IGates_Services _gatesServices;
 
-        public UsersController(IUsers_Services UsersServices)
+        public GatesController(IGates_Services gatesServices)
         {
-            _UsersServices = UsersServices;
+            _gatesServices = gatesServices;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await _UsersServices.Get();
+            var result = await _gatesServices.Get();
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] UserEntity entity)
+        public async Task<IActionResult> Create([FromBody] GateTypeEntity entity)
         {
             try
             {
-                var result = await _UsersServices.Create(entity);
+                var result = await _gatesServices.Create(entity);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -47,9 +47,9 @@ namespace CAPA_WEB_API.Controllers
         {
             try
             {
-                var result = await _UsersServices.GetById(new UserEntity
+                var result = await _gatesServices.GetById(new GateTypeEntity
                 {
-                    UserID = id
+                    GateID = id
                 });
 
                 if (result == null)
@@ -68,11 +68,11 @@ namespace CAPA_WEB_API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UserEntity entity)
+        public async Task<IActionResult> Update([FromBody] GateTypeEntity entity)
         {
             try
             {
-                var result = await _UsersServices.Update(entity);
+                var result = await _gatesServices.Update(entity);
                 return Ok(result);
             }
             catch (Exception ex)

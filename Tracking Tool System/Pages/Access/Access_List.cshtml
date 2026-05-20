@@ -1,0 +1,100 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Access.Access_ListModel
+
+@{
+    ViewData["Title"] = "Accesos";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Accesos</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Lista de accesos</h3>
+            <div class="card-tools">
+                <a asp-page="/Access/CreateAccess" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Agregar nuevo acceso
+                </a>
+                    <a id="editBtn"
+                           class="btn btn-warning btn-sm @(Model.SelectedRolID.HasValue ? "" : "disabled")"
+                           href="@(Model.SelectedRolID.HasValue ? $"/Access/EditAccess?rolId={Model.SelectedRolID}" : "#")">
+                        <i class="fas fa-edit"></i> Editar Acceso
+                    </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+                @* FILTRO POR ROL *@
+
+                <form method="get" id="filterForm" class="mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Filtrar por Rol</label>
+
+                            <select asp-for="SelectedRolID"
+                                    class="form-control"
+                                    onchange="document.getElementById('filterForm').submit();">
+
+                                <option value="">Todos los roles</option>
+
+                                @foreach (var rol in Model.Roles)
+                                {
+                                    <option value="@rol.RolID">@rol.RolType</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table table-bordered table-striped">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Tipo de rol</th>
+                            <th>Descripcion del rol</th>
+                            <th>Acceso</th>
+                            <th>Fecha de Creación</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var acceso in Model.Access)
+                        {
+                            <tr>
+
+                                <td>
+
+                                    @acceso.RolType
+
+                                </td>
+
+                                <td>@acceso.RolDescription</td>
+
+                                <td>@acceso.AccessDescription</td>
+
+                                <td>
+                                    @(acceso.DateCreation?.ToString("MM-dd-yyyy") ?? "")
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+    </div>
+</div>
+</section>

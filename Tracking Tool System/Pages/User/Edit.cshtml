@@ -1,51 +1,67 @@
 ﻿@page
 @model Tracking_Tool_System.Pages.User.EditModel
 
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Edit User</h3>
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Modificar Usuario</h1>
     </div>
+</section>
 
-    <div class="card-body">
-        <form method="post">
-            <input type="hidden" asp-for="UserID" />
+<section class="content">
+    <div class="container-fluid">
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="form-group">
-                <label>Rol ID</label>
-                <input asp-for="RolID" class="form-control" />
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Modificar</h3>
             </div>
 
-            <div class="form-group">
-                <label>Username</label>
-                <input asp-for="Username" class="form-control" />
-            </div>
+            <form method="post">
+                <div class="card-body">
 
-            <div class="form-group">
-                <label>ID Number</label>
-                <input asp-for="IdNumber" class="form-control" />
-            </div>
+                    <input type="hidden" asp-for="UserID" />
 
-            <div class="form-group">
-                <label>Name</label>
-                <input asp-for="EmpName" class="form-control" />
-            </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label>Rol</label>
-                <input asp-for="Rol" class="form-control" />
-            </div>
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <input asp-for="Username" class="form-control" />
+                    </div>
 
-            <div class="form-check">
-                <input asp-for="UserStatus" class="form-check-input" />
-                <label class="form-check-label">Active</label>
-            </div>
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input asp-for="EmpName" class="form-control" />
+                    </div>
 
-            <br />
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select asp-for="UserStatus" class="form-control">
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                    </div>
 
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a asp-page="/User/User_List" class="btn btn-secondary">Cancel</a>
-        </form>
+                    <div class="form-group">
+                        <label>Tipo de Rol</label>
+                        <select asp-for="RolID" class="form-control">
+                            <option value="">Seleccione un rol</option>
+                            @foreach (var rol in Model.Roles)
+                            {
+                                <option value="@rol.RolID">@rol.RolType</option>
+                            }
+                        </select>
+                    </div>
+
+                    <br />
+                </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-warning">Actualizar</button>
+                            <a asp-page="/User/User_List" class="btn btn-secondary">Cancelar</a>
+                        </div>
+            </form>
+        </div>
     </div>
-</div>
+</section>

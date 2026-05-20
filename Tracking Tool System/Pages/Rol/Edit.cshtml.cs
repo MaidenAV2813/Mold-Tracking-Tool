@@ -57,10 +57,12 @@ namespace Tracking_Tool_System.Pages.Rol
 
             var response = await _apiService.PutAsync("roles", entity);
 
-            if (!response.IsSuccessStatusCode)
+            var result = await response.Content.ReadFromJsonAsync<DBEntity>();
+
+            if (result != null && result.CodeError != 0)
             {
-                var error = await response.Content.ReadAsStringAsync();
-                return Content(error);
+                ModelState.AddModelError(string.Empty, result.MsgError);
+                return Page();
             }
 
             return RedirectToPage("/Rol/Rol_List");

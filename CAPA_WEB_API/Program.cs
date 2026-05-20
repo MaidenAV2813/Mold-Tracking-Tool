@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IDataAccess, DataAccess>();
 builder.Services.AddScoped<IRoles_Services, Roles_Services>();
 builder.Services.AddScoped<IUsers_Services, Users_Services>();
+builder.Services.AddScoped<IAccess_Services, Access_Services>();
+builder.Services.AddScoped<IGates_Services, Gates_Services>();
 
 
 // Controllers

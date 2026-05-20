@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CAPA_ENTITY
 {
-    internal class GateTypeEntiry
+    public class GateTypeEntity : DBEntity
     {
         public int? GateID { get; set; }
         public string? GateType { get; set; }
