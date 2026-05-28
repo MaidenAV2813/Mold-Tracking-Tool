@@ -3,20 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Tracking_Tool_System.Services;
 
-namespace Tracking_Tool_System.Pages.Gates
+namespace Tracking_Tool_System.Pages.Critically
 {
-    public class CreateGateModel : PageModel
+    public class CreateCriticallyModel : PageModel
     {
 
         private readonly ApiService _apiService;
 
-        public CreateGateModel(ApiService apiService)
+        public CreateCriticallyModel(ApiService apiService)
         {
             _apiService = apiService;
         }
 
         [BindProperty]
-        public string? GateType { get; set; }
+        public string? CriticallyType { get; set; }
 
         [BindProperty]
         public DateTime DateCreation { get; set; }
@@ -34,20 +34,20 @@ namespace Tracking_Tool_System.Pages.Gates
 
             try
             {
-                var gate = User.Identity?.Name ?? "System";
+                var critically = User.Identity?.Name ?? "System";
                 var now = DateTime.Now;
 
-                var entity = new GateTypeEntity
+                var entity = new CriticallyMoldEntity
                 {
-                    GateType = GateType,
-                    CreatedBy = gate,
-                    ModifiedBy = gate,
+                    CriticallyType = CriticallyType,
+                    CreatedBy = critically,
+                    ModifiedBy = critically,
                     DateCreation = now,
                     DateModification = now
 
                 };
 
-                var response = await _apiService.PostAsync("gates", entity);
+                var response = await _apiService.PostAsync("critically", entity);
 
                 var result = await response.Content.ReadFromJsonAsync<DBEntity>();
 
@@ -57,7 +57,7 @@ namespace Tracking_Tool_System.Pages.Gates
                     return Page();
                 }
 
-                return RedirectToPage("/Gates/Gate_List");
+                return RedirectToPage("/Critically/Critically_List");
             }
             catch (Exception ex)
             {

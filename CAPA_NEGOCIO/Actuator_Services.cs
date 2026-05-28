@@ -11,13 +11,13 @@ using CAPA_DATOS;
 
 namespace CAPA_NEGOCIO
 {
-    public class Gates_Services : IGates_Services
+    public class Actuator_Services : IActuator_Services
 
     {
 
         private readonly IDataAccess sql;
 
-        public Gates_Services(IDataAccess _sql)
+        public Actuator_Services(IDataAccess _sql)
 
         {
 
@@ -27,11 +27,11 @@ namespace CAPA_NEGOCIO
 
         //Metodo Get
 
-        public async Task<IEnumerable<GateTypeEntity>> Get()
+        public async Task<IEnumerable<ActuatorTypeEntity>> Get()
         {
             try
             {
-                var result = sql.QueryAsync<GateTypeEntity>("sp_Gates_List");
+                var result = sql.QueryAsync<ActuatorTypeEntity>("sp_ActuatorType_List");
 
                 return await result;
             }
@@ -63,11 +63,11 @@ namespace CAPA_NEGOCIO
 
         //Metodo Create
 
-        public async Task<DBEntity> Create(GateTypeEntity entity)
+        public async Task<DBEntity> Create(ActuatorTypeEntity entity)
         {
-            var result = sql.ExecuteAsync("sp_Gates_Insert", new
+            var result = sql.ExecuteAsync("sp_ActuatorType_Insert", new
             {
-                entity.GateType,
+                entity.ActuatorType,
                 entity.CreatedBy,
                 entity.DateCreation,
                 entity.DateModification,
@@ -104,15 +104,15 @@ namespace CAPA_NEGOCIO
         //}
 
         //Metodo Delete
-        public async Task<DBEntity> Delete(GateTypeEntity entity)
+        public async Task<DBEntity> Delete(ActuatorTypeEntity entity)
 
         {
             try
 
             {
-                var result = sql.ExecuteAsync("sp_Gate_DeleteByGateID", new
+                var result = sql.ExecuteAsync("sp_ActuatorType_DeleteByGateID", new
                 {
-                    entity.GateID,
+                    entity.ActuatorID,
                 });
 
                 return await result;

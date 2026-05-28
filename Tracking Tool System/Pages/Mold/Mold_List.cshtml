@@ -1,0 +1,127 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Mold.Mold_ListModel
+
+@{
+    ViewData["Title"] = "Moldes";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Lista de Moldes</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+
+            <div class="card-header">           
+
+                <div class="card-tools">
+                    <a asp-page="/Mold/CreateMold" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Agregar nuevo molde
+                    </a>
+                    <a id="editBtn" class="btn btn-warning btn-sm disabled">
+                        <i class="fas fa-edit"></i> Editar molde
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="card-body">
+                <form method="get" id="filterForm" class="mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Filtrar por molde</label>
+
+                            <select asp-for="SelectedMoldNumber"
+                                    class="form-control"
+                                    onchange="document.getElementById('filterForm').submit();">
+
+                                <option value="">Todos los moldes</option>
+
+                                @foreach (var mold in Model.MoldFilterList)
+                                {
+                                    <option value="@mold.MoldNumber">
+                                        @mold.MoldNumber
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-sm2 text-nowrap">
+                        <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Numero de molde</th>
+                            <th>Numero de activo</th>
+                            <th>Estado del molde</th>
+                            <th>Ubicacion</th>
+                            <th>Cant de cavidades</th>
+                            <th>Cant de cavidades bloquedas</th>
+                            <th>Planos</th>
+                            <th>Tiene contador</th>
+                            <th>Tipo de contador</th>
+                            <th>Es de tres placas</th>
+                            <th>Contador inicial</th> 
+                            <th>Tipo de colada</th>
+                            <th>Tipo de actuador</th>
+                            <th>Criticidad</th>
+                            <th>Tipo de gate</th>
+                            <th>Fecha de creación</th>
+                            <th>Craedo por:</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>                       
+                        @foreach (var mold in Model.GridList)
+                        {
+                            <tr onclick="selectRow(@mold.MoldID)" style="cursor:pointer;">
+                                <td>@mold.MoldNumber</td>
+                                <td>@mold.MoldAssetNumber</td>
+                                <td>@mold.MoldStatus</td>
+                                <td>@mold.MoldOrigin</td>
+                                <td>@mold.CavityQty</td>
+                                <td>@mold.BlockCavityQty</td>
+                                <td>@mold.DigitalPlane</td>
+                                <td>@mold.HaveCounter</td>
+                                <td>@mold.CounterType</td>
+                                <td>@mold.ThreeLayer</td>
+                                <td>@mold.InitialCount</td>
+                                <td>@mold.CastingType</td>
+                                <td>@mold.ActuatorType</td>
+                                <td>@mold.CriticallyType</td>
+                                <td>@mold.GateType</td>
+                                <td>@mold.DateCreation?.ToString("MM-dd-yyyy")</td>
+                                <td>@mold.CreatedBy</td>
+                            </tr>
+                        }                        
+                    </tbody>
+
+                    </table>
+                
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script> @* Remarca la linea seleccionada en la lista a modificar de moldes*@
+    function selectRow(id) {
+
+        document.querySelectorAll("tbody tr").forEach(r => r.classList.remove("table-primary"));
+
+        event.currentTarget.classList.add("table-primary");
+
+        let editBtn = document.getElementById("editBtn");
+
+        editBtn.classList.remove("disabled");
+        editBtn.href = "/Mold/Edit?id=" + id;
+    }
+</script>

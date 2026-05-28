@@ -3,20 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Tracking_Tool_System.Services;
 
-namespace Tracking_Tool_System.Pages.Gates
+namespace Tracking_Tool_System.Pages.Casting
 {
-    public class CreateGateModel : PageModel
+    public class CreateCastingModel : PageModel
     {
 
         private readonly ApiService _apiService;
 
-        public CreateGateModel(ApiService apiService)
+        public CreateCastingModel(ApiService apiService)
         {
             _apiService = apiService;
         }
 
         [BindProperty]
-        public string? GateType { get; set; }
+        public string? CastingType { get; set; }
 
         [BindProperty]
         public DateTime DateCreation { get; set; }
@@ -34,20 +34,20 @@ namespace Tracking_Tool_System.Pages.Gates
 
             try
             {
-                var gate = User.Identity?.Name ?? "System";
+                var casting = User.Identity?.Name ?? "System";
                 var now = DateTime.Now;
 
-                var entity = new GateTypeEntity
+                var entity = new CastingMoldEntity
                 {
-                    GateType = GateType,
-                    CreatedBy = gate,
-                    ModifiedBy = gate,
+                    CastingType = CastingType,
+                    CreatedBy = casting,
+                    ModifiedBy = casting,
                     DateCreation = now,
                     DateModification = now
 
                 };
 
-                var response = await _apiService.PostAsync("gates", entity);
+                var response = await _apiService.PostAsync("casting", entity);
 
                 var result = await response.Content.ReadFromJsonAsync<DBEntity>();
 
@@ -57,7 +57,7 @@ namespace Tracking_Tool_System.Pages.Gates
                     return Page();
                 }
 
-                return RedirectToPage("/Gates/Gate_List");
+                return RedirectToPage("/Casting/Casting_List");
             }
             catch (Exception ex)
             {

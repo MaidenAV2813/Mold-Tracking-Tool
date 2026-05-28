@@ -26,8 +26,13 @@ namespace Tracking_Tool_System.Pages.Access
         public List<string> Modules { get; set; } = new()
         {
             "Registro del Molde",
+            "Lista de moldes",
+            "Crear molde",
             "Configuracion del Molde",
             "Tipos de Gates",
+            "Tipos de Coladas",
+            "Tipos de Criticidad",
+            "Tipos de Actuadores",
             "Evaluacion del Molde",
             "Mantenimiento del Molde",
             "Inventario de Repuestos",
@@ -60,41 +65,65 @@ namespace Tracking_Tool_System.Pages.Access
 
         public async Task<IActionResult> OnPost()
         {
+            Roles = await _apiService.GetAsync<RolEntity>("roles");
 
+            if (RolID == null)
             {
-                Roles = await _apiService.GetAsync<RolEntity>("roles");
+                ModelState.AddModelError(string.Empty, "Debe seleccionar un rol.");
+                return Page();
+            }
 
-                if (RolID == null)
+            SelectedModules ??= new List<string>();
+
+            var user = User.Identity?.Name ?? "System";
+            var now = DateTime.Now;
+
+            var currentAccess = await _apiService.GetAsync<AccessEntity>("access");
+
+            var currentRoleAccess = currentAccess
+                .Where(x => x.RolID == RolID)
+                .ToList();
+
+            await _apiService.PostAsync("access/deletebyrol", new AccessEntity
+            {
+                RolID = RolID
+            });
+
+            foreach (var module in SelectedModules)
+            {
+                var moduleName = module.Trim();
+
+                var existing = currentRoleAccess
+                    .FirstOrDefault(x =>
+                        x.AccessDescription != null &&
+                        x.AccessDescription.Trim() == moduleName);
+
+                var entity = new AccessEntity
                 {
-                    ModelState.AddModelError(string.Empty, "Debe seleccionar un rol.");
+                    RolID = RolID,
+                    AccessDescription = moduleName,
+
+                    DateCreation = existing?.DateCreation ?? now,
+
+                    CreatedBy = !string.IsNullOrWhiteSpace(existing?.CreatedBy)
+                        ? existing.CreatedBy
+                        : user,
+
+                    ModifiedBy = user,
+                    DateModification = now
+                };
+
+                var response = await _apiService.PostAsync("access", entity);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    ModelState.AddModelError(string.Empty, error);
                     return Page();
                 }
-
-                var user = User.Identity?.Name ?? "System";
-                var now = DateTime.Now;
-
-                await _apiService.PostAsync("access/deletebyrol", new AccessEntity
-                {
-                    RolID = RolID
-                });
-
-                foreach (var module in SelectedModules)
-                {
-                    var entity = new AccessEntity
-                    {
-                        RolID = RolID,
-                        AccessDescription = module.Trim(),
-                        ModifiedBy = user,
-                        CreatedBy = user,
-                        DateCreation = now,
-                        DateModification = now
-                    };
-
-                    await _apiService.PostAsync("access", entity);
-                }
-
-                return RedirectToPage("/Access/Access_List");
             }
+
+            return RedirectToPage("/Access/Access_List");
         }
     }
 }

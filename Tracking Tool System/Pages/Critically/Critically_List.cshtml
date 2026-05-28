@@ -1,12 +1,12 @@
 ﻿@page
-@model Tracking_Tool_System.Pages.Gates.Gates_ListModel
+@model Tracking_Tool_System.Pages.Critically.Critically_ListModel
 @{
-	ViewData["Title"] = "Gates";
+	ViewData["Title"] = "Criticidad";
 }
 
 <section class="content-header">
     <div class="container-fluid">
-        <h1>Tipos de Gate</h1>
+        <h1>Tipos de Criticidad</h1>
     </div>
 </section>
 
@@ -16,14 +16,14 @@
             <div class="card-header">
                 
                 <div class="card-tools">
-                    <a asp-page="/Gates/CreateGate" class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus"></i> Agregar nuevo tipo de Gate
+                    <a asp-page="/Critically/CreateCritically" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Agregar nuevo tipo de Criticidad
                     </a>
                     <form method="post" asp-page-handler="Eliminar" id="deleteForm" style="display:inline;">
                         <input type="hidden" name="id" id="deleteId" />
 
                         <button id="deleteBtn" type="submit" class="btn btn-danger btn-sm disabled">
-                            <i class="fas fa-trash"></i> Eliminar tipo de Gate
+                            <i class="fas fa-trash"></i> Eliminar tipo de Criticidad
                         </button>
                     </form>
                 </div>
@@ -34,17 +34,17 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Tipo de Gate</th>
+                            <th>Tipo de Criticidad</th>
                             <th>Fecha de creación</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach (var Gates in Model.GridList)
+                        @foreach (var Critically in Model.GridList)
                         {
-                            <tr onclick="selectRow(@Gates.GateID)" style="cursor:pointer;">
-                                <td>@Gates.GateType</td>
-                                <td>@Gates.DateCreation?.ToString("MM-dd-yyyy")</td>
+                            <tr onclick="selectRow(@Critically.CriticallyID)" style="cursor:pointer;">
+                                <td>@Critically.CriticallyType</td>
+                                <td>@Critically.DateCreation?.ToString("MM-dd-yyyy")</td>
                             </tr>
                         }
                     </tbody>

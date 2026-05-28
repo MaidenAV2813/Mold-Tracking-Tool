@@ -11,13 +11,13 @@ using CAPA_DATOS;
 
 namespace CAPA_NEGOCIO
 {
-    public class Gates_Services : IGates_Services
+    public class Critically_Services : ICritically_Services
 
     {
 
         private readonly IDataAccess sql;
 
-        public Gates_Services(IDataAccess _sql)
+        public Critically_Services(IDataAccess _sql)
 
         {
 
@@ -27,11 +27,11 @@ namespace CAPA_NEGOCIO
 
         //Metodo Get
 
-        public async Task<IEnumerable<GateTypeEntity>> Get()
+        public async Task<IEnumerable<CriticallyMoldEntity>> Get()
         {
             try
             {
-                var result = sql.QueryAsync<GateTypeEntity>("sp_Gates_List");
+                var result = sql.QueryAsync<CriticallyMoldEntity>("sp_Critically_List");
 
                 return await result;
             }
@@ -63,11 +63,11 @@ namespace CAPA_NEGOCIO
 
         //Metodo Create
 
-        public async Task<DBEntity> Create(GateTypeEntity entity)
+        public async Task<DBEntity> Create(CriticallyMoldEntity entity)
         {
-            var result = sql.ExecuteAsync("sp_Gates_Insert", new
+            var result = sql.ExecuteAsync("sp_Critically_Insert", new
             {
-                entity.GateType,
+                entity.CriticallyType,
                 entity.CreatedBy,
                 entity.DateCreation,
                 entity.DateModification,
@@ -104,15 +104,15 @@ namespace CAPA_NEGOCIO
         //}
 
         //Metodo Delete
-        public async Task<DBEntity> Delete(GateTypeEntity entity)
+        public async Task<DBEntity> Delete(CriticallyMoldEntity entity)
 
         {
             try
 
             {
-                var result = sql.ExecuteAsync("sp_Gate_DeleteByGateID", new
+                var result = sql.ExecuteAsync("sp_Critically_DeleteByGateID", new
                 {
-                    entity.GateID,
+                    entity.CriticallyID,
                 });
 
                 return await result;

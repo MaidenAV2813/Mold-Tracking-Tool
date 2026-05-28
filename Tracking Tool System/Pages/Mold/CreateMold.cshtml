@@ -1,0 +1,244 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Mold.CreateMoldModel
+@{
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Registro de Molde</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <form method="post">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Información General del Molde</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Número de Molde</label>
+                            <input asp-for="MoldNumber"
+                                   class="form-control text-uppercase"
+                                   oninput="this.value = this.value.toUpperCase()" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Número de Activo</label>
+                            <input asp-for="MoldAssetNumber"
+                                   class="form-control text-uppercase"
+                                   oninput="this.value = this.value.toUpperCase()" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Estado del Molde</label>
+                            <select asp-for="MoldStatus" class="form-control">
+                                <option value="">Seleccione un estado</option>
+                                <option value="Activo">Activo</option>
+                                <option value="Inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Criticidad</label>
+                            <select asp-for="CriticallyID" class="form-control">
+                                <option value="">Seleccione la Criticidad</option>
+
+                                @foreach (var item in Model.CriticallyList)
+                                {
+                                    <option value="@item.CriticallyID">
+                                        @item.CriticallyType
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Gate</label>
+                            <select asp-for="GateID" class="form-control">
+                                <option value="">Seleccione un Gate</option>
+
+                                @foreach (var item in Model.GateList)
+                                {
+                                    <option value="@item.GateID">
+                                        @item.GateType
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Tipo de Colada</label>
+                            <select asp-for="CastingID" class="form-control">
+                                <option value="">Seleccione la Colada</option>
+
+                                @foreach (var item in Model.CastingList)
+                                {
+                                    <option value="@item.CastingID">
+                                        @item.CastingType
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Actuador</label>
+                            <select asp-for="ActuatorID" class="form-control">
+                                <option value="">Seleccione el Actuador</option>
+
+                                @foreach (var item in Model.ActuatorList)
+                                {
+                                    <option value="@item.ActuatorID">
+                                        @item.ActuatorType
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Origen</label>
+                            <input asp-for="MoldOrigin"
+                                   class="form-control text-uppercase"
+                                   oninput="this.value = this.value.toUpperCase()" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Plano Digital</label>
+                            <select asp-for="DigitalPlane" class="form-control">
+                                <option value="">Seleccione una opcion</option>
+                                <option value="Fisico">Fisico</option>
+                                <option value="Digital">Digital</option>
+                                <option value="Fisico/Digital">Fisico/Digital</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-primary mt-3">
+
+                <div class="card-header">
+                    <h3 class="card-title">Características del Molde</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Cantidad de Cavidades</label>
+                            <input asp-for="CavityQty" class="form-control" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Cavidades Bloqueadas</label>
+                            <input asp-for="BlockCavityQty" class="form-control" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Conteo Inicial</label>
+                            <input asp-for="InitialCount" class="form-control" />
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <label>Tiene contador</label>
+
+                             <select asp-for="HaveCounter"
+                                    class="form-control"
+                                    id="HaveCounter">
+
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="Si">Si</option>
+                                        <option value="No">No</option>
+
+                             </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Tipo de contador</label>
+
+                            <select asp-for="CounterType"
+                                    class="form-control"
+                                    id="CounterType">
+
+                                        <option value="">Seleccione una opcion</option>
+                                        <option value="Empotrado">Empotrado</option>
+                                        <option value="Externo">Externo</option>
+                                        <option value="N/A">N/A</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                             <label>Molde de tres placas</label>
+
+                             <select asp-for="ThreeLayer" class="form-control">
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="Si">Si</option>
+                                        <option value="No">No</option>
+                             </select>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>          
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a asp-page="/Mold/Mold_List" class="btn btn-secondary">Cancelar</a>
+            </div>     
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+
+    <script>
+
+        function validateCounterType() {
+
+            let haveCounter = document.getElementById("HaveCounter");
+            let counterType = document.getElementById("CounterType");
+
+            if (haveCounter.value === "No") {
+
+                counterType.value = "N/A";
+                counterType.disabled = true;
+
+            }
+            else {
+
+                counterType.disabled = false;
+
+                if (counterType.value === "N/A") {
+                    counterType.value = "";
+                }
+            }
+        }
+
+        document.getElementById("HaveCounter")
+            .addEventListener("change", validateCounterType);
+
+        window.onload = validateCounterType;
+
+    </script>
+}

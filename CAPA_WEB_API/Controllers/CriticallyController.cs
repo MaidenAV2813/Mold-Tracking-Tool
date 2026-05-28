@@ -6,28 +6,28 @@ namespace CAPA_WEB_API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class GatesController : ControllerBase
+    public class CriticallyController : ControllerBase
     {
-        private readonly IGates_Services _gatesServices;
+        private readonly ICritically_Services _criticallyServices;
 
-        public GatesController(IGates_Services gatesServices)
+        public CriticallyController(ICritically_Services criticallyServices)
         {
-            _gatesServices = gatesServices;
+            _criticallyServices = criticallyServices;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await _gatesServices.Get();
+            var result = await _criticallyServices.Get();
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] GateTypeEntity entity)
+        public async Task<IActionResult> Create([FromBody] CriticallyMoldEntity entity)
         {
             try
             {
-                var result = await _gatesServices.Create(entity);
+                var result = await _criticallyServices.Create(entity);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -86,11 +86,11 @@ namespace CAPA_WEB_API.Controllers
         //}
 
         [HttpPost("delete")]
-        public async Task<IActionResult> Delete([FromBody] GateTypeEntity entity)
+        public async Task<IActionResult> Delete([FromBody] CriticallyMoldEntity entity)
         {
             try
             {
-                var result = await _gatesServices.Delete(entity);
+                var result = await _criticallyServices.Delete(entity);
                 return Ok(result);
             }
             catch (Exception ex)

@@ -1,11 +1,11 @@
 ﻿@page
-@model Tracking_Tool_System.Pages.Gates.CreateGateModel
+@model Tracking_Tool_System.Pages.Critically.CreateCriticallyModel
 @{
-	ViewData["Title"] = "Crear tipo de Gate";
+	ViewData["Title"] = "Crear tipo de Criticidad";
 }
 <section class="content-header">
     <div class="container-fluid">
-         <h1>Crear tipo de Gate</h1>
+         <h1>Crear tipo de Criticidad</h1>
     </div>
 </section>
 
@@ -14,7 +14,7 @@
 
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Información del tipo de Gate</h3>
+                <h3 class="card-title">Información de Criticidad</h3>
             </div>
 
             <form method="post">
@@ -23,15 +23,15 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group">
-                        <label>Tipo de Gate</label>
-                        <input asp-for="GateType" class="form-control" placeholder="Ingrese el tipo de Gate" />
+                        <label>Tipo de Criticidad</label>
+                        <input asp-for="CriticallyType" class="form-control" placeholder="Ingrese el tipo de criticidad" />
                     </div>
 
                 </div>
 
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Salvar</button>
-                    <a asp-page="/Gates/Gate_List" class="btn btn-secondary">Cancelar</a>
+                    <a asp-page="/Critically/Critically_List" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
         </div>

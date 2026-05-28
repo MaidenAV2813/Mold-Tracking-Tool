@@ -25,8 +25,13 @@ namespace Tracking_Tool_System.Pages.Access
         public List<string> Modules { get; set; } = new()
         {
             "Registro del Molde",
+            "Lista de moldes",
+            "Crear molde",
             "Configuracion del Molde",
             "Tipos de Gates",
+            "Tipos de Coladas",
+            "Tipos de Criticidad",
+            "Tipos de Actuadores",
             "Evaluacion del Molde",
             "Mantenimiento del Molde",
             "Inventario de Repuestos",
