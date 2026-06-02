@@ -30,5 +30,7 @@ namespace CAPA_ENTITY
         public string? CriticallyType { get; set; }
 
         public string? GateType { get; set; }
+
+
     }
 }

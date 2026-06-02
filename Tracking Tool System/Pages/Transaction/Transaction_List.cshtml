@@ -1,0 +1,104 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Transaction.Transaction_ListModel
+
+@{
+    ViewData["Title"] = "Tipos de transacciones";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Lista de Transacciones</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-header">
+                
+
+                <div class="card-tools">
+                    <a asp-page="/Transaction/CreateTransaction" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Agregar nuevo tipo de transaccion
+                    </a>
+                    <a id="editBtn" class="btn btn-warning btn-sm disabled">
+                        <i class="fas fa-edit"></i> Editar Transaccion
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body">
+
+                <form method="get" id="filterForm" class="mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Buscar Transaccion</label>
+
+                            <input type="text"
+                                   id="searchTransaction"
+                                   class="form-control"
+                                   placeholder="Digite el tipo de transaccion..."
+                                   oninput="this.value = this.value.replace(/\b\w/g, l => l.toUpperCase());"/>
+                                   
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table table-bordered table-striped">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Tipo de transaccion</th>
+                            <th>Estado</th>
+                            <th>Fecha de creación</th>                           
+                        </tr>
+                    </thead>
+
+                    <tbody>                       
+                            @foreach (var transaction in Model.GridList)
+                            {
+                            <tr onclick="selectRow(@transaction.TransactionID,'@transaction.TransactionType')" style="cursor:pointer;">
+                                    <td>@transaction.TransactionType</td>
+                                    <td>@transaction.TransactionStatus</td>
+                                    <td>@transaction.DateCreation?.ToString("MM-dd-yyyy")</td>
+                                </tr>
+                            }                        
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    const searchInput = document.getElementById("searchTransaction");
+
+    searchInput.addEventListener("keyup", function () {
+        filterTransaction(this.value);
+    });
+
+    function filterTransaction(value) {
+        value = value.toLowerCase();
+
+        document.querySelectorAll("tbody tr").forEach(function (row) {
+            let TransactionType = row.cells[0].innerText.toLowerCase();
+            row.style.display = TransactionType.includes(value) ? "" : "none";
+        });
+    }
+
+    function selectRow(id, TransactionType) {
+        document.querySelectorAll("tbody tr")
+            .forEach(r => r.classList.remove("table-primary"));
+
+        event.currentTarget.classList.add("table-primary");
+
+        searchInput.value = TransactionType;
+
+        let editBtn = document.getElementById("editBtn");
+        editBtn.classList.remove("disabled");
+        editBtn.href = "/Transaction/EditTransaction?id=" + id;
+    }
+</script>

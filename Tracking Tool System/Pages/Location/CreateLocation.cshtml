@@ -1,13 +1,13 @@
 ﻿@page
-@model Tracking_Tool_System.Pages.Rol.CreateModel
+@model Tracking_Tool_System.Pages.Location.CreateLocationModel
 
 @{
-    ViewData["Title"] = "Crear Rol"; 
+    ViewData["Title"] = "Crear Localidad"; 
 }
 
         <section class="content-header">
             <div class="container-fluid">
-                <h1>Crear Rol</h1>
+                <h1>Crear Localidad</h1>
             </div>
         </section>
 
@@ -16,7 +16,7 @@
 
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Información del rol</h3>
+                        <h3 class="card-title">Información de la localidad</h3>
                     </div>
 
                     <form method="post">
@@ -25,20 +25,15 @@
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                             <div class="form-group">
-                                <label>Tipo de Rol</label>
-                                <input asp-for="RolType" class="form-control" placeholder="Ingrese el rol" />
-                            </div>
-
-                            <div class="form-group">
-                                <label>Descripción</label>
-                                <input asp-for="RolDescription" class="form-control" placeholder="Ingrese la descripción del rol" />
-                            </div>                         
+                                <label>Localidad</label>
+                        <input asp-for="LocationNumber" class="form-control" placeholder="Ingrese la localidad" oninput="this.value = this.value.toUpperCase();" />
+                            </div>                       
 
                             <div class="form-group">
                                 <label>Estado</label>
-                                <select asp-for="RolStatus" class="form-control">
-                                    <option value="true">Active</option>
-                                    <option value="false">Inactive</option>
+                                <select asp-for="LocationStatus" class="form-control">
+                                    <option value="Activa">Activa</option>
+                                    <option value="Inactiva">Inactiva</option>
                                 </select>
                             </div>
 
@@ -46,7 +41,7 @@
 
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a asp-page="/Rol/Rol_List" class="btn btn-secondary">Cancelar</a>
+                            <a asp-page="/Location/Location_List" class="btn btn-secondary">Cancelar</a>
                         </div>
                     </form>
                 </div>

@@ -43,7 +43,7 @@
 
             <div class="input-group" data-widget="sidebar-search">
                 <input class="form-control form-control-sidebar" type="search" 
-                    placeholder="Search" aria-label="Search">2
+                    placeholder="Search" aria-label="Search">
 
                 <div class="input-group-append">
                     <button class="btn btn-sidebar">
@@ -83,17 +83,7 @@
                                         <p>Lista de moldes</p>
                                     </a>
                                 </li>
-                            }
-
-                            @if (HasAccess("Crear molde"))
-                            {
-                                <li class="nav-item">
-                                    <a asp-page="/Mold/CreateMold" class="nav-link">
-                                        <i class="fas fa-minus nav-icon"></i>
-                                        <p>Crear molde</p>
-                                    </a>
-                                </li>
-                            }                       
+                            }         
                         
                         </ul>
                             
@@ -195,9 +185,53 @@
                             <i class="nav-icon fas fa-boxes"></i>   
                                 <p>
                                     Inventario de Repuestos
-                                    @*<i class="fas fa-angle-left right"></i>*@
+                                    <i class="fas fa-angle-left right"></i>
                                 </p>
                         </a>
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Localidades"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Location/Location_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Localidades</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (HasAccess("Tipos de Transacciones"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Transaction/Transaction_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Tipos de Transacciones</p>
+                                    </a>
+                                </li>
+
+                            }
+                                
+                            @if (HasAccess("Inventario"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Location/Location_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Inventario</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (HasAccess("Tracciones de Inventario"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Location/Location_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Transacciones de Inventario</p>
+                                    </a>
+                                </li>
+                            }
+                               
+                        </ul>
 
                     </li>
                 }

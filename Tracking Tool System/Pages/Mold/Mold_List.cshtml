@@ -22,7 +22,9 @@
                     <a asp-page="/Mold/CreateMold" class="btn btn-primary btn-sm">
                         <i class="fas fa-plus"></i> Agregar nuevo molde
                     </a>
-                    <a id="editBtn" class="btn btn-warning btn-sm disabled">
+                    <a id="editBtn"
+                           class="btn btn-warning btn-sm @(Model.SelectedMoldID.HasValue ? "" : "disabled")"
+                           href="@(Model.SelectedMoldID.HasValue ? $"/Mold/EditMold?id={Model.SelectedMoldID}" : "#")">
                         <i class="fas fa-edit"></i> Editar molde
                     </a>
                 </div>
@@ -33,21 +35,12 @@
                 <form method="get" id="filterForm" class="mb-3">
                     <div class="row">
                         <div class="col-md-4">
-                            <label>Filtrar por molde</label>
+                            <label>Buscar Molde</label>
 
-                            <select asp-for="SelectedMoldNumber"
-                                    class="form-control"
-                                    onchange="document.getElementById('filterForm').submit();">
-
-                                <option value="">Todos los moldes</option>
-
-                                @foreach (var mold in Model.MoldFilterList)
-                                {
-                                    <option value="@mold.MoldNumber">
-                                        @mold.MoldNumber
-                                    </option>
-                                }
-                            </select>
+                            <input type="text"
+                                   id="searchMold"
+                                   class="form-control"
+                                   placeholder="Digite el número de molde..." />
                         </div>
                     </div>
                 </form>
@@ -71,14 +64,14 @@
                             <th>Criticidad</th>
                             <th>Tipo de gate</th>
                             <th>Fecha de creación</th>
-                            <th>Craedo por:</th>
+                            <th>Creado por:</th>
                         </tr>
                     </thead>
 
                     <tbody>                       
                         @foreach (var mold in Model.GridList)
                         {
-                            <tr onclick="selectRow(@mold.MoldID)" style="cursor:pointer;">
+                            <tr onclick="selectRow(@mold.MoldID, '@mold.MoldNumber')" style="cursor:pointer;">
                                 <td>@mold.MoldNumber</td>
                                 <td>@mold.MoldAssetNumber</td>
                                 <td>@mold.MoldStatus</td>
@@ -112,16 +105,32 @@
 
 </section>
 
-<script> @* Remarca la linea seleccionada en la lista a modificar de moldes*@
-    function selectRow(id) {
+<script>
+    const searchInput = document.getElementById("searchMold");
 
-        document.querySelectorAll("tbody tr").forEach(r => r.classList.remove("table-primary"));
+    searchInput.addEventListener("keyup", function () {
+        filterMolds(this.value);
+    });
+
+    function filterMolds(value) {
+        value = value.toLowerCase();
+
+        document.querySelectorAll("tbody tr").forEach(function (row) {
+            let moldNumber = row.cells[0].innerText.toLowerCase();
+            row.style.display = moldNumber.includes(value) ? "" : "none";
+        });
+    }
+
+    function selectRow(id, moldNumber) {
+        document.querySelectorAll("tbody tr")
+            .forEach(r => r.classList.remove("table-primary"));
 
         event.currentTarget.classList.add("table-primary");
 
-        let editBtn = document.getElementById("editBtn");
+        searchInput.value = moldNumber;
 
+        let editBtn = document.getElementById("editBtn");
         editBtn.classList.remove("disabled");
-        editBtn.href = "/Mold/Edit?id=" + id;
+        editBtn.href = "/Mold/EditMold?id=" + id;
     }
 </script>

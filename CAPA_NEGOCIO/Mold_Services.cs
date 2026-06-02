@@ -104,7 +104,21 @@ namespace CAPA_NEGOCIO
 
                 {
                     entity.MoldID,
+                    entity.CriticallyID,
+                    entity.GateID,
+                    entity.CastingID,
+                    entity.ActuatorID,
                     entity.MoldAssetNumber,
+                    entity.MoldNumber,
+                    entity.MoldStatus,
+                    entity.MoldOrigin,
+                    entity.DigitalPlane,
+                    entity.CavityQty,
+                    entity.BlockCavityQty,
+                    entity.HaveCounter,
+                    entity.CounterType,
+                    entity.ThreeLayer,
+                    entity.InitialCount,
                     entity.DateModification,
                     entity.ModifiedBy
                 });

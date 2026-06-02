@@ -14,6 +14,8 @@ builder.Services.AddScoped<ICasting_Services, Casting_Services>();
 builder.Services.AddScoped<ICritically_Services, Critically_Services>();
 builder.Services.AddScoped<IActuator_Services, Actuator_Services>();
 builder.Services.AddScoped<IMold_Services, Mold_Services>();
+builder.Services.AddScoped<ILocation_Services, Location_Services>();
+builder.Services.AddScoped<ITransaction_Services, Transaction_Services>();
 
 
 // Controllers

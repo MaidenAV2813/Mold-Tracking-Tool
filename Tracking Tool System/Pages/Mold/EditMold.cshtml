@@ -1,0 +1,190 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Mold.EditMoldModel
+
+@{
+    ViewData["Title"] = "Editar Molde";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Modificar Molde</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Modificar</h3>
+            </div>
+
+            <form method="post">
+                <div class="card-body">
+
+                    <input type="hidden" asp-for="MoldID" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                    <div class="form-group">
+                        <label>Criticidad</label>
+                        <select asp-for="CriticallyID" class="form-control">
+                            
+                            @foreach (var critically in Model.Critically)
+                            {
+                                <option value="@critically.CriticallyID">@critically.CriticallyType</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gate</label>
+                        <select asp-for="GateID" class="form-control">
+                            
+                            @foreach (var gate in Model.Gate)
+                            {
+                                <option value="@gate.GateID">@gate.GateType</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Colada</label>
+                        <select asp-for="CastingID" class="form-control">
+                            
+                            @foreach (var casting in Model.Casting)
+                            {
+                                <option value="@casting.CastingID">@casting.CastingType</option>
+                            }
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Actuador</label>
+                        <select asp-for="ActuatorID" class="form-control">
+                            
+                            @foreach (var actuator in Model.Actuator)
+                            {
+                                <option value="@actuator.ActuatorID">@actuator.ActuatorType</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Numero de activo</label>
+                        <input asp-for="MoldAssetNumber" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Numero de molde</label>
+                        <input asp-for="MoldNumber" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select asp-for="MoldStatus" class="form-control">
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ubicacion</label>
+                        <input asp-for="MoldOrigin" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Plano</label>
+                        <select asp-for="DigitalPlane" class="form-control">
+                            <option value="Fisico">Fisico</option>
+                            <option value="Digital">Digital</option>
+                            <option value="Fisico/Digital">Fisico/Digital</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cantidad de cavidades</label>
+                        <input asp-for="CavityQty" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cantidad de cavidades bloqueadas</label>
+                        <input asp-for="BlockCavityQty" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tiene contador</label>
+                        <select asp-for="HaveCounter" class="form-control"
+                            id="HaveCounter">
+                            <option value="Si">Si</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de contador</label>
+                        <select asp-for="CounterType"
+                                class="form-control"
+                                id="CounterType">
+                            <option value="Empotrado">Empotrado</option>
+                            <option value="Externo">Externo</option>
+                            <option value="N/A">N/A</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Molde de tres placas</label>
+                        <select asp-for="ThreeLayer" class="form-control">
+                            <option value="Si">Si</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Conteo Inicial</label>
+                        <input asp-for="InitialCount" class="form-control" />
+                    </div>
+
+                    <br />
+                </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-warning">Actualizar</button>
+                            <a asp-page="/Mold/Mold_List" class="btn btn-secondary">Cancelar</a>
+                        </div>
+
+            </form>
+        </div>
+
+    </div>
+
+</section>
+
+@section Scripts {
+    <script>
+        function validateCounterType() {
+            let haveCounter = document.getElementById("HaveCounter");
+            let counterType = document.getElementById("CounterType");
+
+            if (haveCounter.value === "No") {
+                counterType.value = "N/A";
+                counterType.style.backgroundColor = "#e9ecef";
+                counterType.style.pointerEvents = "none";
+            } else {
+                counterType.style.backgroundColor = "";
+                counterType.style.pointerEvents = "";
+
+                if (counterType.value === "N/A") {
+                    counterType.value = "";
+                }
+            }
+        }
+
+        document.getElementById("HaveCounter")
+            .addEventListener("change", validateCounterType);
+
+        window.onload = validateCounterType;
+    </script>
+}

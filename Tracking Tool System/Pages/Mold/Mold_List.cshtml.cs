@@ -19,7 +19,7 @@ namespace Tracking_Tool_System.Pages.Mold
         public List<MoldEntity> MoldFilterList { get; set; } = new();
 
         [BindProperty(SupportsGet = true)]
-        public string? SelectedMoldNumber { get; set; }
+        public string? SearchMold { get; set; }
 
         public int? SelectedMoldID { get; set; }
 
@@ -39,10 +39,11 @@ namespace Tracking_Tool_System.Pages.Mold
 
                 GridList = Mold;
 
-                if (!string.IsNullOrWhiteSpace(SelectedMoldNumber))
+                if (!string.IsNullOrWhiteSpace(SearchMold))
                 {
                     GridList = Mold
-                        .Where(x => x.MoldNumber == SelectedMoldNumber)
+                        .Where(x => x.MoldNumber != null &&
+                                    x.MoldNumber.Contains(SearchMold, StringComparison.OrdinalIgnoreCase))
                         .ToList();
 
                     SelectedMoldID = GridList.FirstOrDefault()?.MoldID;
