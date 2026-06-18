@@ -1,0 +1,112 @@
+﻿@page
+@model Tracking_Tool_System.Pages.ItemBom.EditItemBomModel
+
+@{
+    ViewData["Title"] = "Editar configuracion de numero de parte";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Modificar configuracion de numero de parte</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Modificar</h3>
+            </div>
+
+            <form method="post">
+                <div class="card-body">
+
+                    <input type="hidden" asp-for="ItemNumberID" />
+                    <input type="hidden" asp-for="MoldID" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label>Numero de Parte</label>
+                        <input asp-for="ItemNumber"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Numero de Molde</label>
+                        <input asp-for="MoldNumber"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripcion</label>
+                        <input asp-for="ItemDescription"
+                               class="form-control"
+                               oninput="this.value = this.value.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Costo unitario</label>
+                        <input asp-for="ItemCost"
+                               class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mínimo de inventario</label>
+                        <input asp-for="ItemInvMin"
+                               class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Máximo de inventario</label>
+                        <input asp-for="ItemInvMax"
+                               class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Parte del suplidor</label>
+                        <input asp-for="ItemSupplierNumber"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Suplidor</label>
+                        <input asp-for="ActualSupplier"
+                               class="form-control"
+                               oninput="this.value = this.value.toUpperCase();" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>UM</label>
+                        <input asp-for="UOM"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select asp-for="ItemStatus" class="form-control">
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+
+                    <br />
+                </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-warning">Actualizar</button>
+                            <a asp-page="/ItemBom/ItemBom_List" class="btn btn-secondary">Cancelar</a>
+                        </div>
+
+            </form>
+        </div>
+
+    </div>
+
+</section>
+

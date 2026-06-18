@@ -37,18 +37,18 @@ body {
 
 body:not(.sidebar-collapse) .main-sidebar,
 body:not(.sidebar-collapse) .main-sidebar::before {
-    width: 320px !important;
+    width: 350px !important;
 }
 
     body:not(.sidebar-collapse) .main-sidebar .brand-link,
     body:not(.sidebar-collapse) .main-sidebar .sidebar {
-        width: 320px !important;
+        width: 350px !important;
     }
 
 body:not(.sidebar-collapse) .content-wrapper,
 body:not(.sidebar-collapse) .main-header,
 body:not(.sidebar-collapse) .main-footer {
-    margin-left: 320px !important;
+    margin-left: 350px !important;
 }
 
 /* Ajustar flecha de submenu */

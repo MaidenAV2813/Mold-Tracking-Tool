@@ -39,6 +39,7 @@ namespace Tracking_Tool_System.Pages.Access
             "Tipos de Transacciones",
             "Inventario",
             "Transacciones de Inventario",
+            "BOM de Repuestos/Moldes",
             "Reportes e Indicadores",
             "Mantenimientos del sistema",
             "Roles",

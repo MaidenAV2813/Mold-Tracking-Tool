@@ -1,0 +1,140 @@
+﻿@page
+@model Tracking_Tool_System.Pages.ItemBom.CreateItemBomModel
+
+@{
+    ViewData["Title"] = "Crear numero de parte"; 
+}
+
+        <section class="content-header">
+            <div class="container-fluid">
+            <h1>Crear Numero de parte</h1>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Información del numero de parte</h3>
+                    </div>
+
+                    <form method="post">
+                        <div class="card-body">
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            
+                            <div class="form-group">
+                                <label>Numero de Molde</label>
+                                <select asp-for="MoldID" id="MoldID"  class="form-control">
+                                    <option value="">Seleccione el numero de molde</option>
+
+                                    @foreach (var item in Model.MoldList)
+                                    {
+                                        <option value="@item.MoldID">
+                                            @item.MoldNumber
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Parte del suplidor</label>
+                                <input asp-for="ItemSupplierNumber" id="ItemSupplierNumber" class="form-control" 
+                                    placeholder="Ingrese el item del suplidor" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Numero de parte ICU</label>
+                                <input asp-for="ItemNumber" id="ICUItemNumber" class="form-control" readonly />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Descripcion</label>
+                                <input asp-for="ItemDescription" class="form-control" 
+                                    placeholder="Ingrese la descripcion"
+                                    oninput="this.value = this.value.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Suplidor</label>
+                                <input asp-for="ActualSupplier" id="ActualSupplier" class="form-control" 
+                                    placeholder="Ingrese el nombre del suplidor" 
+                                    oninput="this.value = this.value.toUpperCase();" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Costo Unitario</label>
+                                <input asp-for="ItemCost" class="form-control" 
+                                    placeholder="Ingrese el costo unitario" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Nivel minimo de inventario</label>
+                                <input asp-for="ItemInvMin" class="form-control" 
+                                    placeholder="Ingrese el nivel minimo de inventario" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Nivel maximo de inventario</label>
+                                <input asp-for="ItemInvMax" class="form-control"
+                               placeholder="Ingrese el nivel maximo de inventario" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>UM</label>
+                                <input asp-for="UOM" class="form-control" value="EA" readonly />                               
+                            </div>
+
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select asp-for="ItemStatus" class="form-control">
+                                    <option value="Activo">Activo</option>
+                                    <option value="Inactivo">Inactivo</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a asp-page="/ItemBom/ItemBom_List" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </section>
+
+
+<script>
+
+    function generarParteICU() {
+
+        let moldSelect = document.getElementById("MoldID");
+        let moldText = moldSelect.options[moldSelect.selectedIndex].text;
+
+        let itemSupplier = document.getElementById("ItemSupplierNumber").value;
+
+        let numeroMolde = "";
+
+        let partes = moldText.split("-");
+
+        if (partes.length >= 3) {
+            numeroMolde = partes[1];
+        }
+
+        document.getElementById("ICUItemNumber").value =
+            numeroMolde +
+            itemSupplier;
+    }
+
+    document.getElementById("MoldID")
+        .addEventListener("change", generarParteICU);
+
+    document.getElementById("ItemSupplierNumber")
+        .addEventListener("input", generarParteICU);
+
+
+</script>

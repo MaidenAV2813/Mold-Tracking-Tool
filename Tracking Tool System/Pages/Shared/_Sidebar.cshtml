@@ -221,12 +221,22 @@
                                 </li>
                             }
 
-                            @if (HasAccess("Tracciones de Inventario"))
+                            @if (HasAccess("Transacciones de Inventario"))
                             {
                                 <li class="nav-item">
                                     <a asp-page="/Location/Location_List" class="nav-link">
                                         <i class="fas fa-minus nav-icon"></i>
                                         <p>Transacciones de Inventario</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (HasAccess("BOM de Repuestos/Moldes"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/ItemBom/ItemBom_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>BOM de Repuestos/Moldes</p>
                                     </a>
                                 </li>
                             }
