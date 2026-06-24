@@ -57,7 +57,7 @@
                     <tbody>                       
                             @foreach (var transaction in Model.GridList)
                             {
-                            <tr onclick="selectRow(@transaction.TransactionID,'@transaction.TransactionType')" style="cursor:pointer;">
+                            <tr onclick="selectRow(@transaction.TransactionTypeID,'@transaction.TransactionType')" style="cursor:pointer;">
                                     <td>@transaction.TransactionType</td>
                                     <td>@transaction.TransactionStatus</td>
                                     <td>@transaction.DateCreation?.ToString("MM-dd-yyyy")</td>

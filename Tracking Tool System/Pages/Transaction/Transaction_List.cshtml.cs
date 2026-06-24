@@ -23,7 +23,7 @@ namespace Tracking_Tool_System.Pages.Transaction
         [BindProperty(SupportsGet = true)]
         public string? SearchTransaction { get; set; }
 
-        public int? SelectedTransactionID { get; set; }
+        public int? SelectedTransactionTypeID { get; set; }
 
         public async Task<IActionResult> OnGet()
         {
@@ -46,7 +46,7 @@ namespace Tracking_Tool_System.Pages.Transaction
                                     x.TransactionType.Contains(SearchTransaction, StringComparison.OrdinalIgnoreCase))
                         .ToList();
 
-                    SelectedTransactionID = GridList.FirstOrDefault()?.TransactionID;
+                    SelectedTransactionTypeID = GridList.FirstOrDefault()?.TransactionTypeID;
                 }
 
                 return Page();
@@ -63,7 +63,7 @@ namespace Tracking_Tool_System.Pages.Transaction
             {
                 var result = await _apiService.PostAsync("transaction/delete", new TransactionEntity
                 {
-                    TransactionID = id
+                    TransactionTypeID = id
                 });
 
                 var content = await result.Content.ReadAsStringAsync();

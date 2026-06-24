@@ -16,7 +16,7 @@ namespace Tracking_Tool_System.Pages.Transaction
         }
 
         [BindProperty]
-        public int TransactionID { get; set; }
+        public int TransactionTypeID { get; set; }
 
         [BindProperty]
         public string? TransactionType { get; set; }
@@ -27,11 +27,11 @@ namespace Tracking_Tool_System.Pages.Transaction
         public async Task<IActionResult> OnGet(int id)
         {
 
-            TransactionID = id;
+            TransactionTypeID = id;
 
             //Obtener la transaccion a editar
             var transaction = (await _apiService.GetAsync<TransactionEntity>("transaction"))
-                .FirstOrDefault(x => x.TransactionID == id);
+                .FirstOrDefault(x => x.TransactionTypeID == id);
 
             if (transaction == null)
                 return NotFound();
@@ -53,7 +53,7 @@ namespace Tracking_Tool_System.Pages.Transaction
 
             var entity = new TransactionEntity
             {
-                TransactionID = TransactionID,
+                TransactionTypeID = TransactionTypeID,
                 TransactionType = TransactionType,
                 TransactionStatus = TransactionStatus,
                 ModifiedBy = user,

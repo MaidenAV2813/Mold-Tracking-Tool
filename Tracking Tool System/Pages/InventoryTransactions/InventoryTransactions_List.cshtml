@@ -1,0 +1,102 @@
+﻿@page
+@model Tracking_Tool_System.Pages.InventoryTransactions.InventoryTransactions_ListModel
+
+@{
+    ViewData["Title"] = "Transacciones de inventario";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Transacciones de inventario</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-header">
+                
+
+                <div class="card-tools">
+                    <a asp-page="/InventoryTransactions/CreateInventoryTransactions" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Agregar una transaccion
+                    </a>
+                    @* <a id="editBtn" class="btn btn-warning btn-sm disabled">
+                        <i class="fas fa-edit"></i> Editar configuracion de numero de parte
+                    </a> *@
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                <form method="get" id="filterForm" class="mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Buscar por numero de parte</label>
+
+                            <input type="text"
+                                   id="searchpart"
+                                   class="form-control"
+                                   placeholder="Digite el número de parte..." 
+                                   oninput="this.value = this.value.toUpperCase();"/>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-sm2 text-nowrap">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>Número de parte</th>
+                                <th>Tipo de transaccion</th>
+                                <th>Localidad</th>
+                                <th>Cantidad</th>
+                                <th>Comentarios</th>
+                                <th>Suplidor</th>
+                                <th>Fecha de transaccion</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>                       
+                            @foreach (var part in Model.GridList)
+                            {
+                            <tr onclick="selectRow(@part.ItemNumberID,'@part.ItemNumber')" style="cursor:pointer;">
+                                <td>@part.ItemNumber</td>
+                                <td>@part.TransactionType</td>
+                                <td>@part.LocationNumber</td>
+                                <td>@part.Qty</td>
+                                <td>@part.Comments</td>
+                                <td>@part.ActualSupplier</td>
+                                <td>@part.DateCreation?.ToString("MM-dd-yyyy")</td>
+                            </tr>
+                            }                        
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    const searchInput = document.getElementById("searchpart");
+
+    searchInput.addEventListener("keyup", function () {
+        filterpart(this.value);
+    });
+
+    function filterpart(value) {
+        value = value.toLowerCase();
+
+        document.querySelectorAll("tbody tr").forEach(function (row) {
+            let ItemNumber = row.cells[0].innerText.toLowerCase();
+            row.style.display = ItemNumber.includes(value) ? "" : "none";
+        });
+    }
+
+</script>

@@ -6,7 +6,7 @@ namespace CAPA_ENTITY
 {
     public class TransactionEntity : DBEntity
     {
-        public int? TransactionID { get; set; }
+        public int? TransactionTypeID { get; set; }
         public string? TransactionType { get; set; }
         public string? TransactionStatus { get; set; }
 

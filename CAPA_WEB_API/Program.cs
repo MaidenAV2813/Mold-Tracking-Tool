@@ -17,6 +17,8 @@ builder.Services.AddScoped<IMold_Services, Mold_Services>();
 builder.Services.AddScoped<ILocation_Services, Location_Services>();
 builder.Services.AddScoped<ITransaction_Services, Transaction_Services>();
 builder.Services.AddScoped<IItemBom_Services, ItemBom_Services>();
+builder.Services.AddScoped<IInventoryBOH_Services, InventoryBOH_Services>();
+builder.Services.AddScoped<IInventoryTransactions_Services, InventoryTransactions_Services>();
 
 
 // Controllers

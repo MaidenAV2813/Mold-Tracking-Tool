@@ -53,7 +53,7 @@ namespace CAPA_NEGOCIO
             {
                 var result = sql.QueryFirstAsync<TransactionEntity>("", new
 
-                { entity.TransactionID });
+                { entity.TransactionTypeID });
 
                 return await result;
             }
@@ -91,7 +91,7 @@ namespace CAPA_NEGOCIO
                 var result = sql.ExecuteAsync("sp_Transactions_Update", new
 
                 {
-                    entity.TransactionID,
+                    entity.TransactionTypeID,
                     entity.TransactionType,
                     entity.TransactionStatus,
                     entity.DateModification,
@@ -116,7 +116,7 @@ namespace CAPA_NEGOCIO
             {
                 var result = sql.ExecuteAsync("", new
                 {
-                    entity.TransactionID,
+                    entity.TransactionTypeID,
                 });
 
                 return await result;

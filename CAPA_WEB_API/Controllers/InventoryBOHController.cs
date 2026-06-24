@@ -6,28 +6,28 @@ namespace CAPA_WEB_API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TransactionController : ControllerBase
+    public class InventoryBOHController : ControllerBase
     {
-        private readonly ITransaction_Services _transactionServices;
+        private readonly IInventoryBOH_Services _inventorybohServices;
 
-        public TransactionController(ITransaction_Services transactionServices)
+        public InventoryBOHController(IInventoryBOH_Services inventorybohServices)
         {
-            _transactionServices = transactionServices;
+            _inventorybohServices = inventorybohServices;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await _transactionServices.Get();
+            var result = await _inventorybohServices.Get();
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TransactionEntity entity)
+        public async Task<IActionResult> Create([FromBody] InventoryBOHEntity entity)
         {
             try
             {
-                var result = await _transactionServices.Create(entity);
+                var result = await _inventorybohServices.Create(entity);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -47,32 +47,14 @@ namespace CAPA_WEB_API.Controllers
         {
             try
             {
-                var result = await _transactionServices.GetById(new TransactionEntity
+                var result = await _inventorybohServices.GetById(new InventoryBOHEntity
                 {
-                    TransactionTypeID = id
+                    BOHID = id
                 });
 
                 if (result == null)
                     return NotFound();
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new DBEntity
-                {
-                    CodeError = ex.HResult,
-                    MsgError = ex.Message
-                });
-            }
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] TransactionEntity entity)
-        {
-            try
-            {
-                var result = await _transactionServices.Update(entity);
                 return Ok(result);
             }
             catch (Exception ex)

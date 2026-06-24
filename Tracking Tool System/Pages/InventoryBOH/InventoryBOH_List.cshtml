@@ -1,0 +1,148 @@
+﻿@page
+@model Tracking_Tool_System.Pages.InventoryBOH.InventoryBOH_ListModel
+
+@{
+    ViewData["Title"] = "Balance de inventario";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Balance de inventario</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <form method="get" id="filterForm" class="mb-3">
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <label>Buscar número de parte</label>
+                            <input type="text"
+                               id="searchpart"
+                               class="form-control"
+                               placeholder="Digite el número de parte..."
+                               oninput="this.value = this.value.toUpperCase();" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Buscar localidad</label>
+                            <select id="SearchLocation"
+                            class="form-control select2">
+                            <option value="">Todas las localidades</option>
+
+                        @foreach (var loc in Model.LocationList)
+                        {
+                            <option value="@loc.LocationNumber">
+                                @loc.LocationNumber
+                            </option>
+                        }
+                    </select>
+                        </div>
+
+                    </div>
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-sm2 text-nowrap">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>Número de parte</th>
+                                <th>Localidad</th>
+                                <th>Cantidad</th>
+                                <th>Unidad de medida</th>
+                                <th>Estado</th>
+                                <th>Suplidor</th>                           
+                            </tr>
+                        </thead>
+
+                        <tbody>                       
+                            @foreach (var part in Model.GridList)
+                            {
+                            <tr onclick="selectRow(@part.ItemNumberID,'@part.ItemNumber')" style="cursor:pointer;">
+                                <td>@part.ItemNumber</td>
+                                <td>@part.LocationNumber</td>
+                                <td>@part.QtyOnHand</td>
+                                <td>@part.UOM</td>
+                                <td>@part.ItemStatus</td>
+                                <td>@part.ActualSupplier</td>
+                            </tr>
+                            }                        
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    const searchInput = document.getElementById("searchpart");
+
+    searchInput.addEventListener("keyup", function () {
+        filterpart(this.value);
+    });
+
+    function filterpart(value) {
+        value = value.toLowerCase();
+
+        document.querySelectorAll("tbody tr").forEach(function (row) {
+            let ItemNumber = row.cells[0].innerText.toLowerCase();
+            row.style.display = ItemNumber.includes(value) ? "" : "none";
+        });
+    }
+
+    function selectRow(id, ItemNumber) {
+        document.querySelectorAll("tbody tr")
+            .forEach(r => r.classList.remove("table-primary"));
+
+        event.currentTarget.classList.add("table-primary");
+
+        searchInput.value = ItemNumber;
+
+        let editBtn = document.getElementById("editBtn");
+        editBtn.classList.remove("disabled");
+        editBtn.href = "/ItemBom/EditItemBom?id=" + id;
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#SearchLocation').select2({
+            placeholder: 'Digite o seleccione una localidad',
+            allowClear: true,
+            width: '100%'
+        });
+
+        $('#SearchLocation').on('change', function () {
+
+            let locationValue = ($(this).val() || '').toLowerCase();
+
+            $('tbody tr').each(function () {
+
+                let locationNumber = $(this).find('td:eq(1)').text().toLowerCase();
+
+                if (locationValue === '' || locationNumber === locationValue)
+                {
+                    $(this).show();
+                }
+                else
+                {
+                    $(this).hide();
+                }
+
+            });
+
+        });
+
+    });
+</script>
