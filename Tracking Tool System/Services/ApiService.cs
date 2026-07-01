@@ -44,5 +44,12 @@ namespace Tracking_Tool_System.Services
         {
             return await _httpClient.GetFromJsonAsync<T>(endpoint);
         }
+
+        // Delete
+        public async Task<HttpResponseMessage> DeleteAsync(string endpoint)
+        {
+            return await _httpClient.DeleteAsync(endpoint);
+        }
+
     }
 }

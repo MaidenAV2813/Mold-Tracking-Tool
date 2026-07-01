@@ -172,9 +172,21 @@
                             <i class="nav-icon fas fa-wrench"></i>
                                 <p>
                                     Mantenimiento del Molde
-                                    @*<i class="fas fa-angle-left right"></i>*@
+                                    <i class="fas fa-angle-left right"></i>
                                 </p>
                         </a>
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Consultar ordenes"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/PartMaintenance/CreatePartMaintenance" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Consultar de ordenes</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
                     </li>
                 }
 

@@ -30,6 +30,13 @@
                         </div>
 
                         <div class="col-md-4">
+                            <label>Descripcion del Molde</label>
+                            <input asp-for="MoldDescription"
+                                   class="form-control text-uppercase"
+                                   oninput="this.value = this.value.toUpperCase()" />
+                        </div>
+
+                        <div class="col-md-4">
                             <label>Número de Activo</label>
                             <input asp-for="MoldAssetNumber"
                                    class="form-control text-uppercase"

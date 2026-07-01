@@ -50,6 +50,7 @@
                         <thead class="bg-primary text-white">
                         <tr>
                             <th>Numero de molde</th>
+                            <th>Descripcion del molde</th>
                             <th>Numero de activo</th>
                             <th>Estado del molde</th>
                             <th>Ubicacion</th>
@@ -74,6 +75,7 @@
                         {
                             <tr onclick="selectRow(@mold.MoldID, '@mold.MoldNumber')" style="cursor:pointer;">
                                 <td>@mold.MoldNumber</td>
+                                <td>@mold.MoldDescription</td>
                                 <td>@mold.MoldAssetNumber</td>
                                 <td>@mold.MoldStatus</td>
                                 <td>@mold.MoldOrigin</td>

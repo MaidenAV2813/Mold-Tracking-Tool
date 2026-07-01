@@ -35,6 +35,7 @@ namespace Tracking_Tool_System.Pages.Access
             "Tipos de Actuadores",
             "Evaluacion del Molde",
             "Mantenimiento del Molde",
+            "Consultar ordenes",
             "Inventario de Repuestos",
             "Localidades",
             "Tipos de Transacciones",

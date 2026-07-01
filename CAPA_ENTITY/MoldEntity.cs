@@ -13,6 +13,7 @@ namespace CAPA_ENTITY
         public int? ActuatorID { get; set; }
         public string? MoldAssetNumber { get; set; }
         public string? MoldNumber { get; set; }
+        public string? MoldDescription { get; set; }
         public string? MoldStatus { get; set; }
         public string? MoldOrigin { get; set; }   
         public string? DigitalPlane { get; set; }

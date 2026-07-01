@@ -59,6 +59,9 @@ namespace Tracking_Tool_System.Pages.Mold
         public string? MoldNumber { get; set; }
 
         [BindProperty]
+        public string? MoldDescription { get; set; }
+
+        [BindProperty]
         public string? MoldStatus { get; set; }
 
         [BindProperty]
@@ -105,6 +108,7 @@ namespace Tracking_Tool_System.Pages.Mold
 
             // Asignar valores a los controles
             MoldNumber = mold.MoldNumber;
+            MoldDescription = mold.MoldDescription;
             MoldAssetNumber = mold.MoldAssetNumber;
             MoldStatus = mold.MoldStatus;
             MoldOrigin = mold.MoldOrigin;
@@ -147,6 +151,7 @@ namespace Tracking_Tool_System.Pages.Mold
                 ActuatorID  = ActuatorID,
                 MoldAssetNumber = MoldAssetNumber,
                 MoldNumber = MoldNumber,
+                MoldDescription = MoldDescription,
                 MoldStatus = MoldStatus,
                 MoldOrigin = MoldOrigin,
                 DigitalPlane = DigitalPlane,

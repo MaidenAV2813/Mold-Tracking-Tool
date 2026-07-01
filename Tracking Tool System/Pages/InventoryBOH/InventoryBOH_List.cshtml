@@ -114,35 +114,30 @@
     }
 </script>
 
-<script>
-    $(document).ready(function () {
 
-        $('#SearchLocation').select2({
-            placeholder: 'Digite o seleccione una localidad',
-            allowClear: true,
-            width: '100%'
-        });
-
-        $('#SearchLocation').on('change', function () {
-
-            let locationValue = ($(this).val() || '').toLowerCase();
-
-            $('tbody tr').each(function () {
-
-                let locationNumber = $(this).find('td:eq(1)').text().toLowerCase();
-
-                if (locationValue === '' || locationNumber === locationValue)
-                {
-                    $(this).show();
-                }
-                else
-                {
-                    $(this).hide();
-                }
-
+@section Scripts {
+    <script>
+        $(function () {
+            $('#SearchLocation').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Digite o seleccione una localidad',
+                allowClear: true,
+                width: '100%'
             });
 
+        $(document).on('keyup', '.select2-search__field', function () {
+            this.value = this.value.toUpperCase();
         });
 
-    });
-</script>
+            $('#SearchLocation').on('change', function () {
+                let locationValue = ($(this).val() || '').toLowerCase();
+
+                $('tbody tr').each(function () {
+                    let locationNumber = $(this).find('td:eq(1)').text().toLowerCase();
+
+                    $(this).toggle(locationValue === '' || locationNumber === locationValue);
+                });
+            });
+        });
+    </script>
+}

@@ -19,6 +19,8 @@ builder.Services.AddScoped<ITransaction_Services, Transaction_Services>();
 builder.Services.AddScoped<IItemBom_Services, ItemBom_Services>();
 builder.Services.AddScoped<IInventoryBOH_Services, InventoryBOH_Services>();
 builder.Services.AddScoped<IInventoryTransactions_Services, InventoryTransactions_Services>();
+builder.Services.AddScoped<IPartMaintenance_Services, PartMaintenance_Services>();
+builder.Services.AddScoped<Ivw_EBS_WorkOrders_Services, vw_EBS_WorkOrders_Services>();
 
 
 // Controllers

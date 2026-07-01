@@ -48,6 +48,7 @@ namespace Tracking_Tool_System.Pages.InventoryTransactions
         public List<TransactionEntity> TransactionList { get; set; } = new();
         public List<LocationEntity> LocationList { get; set; } = new();
         public List<ItemBomEntity> ItemBomList { get; set; } = new();
+        public List<PartMaintenanceEntity> PartList { get; set; } = new();
 
 
         public async Task<IActionResult> OnGet()

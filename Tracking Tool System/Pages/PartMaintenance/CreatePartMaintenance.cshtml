@@ -1,0 +1,205 @@
+﻿@page
+@model Tracking_Tool_System.Pages.PartMaintenance.CreatePartMaintenanceModel
+
+@{
+    ViewData["Title"] = "Asignación de repuestos a mantenimiento";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Asignación de repuestos a mantenimiento</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Buscar Orden de Trabajo</h3>
+            </div>
+
+            <form method="post" id="partMaintenanceForm">
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Número de Orden PM</label>
+                                <input asp-for="OrderNum"
+                                       class="form-control"
+                                       placeholder="Digite el número de PM"
+                                       oninput="this.value=this.value.toUpperCase();" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit"
+                                    asp-page-handler="Buscar"
+                                    class="btn btn-primary">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+
+                    @if (Model.WorkOrderInfo != null)
+                    {
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Orden PM</label>
+                                <input class="form-control"
+                                       value="@Model.WorkOrderInfo.WIP_ENTITY_NAME"
+                                       readonly />
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Asset Number</label>
+                                <input class="form-control"
+                                       value="@Model.WorkOrderInfo.ASSET_NUMBER"
+                                       readonly />
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Fecha Completado</label>
+                                <input class="form-control"
+                                       value="@Model.WorkOrderInfo.DATE_COMPLETED?.ToString("MM-dd-yyyy")"
+                                       readonly />
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label>Descripción</label>
+                            <input class="form-control"
+                                   value="@Model.WorkOrderInfo.DESCRIPTION"
+                                   readonly />
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Número de Parte</label>
+                                    <select asp-for="ItemNumberID"
+                                            id="ItemNumberID"
+                                            class="form-control select2">
+                                        <option value="">Seleccione un número de parte</option>
+
+                                        @foreach (var item in Model.ItemList)
+                                        {
+                                            <option value="@item.ItemNumberID">
+                                                @item.ItemNumber
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Cantidad</label>
+                                    <input asp-for="QtyAsigned"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="submit"
+                                        asp-page-handler="Agregar"
+                                        class="btn btn-success">
+                                    <i class="fas fa-plus"></i> Agregar
+                                </button>
+                            </div>
+
+
+
+
+                            <hr />
+
+                            <h5>Repuestos asignados</h5>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-sm text-nowrap">
+                                    <thead class="bg-primary text-white">
+                                        <tr>
+                                            <th>Número de Parte</th>
+                                            <th>Descripción</th>
+                                            <th>Cantidad</th>
+                                            <th>Fecha Creación</th>
+                                            <th>Creado Por</th>
+                                            <th>Eliminar</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var part in Model.PartList)
+                                        {
+                                            <tr>
+                                                <td>@part.ItemNumber</td>
+                                                <td>@part.ItemDescription</td>
+                                                <td>@part.QtyAsigned</td>
+                                                <td>@part.DateCreation?.ToString("MM-dd-yyyy")</td>
+                                                <td>@part.CreatedBy</td>
+                                                <td class="text-center">
+                                                    <button type="button"
+                                                            class="btn btn-danger btn-sm"
+                                                            onclick="confirmDelete(@part.PartMaintenanceID)">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <input type="hidden" name="DeletePartMaintenanceID" id="DeletePartMaintenanceID" />
+                            </div>
+
+
+
+
+
+                        </div>
+                    }
+
+                </div>
+
+                <div class="card-footer">
+                    <a asp-page="/PartMaintenance/PartMaintenance_List"
+                       class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#ItemNumberID').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Seleccione o busque un número de parte',
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
+
+
+    <script>
+        function confirmDelete(id) {
+            document.getElementById("DeletePartMaintenanceID").value = id;
+
+            const form = document.getElementById("partMaintenanceForm");
+            form.action = "?handler=Eliminar";
+            form.submit();
+        }
+    </script>
+}
