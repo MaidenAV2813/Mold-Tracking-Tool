@@ -21,10 +21,10 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
         public int? ItemNumberID { get; set; }
 
         [BindProperty]
-        public int? QtyAsigned { get; set; }
+        public string? ItemDescription { get; set; }
 
         [BindProperty]
-        public int? DeletePartMaintenanceID { get; set; }
+        public int? QtyAsigned { get; set; }
 
         public vw_EBS_WorkOrdersEntity? WorkOrderInfo { get; set; }
 
@@ -32,9 +32,38 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
 
         public List<PartMaintenanceEntity> PartList { get; set; } = new();
 
-        public async Task<IActionResult> OnGet()
+        [BindProperty]
+        public int? EditPartMaintenanceID { get; set; }
+
+        [BindProperty]
+        public int? EditItemNumberID { get; set; }
+
+        [BindProperty]
+        public int? EditQtyAsigned { get; set; }
+
+        [BindProperty]
+        public int? TotalQtyOnHand { get; set; }
+
+        [BindProperty]
+        public int? LocationQtyOnHand { get; set; }
+
+        [BindProperty]
+        public int? LocationID { get; set; }
+
+        //[BindProperty]
+        //public string? LocationNumber { get; set; }
+
+        public async Task<IActionResult> OnGet(string? orderNum)
         {
             await LoadItems();
+
+            if (!string.IsNullOrWhiteSpace(orderNum))
+            {
+                OrderNum = orderNum;
+                await LoadWorkOrder();
+                await LoadPartMaintenance();
+            }
+
             return Page();
         }
 
@@ -80,6 +109,17 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
                 return Page();
             }
 
+            if (LocationID == null)
+            {
+                ModelState.AddModelError("", "Debe seleccionar la localidad desde donde se rebajará el inventario.");
+
+                await LoadWorkOrder();
+                await LoadPartMaintenance();
+                await LoadItems();
+
+                return Page();
+            }
+
             if (QtyAsigned == null || QtyAsigned <= 0)
             {
                 ModelState.AddModelError("", "Debe digitar una cantidad válida.");
@@ -88,6 +128,19 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
 
             var user = User.Identity?.Name ?? "System";
             var now = DateTime.Now;
+
+
+            if (QtyAsigned > LocationQtyOnHand)
+            {
+                ModelState.AddModelError("", "La cantidad a rebajar es mayor que el inventario disponible.");
+
+                await LoadWorkOrder();
+                await LoadPartMaintenance();
+                await LoadItems();
+
+                return Page();
+            }
+
 
             var entity = new PartMaintenanceEntity
             {
@@ -116,30 +169,12 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
 
         }
 
-        public async Task<IActionResult> OnPostEliminar()
+        public async Task<IActionResult> OnGetItemBOH(int itemNumberID)
         {
-            await LoadItems();
+            var item = await _apiService.GetAsync<ItemBOHPartMaintenanceEntity>(
+                $"PartMaintenance/itemboh/{itemNumberID}");
 
-            if (DeletePartMaintenanceID == null)
-            {
-                ModelState.AddModelError("", "No se recibió el registro a eliminar.");
-                return Page();
-            }
-
-            var response = await _apiService.DeleteAsync($"PartMaintenance/{DeletePartMaintenanceID}");
-
-            var result = await response.Content.ReadFromJsonAsync<DBEntity>();
-
-            if (result != null && result.CodeError != 0)
-            {
-                ModelState.AddModelError("", result.MsgError);
-                return Page();
-            }
-
-            await LoadWorkOrder();
-            await LoadPartMaintenance();
-
-            return Page();
+            return new JsonResult(item);
         }
 
         private async Task LoadItems()

@@ -9,5 +9,6 @@ namespace CAPA_NEGOCIO
         Task<PartMaintenanceEntity> GetById(PartMaintenanceEntity entity);
         Task<DBEntity> Update(PartMaintenanceEntity entity);
         Task<DBEntity> Delete(PartMaintenanceEntity entity);
+        Task<IEnumerable<ItemBOHPartMaintenanceEntity>> GetItemBOH(ItemBOHPartMaintenanceEntity entity);
     }
 }

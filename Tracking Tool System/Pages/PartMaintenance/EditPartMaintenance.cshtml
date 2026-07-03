@@ -1,0 +1,87 @@
+﻿@page
+@model Tracking_Tool_System.Pages.PartMaintenance.EditPartMaintenanceModel
+
+@{
+    ViewData["Title"] = "Editar repuesto asignado";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Editar repuesto asignado</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Modificar repuesto</h3>
+            </div>
+
+            <form method="post">
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="PartMaintenanceID" />
+                    <input type="hidden" asp-for="OrderNum" />
+
+                    <div class="form-group">
+                        <label>Número de Orden PM</label>
+                        <input asp-for="OrderNum" class="form-control" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Número de Parte</label>
+                        <select asp-for="ItemNumberID"
+                                id="ItemNumberID"
+                                class="form-control select2">
+                            <option value="">Seleccione un número de parte</option>
+
+                            @foreach (var item in Model.ItemList)
+                            {
+                                <option value="@item.ItemNumberID">
+                                    @item.ItemNumber
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <input asp-for="QtyAsigned" class="form-control" />
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-warning">
+                        Actualizar
+                    </button>
+
+                    <a asp-page="/PartMaintenance/CreatePartMaintenance"
+                       asp-route-orderNum="@Model.OrderNum"
+                       class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#ItemNumberID').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Seleccione o busque un número de parte',
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
+}

@@ -59,7 +59,6 @@ namespace CAPA_NEGOCIO
             var result = sql.ExecuteAsync("sp_PartMaintenance_Update", new
             {
                 entity.PartMaintenanceID,
-                entity.OrderNum,
                 entity.ItemNumberID,
                 entity.QtyAsigned,
                 entity.DateModification,
@@ -76,6 +75,18 @@ namespace CAPA_NEGOCIO
                 new
                 {
                     entity.PartMaintenanceID
+                });
+
+            return await result;
+        }
+
+        public async Task<IEnumerable<ItemBOHPartMaintenanceEntity>> GetItemBOH(ItemBOHPartMaintenanceEntity entity)
+        {
+            var result = sql.QueryAsync<ItemBOHPartMaintenanceEntity>(
+                "sp_ItemBOH_PartMaintenance_Get",
+                new
+                {
+                    entity.ItemNumberID
                 });
 
             return await result;

@@ -96,16 +96,63 @@
                                             </option>
                                         }
                                     </select>
+
+                                    <div class="form-group mt-3">
+                                        <label>Descripción</label>
+                                        <input asp-for="ItemDescription"
+                                               id="ItemDescription"
+                                               class="form-control"
+                                               readonly />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Inventario Total</label>
+
+                                        <input asp-for="TotalQtyOnHand"
+                                               id="TotalQtyOnHand"
+                                               class="form-control"
+                                               readonly />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Localidad</label>
+
+                                        <select asp-for="LocationID"
+                                                id="LocationID"
+                                                class="form-control select2">
+                                            <option value="">Seleccione una localidad</option>
+                                        </select>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Disponible en la Localidad</label>
+
+                                        <input asp-for="LocationQtyOnHand"
+                                               id="LocationQtyOnHand"
+                                               class="form-control"
+                                               readonly />
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Cantidad a Rebajar</label>
+
+                                        <input asp-for="QtyAsigned"
+                                               class="form-control" />
+
+                                    </div>
+
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
+                            @* <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Cantidad</label>
                                     <input asp-for="QtyAsigned"
                                            class="form-control" />
                                 </div>
-                            </div>
+                            </div> *@
 
                             <div class="col-md-3 d-flex align-items-end">
                                 <button type="submit"
@@ -114,9 +161,6 @@
                                     <i class="fas fa-plus"></i> Agregar
                                 </button>
                             </div>
-
-
-
 
                             <hr />
 
@@ -131,7 +175,9 @@
                                             <th>Cantidad</th>
                                             <th>Fecha Creación</th>
                                             <th>Creado Por</th>
+                                            <th>Editar</th>
                                             <th>Eliminar</th>
+
                                         </tr>
                                     </thead>
 
@@ -145,22 +191,30 @@
                                                 <td>@part.DateCreation?.ToString("MM-dd-yyyy")</td>
                                                 <td>@part.CreatedBy</td>
                                                 <td class="text-center">
-                                                    <button type="button"
-                                                            class="btn btn-danger btn-sm"
-                                                            onclick="confirmDelete(@part.PartMaintenanceID)">
+                                                    <a asp-page="/PartMaintenance/EditPartMaintenance"
+                                                       asp-route-id="@part.PartMaintenanceID"
+                                                       asp-route-orderNum="@Model.OrderNum"
+                                                       class="btn btn-warning btn-sm">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a asp-page="/PartMaintenance/DeletePartMaintenance"
+                                                       asp-route-id="@part.PartMaintenanceID"
+                                                       asp-route-orderNum="@Model.OrderNum"
+                                                       class="btn btn-danger btn-sm">
                                                         <i class="fas fa-trash-alt"></i>
-                                                    </button>
+                                                    </a>
                                                 </td>
                                             </tr>
                                         }
                                     </tbody>
                                 </table>
-                                <input type="hidden" name="DeletePartMaintenanceID" id="DeletePartMaintenanceID" />
+                                
+@*                                 <input type="hidden" asp-for="EditPartMaintenanceID" id="EditPartMaintenanceID" />
+                                <input type="hidden" asp-for="EditItemNumberID" id="EditItemNumberID" />
+                                <input type="hidden" asp-for="EditQtyAsigned" id="EditQtyAsigned" /> *@
                             </div>
-
-
-
-
 
                         </div>
                     }
@@ -173,6 +227,7 @@
                         Cancelar
                     </a>
                 </div>
+
             </form>
 
         </div>
@@ -183,23 +238,99 @@
 @section Scripts {
     <script>
         $(function () {
+
             $('#ItemNumberID').select2({
                 theme: 'bootstrap4',
                 placeholder: 'Seleccione o busque un número de parte',
                 allowClear: true,
                 width: '100%'
             });
+
+            $('#ItemNumberID').on('change', function () {
+
+                var itemNumberID = $(this).val();
+
+                $('#ItemDescription').val('');
+                $('#QtyOnHand').val('');
+                $('#LocationID').empty();
+                $('#LocationID').append('<option value="">Seleccione una localidad</option>');
+
+                if (!itemNumberID)
+                    return;
+
+                $.ajax({
+                    url: '?handler=ItemBOH',
+                    type: 'GET',
+                    data: { itemNumberID: itemNumberID },
+                    success: function (data) {
+
+                        if (!data || data.length === 0)
+                            return;
+
+                        $('#ItemDescription').val(data[0].itemDescription);
+
+                        var totalQty = 0;
+
+                        $.each(data, function (i, item) {
+
+                            var qty = parseInt(item.qtyOnHand || 0);
+                            totalQty += qty;
+
+                            if (item.locationID && item.locationNumber) {
+                                $('#LocationID').append(
+                                    $('<option>', {
+                                        value: item.locationID,
+                                        text: item.locationNumber,
+                                        'data-qty': qty
+                                    })
+                                );
+                            }
+                        });
+
+                        // Total de todas las localidades
+                        $('#TotalQtyOnHand').val(totalQty);
+                    },
+                    error: function (xhr) {
+                        console.log(xhr);
+                    }
+                });
+
+            });
+
+            $('#LocationID').on('change', function () {
+
+                var qty = $('#LocationID option:selected').data('qty');
+
+                if (qty === undefined || qty === null || qty === '') {
+                    $('#QtyOnHand').val('');
+                    return;
+                }
+
+                // Cantidad solo de la localidad seleccionada
+                $('#LocationQtyOnHand').val(qty);
+
+            });
+
         });
     </script>
 
-
     <script>
-        function confirmDelete(id) {
-            document.getElementById("DeletePartMaintenanceID").value = id;
 
-            const form = document.getElementById("partMaintenanceForm");
-            form.action = "?handler=Eliminar";
-            form.submit();
-        }
+    $('#QtyAsigned').on('keyup change', function () {
+
+    var qtyToAssign = parseInt($(this).val()) || 0;
+    var qtyAvailable = parseInt($('#LocationQtyOnHand').val()) || 0;
+
+    if (qtyToAssign > qtyAvailable) {
+
+    alert('La cantidad a rebajar es mayor que el inventario disponible en la localidad.');
+
+    $(this).val('');
+    $(this).focus();
+
+    }
+
+    });
+
     </script>
 }
