@@ -124,3 +124,57 @@ body:not(.sidebar-collapse) .main-footer {
     top: 0;
     z-index: 2;
 }
+
+.top-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 18px;
+    margin-bottom: 4px;
+}
+
+    .top-scroll div {
+        height: 1px;
+    }
+
+.table-scroll {
+    overflow: auto;
+    max-height: 650px;
+}
+
+    .table-scroll thead th {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+/* Tablas con scroll reutilizable */
+.horizontal-scroll {
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 20px;
+    margin-bottom: 5px;
+}
+
+.horizontal-scroll-content {
+    width: 1500px;
+    height: 1px;
+}
+
+.table-scroll {
+    overflow: auto;
+    max-height: 650px;
+    width: 100%;
+}
+
+    .table-scroll table {
+        min-width: 1500px;
+        min-width: 100%;
+        table-layout: auto;
+    }
+
+    .table-scroll thead th {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }

@@ -35,19 +35,14 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Número de Parte</label>
-                        <select asp-for="ItemNumberID"
-                                id="ItemNumberID"
-                                class="form-control select2">
-                            <option value="">Seleccione un número de parte</option>
+                        <label>Número de parte</label>
 
-                            @foreach (var item in Model.ItemList)
-                            {
-                                <option value="@item.ItemNumberID">
-                                    @item.ItemNumber
-                                </option>
-                            }
-                        </select>
+                        <input asp-for="ItemNumber"
+                               class="form-control"
+                               readonly />
+
+                        <input asp-for="ItemNumberID"
+                               type="hidden" />
                     </div>
 
                     <div class="form-group">
@@ -116,12 +111,7 @@
 
             let selectedLocationID = '@Model.LocationID';
 
-            $('#ItemNumberID').select2({
-                theme: 'bootstrap4',
-                placeholder: 'Seleccione o busque un número de parte',
-                allowClear: true,
-                width: '100%'
-            });
+            
 
             $('#LocationID').select2({
                 theme: 'bootstrap4',
@@ -187,10 +177,6 @@
                 });
             }
 
-            $('#ItemNumberID').on('change', function () {
-                let itemNumberID = $(this).val();
-                loadItemBOH(itemNumberID, null);
-            });
 
             $('#LocationID').on('change', function () {
                 let qty = $('#LocationID option:selected').data('qty');

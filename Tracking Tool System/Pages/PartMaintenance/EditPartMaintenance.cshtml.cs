@@ -24,6 +24,9 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
         public int? ItemNumberID { get; set; }
 
         [BindProperty]
+        public string? ItemNumber { get; set; }
+
+        [BindProperty]
         public int? LocationID { get; set; }
 
         [BindProperty]
@@ -51,6 +54,7 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
 
             PartMaintenanceID = part.PartMaintenanceID;
             ItemNumberID = part.ItemNumberID;
+            ItemNumber = part.ItemNumber;
             LocationID = part.LocationID;
             QtyAsigned = part.QtyAsigned;
 
