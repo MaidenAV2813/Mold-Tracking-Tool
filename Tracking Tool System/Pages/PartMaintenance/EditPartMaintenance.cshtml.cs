@@ -24,7 +24,16 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
         public int? ItemNumberID { get; set; }
 
         [BindProperty]
+        public int? LocationID { get; set; }
+
+        [BindProperty]
         public int? QtyAsigned { get; set; }
+
+        public string? ItemDescription { get; set; }
+
+        public int? TotalQtyOnHand { get; set; }
+
+        public int? LocationQtyOnHand { get; set; }
 
         public List<ItemBomEntity> ItemList { get; set; } = new();
 
@@ -42,7 +51,10 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
 
             PartMaintenanceID = part.PartMaintenanceID;
             ItemNumberID = part.ItemNumberID;
+            LocationID = part.LocationID;
             QtyAsigned = part.QtyAsigned;
+
+            await LoadItemBOH();
 
             return Page();
         }
@@ -63,9 +75,17 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
                 return Page();
             }
 
+            if (LocationID == null)
+            {
+                ModelState.AddModelError("", "Debe seleccionar la localidad.");
+                await LoadItemBOH();
+                return Page();
+            }
+
             if (QtyAsigned == null || QtyAsigned <= 0)
             {
                 ModelState.AddModelError("", "Debe digitar una cantidad válida.");
+                await LoadItemBOH();
                 return Page();
             }
 
@@ -76,6 +96,7 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
             {
                 PartMaintenanceID = PartMaintenanceID,
                 ItemNumberID = ItemNumberID,
+                LocationID = LocationID,
                 QtyAsigned = QtyAsigned,
                 DateModification = now,
                 ModifiedBy = user
@@ -88,10 +109,19 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
             if (result != null && result.CodeError != 0)
             {
                 ModelState.AddModelError("", result.MsgError);
+                await LoadItemBOH();
                 return Page();
             }
 
             return RedirectToPage("/PartMaintenance/CreatePartMaintenance", new { orderNum = OrderNum });
+        }
+
+        public async Task<IActionResult> OnGetItemBOH(int itemNumberID)
+        {
+            var item = await _apiService.GetAsync<ItemBOHPartMaintenanceEntity>(
+                $"PartMaintenance/itemboh/{itemNumberID}");
+
+            return new JsonResult(item);
         }
 
         private async Task LoadItems()
@@ -99,6 +129,29 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
             ItemList = (await _apiService.GetAsync<ItemBomEntity>("ItemBom"))
                 .OrderBy(x => x.ItemNumber)
                 .ToList();
+        }
+
+        private async Task LoadItemBOH()
+        {
+            if (ItemNumberID == null)
+                return;
+
+            var bohList = await _apiService.GetAsync<ItemBOHPartMaintenanceEntity>(
+                $"PartMaintenance/itemboh/{ItemNumberID}");
+
+            var list = bohList.ToList();
+
+            if (!list.Any())
+                return;
+
+            ItemDescription = list.FirstOrDefault()?.ItemDescription;
+
+            TotalQtyOnHand = list.Sum(x => x.QtyOnHand ?? 0);
+
+            LocationQtyOnHand = list
+                .Where(x => x.LocationID == LocationID)
+                .Select(x => x.QtyOnHand)
+                .FirstOrDefault();
         }
     }
 }

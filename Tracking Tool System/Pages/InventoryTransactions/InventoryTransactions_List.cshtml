@@ -41,8 +41,10 @@
                     </div>
                 </form>
 
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-sm2 text-nowrap">
+
+
+                <div class="table-responsive" style="max-height:650px; overflow:auto;">
+                    <table class="table table-bordered table-striped table-sm2 text-nowrap" style="min-width:1500px;">
                         <thead class="bg-primary text-white">
                             <tr>
                                 <th>Número de parte</th>
@@ -65,7 +67,7 @@
                                 <td>@part.Qty</td>
                                 <td>@part.Comments</td>
                                 <td>@part.ActualSupplier</td>
-                                <td>@part.DateCreation?.ToString("MM-dd-yyyy")</td>
+                                    <td>@part.DateCreation?.ToString("MM-dd-yyyy HH:mm:ss")</td>
                             </tr>
                             }                        
                         </tbody>

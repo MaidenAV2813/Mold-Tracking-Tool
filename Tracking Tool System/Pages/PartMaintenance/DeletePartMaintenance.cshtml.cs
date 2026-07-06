@@ -22,6 +22,8 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
 
         public string? ItemNumber { get; set; }
         public string? ItemDescription { get; set; }
+        public int? LocationID { get; set; }
+        public string? LocationNumber { get; set; }
         public int? QtyAsigned { get; set; }
 
         public async Task<IActionResult> OnGet(int id, string orderNum)
@@ -37,6 +39,7 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
             PartMaintenanceID = part.PartMaintenanceID;
             ItemNumber = part.ItemNumber;
             ItemDescription = part.ItemDescription;
+            LocationNumber = part.LocationNumber;
             QtyAsigned = part.QtyAsigned;
 
             return Page();

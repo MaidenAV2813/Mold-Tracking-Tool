@@ -26,6 +26,7 @@ namespace CAPA_NEGOCIO
             {
                 entity.OrderNum,
                 entity.ItemNumberID,
+                entity.LocationID,
                 entity.QtyAsigned,
                 entity.DateCreation,
                 entity.DateModification,
@@ -60,6 +61,7 @@ namespace CAPA_NEGOCIO
             {
                 entity.PartMaintenanceID,
                 entity.ItemNumberID,
+                entity.LocationID,
                 entity.QtyAsigned,
                 entity.DateModification,
                 entity.ModifiedBy
@@ -74,7 +76,7 @@ namespace CAPA_NEGOCIO
                 "sp_PartMaintenance_Delete",
                 new
                 {
-                    entity.PartMaintenanceID
+                    entity.PartMaintenanceID,
                 });
 
             return await result;

@@ -117,32 +117,6 @@ namespace CAPA_WEB_API.Controllers
             }
         }
 
-        //[HttpGet("byid/{id}")]
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    try
-        //    {
-        //        var result = await _itemBomServices.GetById(
-        //            new ItemBomEntity
-        //            {
-        //                ItemNumberID = id
-        //            });
-
-        //        if (result == null)
-        //            return NotFound();
-
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(new DBEntity
-        //        {
-        //            CodeError = ex.HResult,
-        //            MsgError = ex.Message
-        //        });
-        //    }
-        //}
-
         [HttpGet("itemboh/{id}")]
         public async Task<IActionResult> GetItemBOH(int id)
         {

@@ -21,25 +21,13 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
         public int? ItemNumberID { get; set; }
 
         [BindProperty]
-        public string? ItemDescription { get; set; }
+        public int? LocationID { get; set; }
 
         [BindProperty]
         public int? QtyAsigned { get; set; }
 
-        public vw_EBS_WorkOrdersEntity? WorkOrderInfo { get; set; }
-
-        public List<ItemBomEntity> ItemList { get; set; } = new();
-
-        public List<PartMaintenanceEntity> PartList { get; set; } = new();
-
         [BindProperty]
-        public int? EditPartMaintenanceID { get; set; }
-
-        [BindProperty]
-        public int? EditItemNumberID { get; set; }
-
-        [BindProperty]
-        public int? EditQtyAsigned { get; set; }
+        public string? ItemDescription { get; set; }
 
         [BindProperty]
         public int? TotalQtyOnHand { get; set; }
@@ -47,11 +35,11 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
         [BindProperty]
         public int? LocationQtyOnHand { get; set; }
 
-        [BindProperty]
-        public int? LocationID { get; set; }
+        public vw_EBS_WorkOrdersEntity? WorkOrderInfo { get; set; }
 
-        //[BindProperty]
-        //public string? LocationNumber { get; set; }
+        public List<ItemBomEntity> ItemList { get; set; } = new();
+
+        public List<PartMaintenanceEntity> PartList { get; set; } = new();
 
         public async Task<IActionResult> OnGet(string? orderNum)
         {
@@ -77,10 +65,7 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
                 return Page();
             }
 
-            var result = await _apiService.GetAsync<vw_EBS_WorkOrdersEntity>(
-                $"vw_EBS_WorkOrders/byorder/{OrderNum}");
-
-            WorkOrderInfo = result.FirstOrDefault();
+            await LoadWorkOrder();
 
             if (WorkOrderInfo == null)
             {
@@ -106,46 +91,35 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
             if (ItemNumberID == null)
             {
                 ModelState.AddModelError("", "Debe seleccionar un número de parte.");
+                await LoadWorkOrder();
+                await LoadPartMaintenance();
                 return Page();
             }
 
             if (LocationID == null)
             {
                 ModelState.AddModelError("", "Debe seleccionar la localidad desde donde se rebajará el inventario.");
-
                 await LoadWorkOrder();
                 await LoadPartMaintenance();
-                await LoadItems();
-
                 return Page();
             }
 
             if (QtyAsigned == null || QtyAsigned <= 0)
             {
                 ModelState.AddModelError("", "Debe digitar una cantidad válida.");
+                await LoadWorkOrder();
+                await LoadPartMaintenance();
                 return Page();
             }
 
             var user = User.Identity?.Name ?? "System";
             var now = DateTime.Now;
 
-
-            if (QtyAsigned > LocationQtyOnHand)
-            {
-                ModelState.AddModelError("", "La cantidad a rebajar es mayor que el inventario disponible.");
-
-                await LoadWorkOrder();
-                await LoadPartMaintenance();
-                await LoadItems();
-
-                return Page();
-            }
-
-
             var entity = new PartMaintenanceEntity
             {
                 OrderNum = OrderNum,
                 ItemNumberID = ItemNumberID,
+                LocationID = LocationID,
                 QtyAsigned = QtyAsigned,
                 CreatedBy = user,
                 ModifiedBy = user,
@@ -160,13 +134,24 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
             if (result != null && result.CodeError != 0)
             {
                 ModelState.AddModelError("", result.MsgError);
+                await LoadWorkOrder();
+                await LoadPartMaintenance();
                 return Page();
             }
 
             await LoadWorkOrder();
             await LoadPartMaintenance();
-            return Page();
 
+            ItemNumberID = null;
+            LocationID = null;
+            QtyAsigned = null;
+            ItemDescription = null;
+            TotalQtyOnHand = null;
+            LocationQtyOnHand = null;
+
+            ModelState.Clear();
+
+            return Page();
         }
 
         public async Task<IActionResult> OnGetItemBOH(int itemNumberID)
@@ -179,8 +164,7 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
 
         private async Task LoadItems()
         {
-            ItemList = (await _apiService
-                .GetAsync<ItemBomEntity>("ItemBom"))
+            ItemList = (await _apiService.GetAsync<ItemBomEntity>("ItemBom"))
                 .OrderBy(x => x.ItemNumber)
                 .ToList();
         }

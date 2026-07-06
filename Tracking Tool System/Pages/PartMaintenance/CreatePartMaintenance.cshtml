@@ -72,7 +72,7 @@
                         </div>
 
                         <div class="form-group mt-3">
-                            <label>Descripción</label>
+                            <label>Descripción PM</label>
                             <input class="form-control"
                                    value="@Model.WorkOrderInfo.DESCRIPTION"
                                    readonly />
@@ -81,7 +81,7 @@
                         <hr />
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div class="form-group">
                                     <label>Número de Parte</label>
                                     <select asp-for="ItemNumberID"
@@ -96,126 +96,126 @@
                                             </option>
                                         }
                                     </select>
-
-                                    <div class="form-group mt-3">
-                                        <label>Descripción</label>
-                                        <input asp-for="ItemDescription"
-                                               id="ItemDescription"
-                                               class="form-control"
-                                               readonly />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Inventario Total</label>
-
-                                        <input asp-for="TotalQtyOnHand"
-                                               id="TotalQtyOnHand"
-                                               class="form-control"
-                                               readonly />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Localidad</label>
-
-                                        <select asp-for="LocationID"
-                                                id="LocationID"
-                                                class="form-control select2">
-                                            <option value="">Seleccione una localidad</option>
-                                        </select>
-
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Disponible en la Localidad</label>
-
-                                        <input asp-for="LocationQtyOnHand"
-                                               id="LocationQtyOnHand"
-                                               class="form-control"
-                                               readonly />
-
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Cantidad a Rebajar</label>
-
-                                        <input asp-for="QtyAsigned"
-                                               class="form-control" />
-
-                                    </div>
-
                                 </div>
                             </div>
 
-                            @* <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Cantidad</label>
+                                    <label>Localidad</label>
+                                    <select asp-for="LocationID"
+                                            id="LocationID"
+                                            class="form-control select2">
+                                        <option value="">Seleccione una localidad</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Descripción del Repuesto</label>
+                                    <textarea asp-for="ItemDescription"
+                                              id="ItemDescription"
+                                              class="form-control"
+                                              rows="2"
+                                              readonly></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Disponible en la Localidad</label>
+                                    <input asp-for="LocationQtyOnHand"
+                                           id="LocationQtyOnHand"
+                                           class="form-control"
+                                           readonly />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Inventario Total</label>
+                                    <input asp-for="TotalQtyOnHand"
+                                           id="TotalQtyOnHand"
+                                           class="form-control"
+                                           readonly />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Cantidad a Rebajar</label>
                                     <input asp-for="QtyAsigned"
+                                           id="QtyAsigned"
                                            class="form-control" />
                                 </div>
-                            </div> *@
-
-                            <div class="col-md-3 d-flex align-items-end">
-                                <button type="submit"
-                                        asp-page-handler="Agregar"
-                                        class="btn btn-success">
-                                    <i class="fas fa-plus"></i> Agregar
-                                </button>
                             </div>
+                        </div>
 
-                            <hr />
+                        <div class="form-group mt-2">
+                            <button type="submit"
+                                    asp-page-handler="Agregar"
+                                    class="btn btn-success btn-block">
+                                <i class="fas fa-plus-circle"></i> Agregar Repuesto
+                            </button>
+                        </div>
 
-                            <h5>Repuestos asignados</h5>
+                        <hr class="mt-4" />
 
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-sm text-nowrap">
-                                    <thead class="bg-primary text-white">
+                        <h4 class="mb-3">
+                            <i class="fas fa-tools"></i>
+                            Repuestos Asignados
+                            <span class="badge badge-primary">@Model.PartList.Count</span>
+                        </h4>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm text-nowrap">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th>Número de Parte</th>
+                                        <th>Descripción</th>
+                                        <th>Cantidad</th>
+                                        <th>Fecha Creación</th>
+                                        <th>Creado Por</th>
+                                        <th>Editar</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var part in Model.PartList)
+                                    {
                                         <tr>
-                                            <th>Número de Parte</th>
-                                            <th>Descripción</th>
-                                            <th>Cantidad</th>
-                                            <th>Fecha Creación</th>
-                                            <th>Creado Por</th>
-                                            <th>Editar</th>
-                                            <th>Eliminar</th>
+                                            <td>@part.ItemNumber</td>
+                                            <td>@part.ItemDescription</td>
+                                            <td>@part.QtyAsigned</td>
+                                            <td>@part.DateCreation?.ToString("MM-dd-yyyy HH:mm:ss")</td>
+                                            <td>@part.CreatedBy</td>
 
+                                            <td class="text-center">
+                                                <a asp-page="/PartMaintenance/EditPartMaintenance"
+                                                   asp-route-id="@part.PartMaintenanceID"
+                                                   asp-route-orderNum="@Model.OrderNum"
+                                                   class="btn btn-warning btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+
+                                            <td class="text-center">
+                                                <a asp-page="/PartMaintenance/DeletePartMaintenance"
+                                                   asp-route-id="@part.PartMaintenanceID"
+                                                   asp-route-orderNum="@Model.OrderNum"
+                                                   class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </td>
                                         </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach (var part in Model.PartList)
-                                        {
-                                            <tr>
-                                                <td>@part.ItemNumber</td>
-                                                <td>@part.ItemDescription</td>
-                                                <td>@part.QtyAsigned</td>
-                                                <td>@part.DateCreation?.ToString("MM-dd-yyyy")</td>
-                                                <td>@part.CreatedBy</td>
-                                                <td class="text-center">
-                                                    <a asp-page="/PartMaintenance/EditPartMaintenance"
-                                                       asp-route-id="@part.PartMaintenanceID"
-                                                       asp-route-orderNum="@Model.OrderNum"
-                                                       class="btn btn-warning btn-sm">
-                                                        <i class="fas fa-edit"></i>
-                                                    </a>
-                                                </td>
-                                                <td class="text-center">
-                                                    <a asp-page="/PartMaintenance/DeletePartMaintenance"
-                                                       asp-route-id="@part.PartMaintenanceID"
-                                                       asp-route-orderNum="@Model.OrderNum"
-                                                       class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                                
-@*                                 <input type="hidden" asp-for="EditPartMaintenanceID" id="EditPartMaintenanceID" />
-                                <input type="hidden" asp-for="EditItemNumberID" id="EditItemNumberID" />
-                                <input type="hidden" asp-for="EditQtyAsigned" id="EditQtyAsigned" /> *@
-                            </div>
-
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     }
 
@@ -227,7 +227,6 @@
                         Cancelar
                     </a>
                 </div>
-
             </form>
 
         </div>
@@ -246,14 +245,24 @@
                 width: '100%'
             });
 
+            $('#LocationID').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Seleccione una localidad',
+                allowClear: true,
+                width: '100%'
+            });
+
             $('#ItemNumberID').on('change', function () {
 
                 var itemNumberID = $(this).val();
 
                 $('#ItemDescription').val('');
-                $('#QtyOnHand').val('');
+                $('#TotalQtyOnHand').val('');
+                $('#LocationQtyOnHand').val('');
+
                 $('#LocationID').empty();
                 $('#LocationID').append('<option value="">Seleccione una localidad</option>');
+                $('#LocationID').val('').trigger('change');
 
                 if (!itemNumberID)
                     return;
@@ -267,27 +276,29 @@
                         if (!data || data.length === 0)
                             return;
 
-                        $('#ItemDescription').val(data[0].itemDescription);
+                        $('#ItemDescription').val(data[0].itemDescription || data[0].ItemDescription || '');
 
                         var totalQty = 0;
 
                         $.each(data, function (i, item) {
 
-                            var qty = parseInt(item.qtyOnHand || 0);
-                            totalQty += qty;
+                            var locationID = item.locationID || item.LocationID;
+                            var locationNumber = item.locationNumber || item.LocationNumber;
+                            var qtyOnHand = parseInt(item.qtyOnHand || item.QtyOnHand || 0);
 
-                            if (item.locationID && item.locationNumber) {
+                            totalQty += qtyOnHand;
+
+                            if (locationID && locationNumber) {
                                 $('#LocationID').append(
                                     $('<option>', {
-                                        value: item.locationID,
-                                        text: item.locationNumber,
-                                        'data-qty': qty
+                                        value: locationID,
+                                        text: locationNumber,
+                                        'data-qty': qtyOnHand
                                     })
                                 );
                             }
                         });
 
-                        // Total de todas las localidades
                         $('#TotalQtyOnHand').val(totalQty);
                     },
                     error: function (xhr) {
@@ -302,35 +313,39 @@
                 var qty = $('#LocationID option:selected').data('qty');
 
                 if (qty === undefined || qty === null || qty === '') {
-                    $('#QtyOnHand').val('');
+                    $('#LocationQtyOnHand').val('');
                     return;
                 }
 
-                // Cantidad solo de la localidad seleccionada
                 $('#LocationQtyOnHand').val(qty);
-
             });
 
+            $('#QtyAsigned').on('keyup change', function () {
+
+                var qtyToAssign = parseInt($(this).val()) || 0;
+                var qtyAvailable = parseInt($('#LocationQtyOnHand').val()) || 0;
+
+                if (qtyToAssign > qtyAvailable && qtyAvailable > 0) {
+                    alert('La cantidad a rebajar es mayor que el inventario disponible en la localidad.');
+                    $(this).val('');
+                    $(this).focus();
+                }
+            });
+
+                    @if (Model.ItemNumberID == null)
+        {
+                <text>
+                        $('#ItemNumberID').val(null).trigger('change');
+                        $('#LocationID').empty();
+                        $('#LocationID').append('<option value="">Seleccione una localidad</option>');
+                        $('#LocationID').val(null).trigger('change');
+
+                        $('#ItemDescription').val('');
+                        $('#TotalQtyOnHand').val('');
+                        $('#LocationQtyOnHand').val('');
+                        $('#QtyAsigned').val('');
+                </text>
+        }
         });
-    </script>
-
-    <script>
-
-    $('#QtyAsigned').on('keyup change', function () {
-
-    var qtyToAssign = parseInt($(this).val()) || 0;
-    var qtyAvailable = parseInt($('#LocationQtyOnHand').val()) || 0;
-
-    if (qtyToAssign > qtyAvailable) {
-
-    alert('La cantidad a rebajar es mayor que el inventario disponible en la localidad.');
-
-    $(this).val('');
-    $(this).focus();
-
-    }
-
-    });
-
     </script>
 }

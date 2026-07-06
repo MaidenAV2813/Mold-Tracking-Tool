@@ -29,6 +29,7 @@
 
                     <div class="alert alert-warning">
                         ¿Está seguro que desea eliminar este repuesto asignado?
+                        Al eliminarlo, la cantidad será devuelta al inventario de la localidad correspondiente.
                     </div>
 
                     <div class="form-group">
@@ -47,6 +48,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Localidad</label>
+                        <input asp-for="LocationNumber" class="form-control" readonly />
+                    </div>
+
+                    <div class="form-group">
                         <label>Cantidad</label>
                         <input asp-for="QtyAsigned" class="form-control" readonly />
                     </div>
@@ -55,7 +61,7 @@
 
                 <div class="card-footer">
                     <button type="submit" class="btn btn-danger">
-                        Eliminar
+                        <i class="fas fa-trash-alt"></i> Eliminar
                     </button>
 
                     <a asp-page="/PartMaintenance/CreatePartMaintenance"
