@@ -33,6 +33,8 @@ namespace Tracking_Tool_System.Pages.Access
             "Tipos de Criticidad",
             "Tipos de Actuadores",
             "Evaluacion del Molde",
+            "Partes del molde",
+            "Evaluacion",
             "Mantenimiento del Molde",
             "Consultar ordenes",
             "Inventario de Repuestos",
@@ -41,6 +43,7 @@ namespace Tracking_Tool_System.Pages.Access
             "Inventario",
             "Transacciones de Inventario",
             "BOM de Repuestos/Moldes",
+            "ListNumbers",
             "Reportes e Indicadores",
             "Mantenimientos del sistema",
             "Roles",
@@ -89,8 +92,8 @@ namespace Tracking_Tool_System.Pages.Access
                     AccessDescription = module.Trim(),
                     CreatedBy = user,
                     ModifiedBy = user,
-                    DateCreation = now,
-                    DateModification = now
+                    DateCreation = DateTime.Now,
+                    DateModification = DateTime.Now
                 };
 
                 var response = await _apiService.PostAsync("access", entity);

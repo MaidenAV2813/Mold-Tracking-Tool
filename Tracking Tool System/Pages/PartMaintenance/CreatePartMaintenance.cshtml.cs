@@ -123,8 +123,8 @@ namespace Tracking_Tool_System.Pages.PartMaintenance
                 QtyAsigned = QtyAsigned,
                 CreatedBy = user,
                 ModifiedBy = user,
-                DateCreation = now,
-                DateModification = now
+                DateCreation = DateTime.Now,
+                DateModification = DateTime.Now
             };
 
             var response = await _apiService.PostAsync("PartMaintenance", entity);

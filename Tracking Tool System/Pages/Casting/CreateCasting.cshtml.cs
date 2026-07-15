@@ -42,8 +42,8 @@ namespace Tracking_Tool_System.Pages.Casting
                     CastingType = CastingType,
                     CreatedBy = casting,
                     ModifiedBy = casting,
-                    DateCreation = now,
-                    DateModification = now
+                    DateCreation = DateTime.Now,
+                    DateModification = DateTime.Now
 
                 };
 

@@ -63,8 +63,8 @@ namespace Tracking_Tool_System.Pages.User
                 UserStatus = UserStatus,
                 CreatedBy = user,
                 ModifiedBy = user,
-                DateCreation = now,
-                DateModification = now
+                DateCreation = DateTime.Now,
+                DateModification = DateTime.Now
             };
 
             var response = await _apiService.PostAsync("users", entity);

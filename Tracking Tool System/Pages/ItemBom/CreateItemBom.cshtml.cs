@@ -89,8 +89,8 @@ namespace Tracking_Tool_System.Pages.ItemBom
                     ItemStatus = ItemStatus,
                     CreatedBy = user,
                     ModifiedBy = user,
-                    DateCreation = now,
-                    DateModification = now
+                    DateCreation = DateTime.Now,
+                    DateModification = DateTime.Now
 
                 };
 

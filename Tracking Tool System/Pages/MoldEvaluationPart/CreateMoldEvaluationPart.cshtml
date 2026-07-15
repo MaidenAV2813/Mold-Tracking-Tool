@@ -1,0 +1,85 @@
+﻿@page
+@model Tracking_Tool_System.Pages.MoldEvaluationPart.CreateMoldEvaluationPartModel
+
+@{
+    ViewData["Title"] = "Agregar parte";
+}
+
+<section class="content-header">
+
+    <div class="container-fluid">
+
+        <h1>Agregar parte de evaluación</h1>
+
+    </div>
+
+</section>
+
+<section class="content">
+
+    <div class="container-fluid">
+
+        <div class="card card-primary">
+
+            <div class="card-header">
+
+                <h3 class="card-title">
+                    Nueva parte de evaluación
+                </h3>
+
+            </div>
+
+            <form method="post">
+
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger">
+                    </div>
+
+                    <div class="form-group">
+
+                        <label asp-for="Parts">
+                            Parte
+                        </label>
+
+                        <input asp-for="Parts"
+                               class="form-control"
+                               maxlength="150"
+                               autocomplete="off"
+                               placeholder="Digite el nombre de la parte" />
+
+                        <span asp-validation-for="Parts"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="fas fa-save"></i>
+                        Guardar
+
+                    </button>
+
+                    <a asp-page="/MoldEvaluationPart/MoldEvaluationPart_List"
+                       class="btn btn-secondary">
+
+                        Cancelar
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>

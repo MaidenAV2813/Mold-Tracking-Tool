@@ -21,6 +21,10 @@ builder.Services.AddScoped<IInventoryBOH_Services, InventoryBOH_Services>();
 builder.Services.AddScoped<IInventoryTransactions_Services, InventoryTransactions_Services>();
 builder.Services.AddScoped<IPartMaintenance_Services, PartMaintenance_Services>();
 builder.Services.AddScoped<Ivw_EBS_WorkOrders_Services, vw_EBS_WorkOrders_Services>();
+builder.Services.AddScoped<IListNumber_Services, ListNumber_Services>();
+builder.Services.AddScoped<Ivw_EBS_List_Numbers_Services, vw_EBS_List_Numbers_Services>();
+builder.Services.AddScoped<IMoldEvaluationPart_Services,MoldEvaluationPart_Services>();
+builder.Services.AddScoped<IMoldEvaluation_Services,MoldEvaluation_Services>();
 
 
 // Controllers

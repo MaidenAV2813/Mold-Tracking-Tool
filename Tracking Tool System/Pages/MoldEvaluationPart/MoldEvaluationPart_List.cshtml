@@ -1,0 +1,214 @@
+﻿@page
+@model Tracking_Tool_System.Pages.MoldEvaluationPart.MoldEvaluationPart_ListModel
+
+@{
+    ViewData["Title"] = "Partes de evaluación";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Partes de evaluación del molde</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div class="card-tools">
+
+                    <a asp-page="/MoldEvaluationPart/CreateMoldEvaluationPart"
+                       class="btn btn-primary btn-sm">
+
+                        <i class="fas fa-plus"></i>
+                        Agregar
+
+                    </a>
+
+                    <button type="button"
+                            id="btnEdit"
+                            class="btn btn-warning btn-sm"
+                            disabled>
+
+                        <i class="fas fa-edit"></i>
+                        Editar
+
+                    </button>
+
+                    <button type="button"
+                            id="btnDelete"
+                            class="btn btn-danger btn-sm"
+                            disabled>
+
+                        <i class="fas fa-trash"></i>
+                        Eliminar
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger">
+                </div>
+
+                <form method="get"
+                      class="mb-3">
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label>Buscar parte</label>
+
+                            <input type="text"
+                                   id="searchPart"
+                                   class="form-control"
+                                   placeholder="Digite el nombre de la parte..."
+                                   autocomplete="off" />
+                        </div>
+                    </div>
+
+                </form>
+
+                <form method="post"
+                      id="deleteForm">
+
+                    <input asp-for="MoldEvaPartID"
+                           type="hidden"
+                           id="MoldEvaPartID" />
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-hover table-sm" style="width:60%;">
+
+                            <thead class="bg-primary text-white">
+
+                                <tr>
+                                    <th>Parte</th>
+                                    <th>Fecha de creación</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="partsTableBody">
+
+                                @foreach (var item in Model.GridList)
+                                {
+                                    <tr class="selectable-row"
+                                        data-id="@item.MoldEvaPartID"
+                                        data-part="@item.Parts"
+                                        style="cursor:pointer;">
+
+                                        <td>@item.Parts</td>
+
+                                        <td>
+                                            @item.DateCreation?.ToString("MM-dd-yyyy")
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(function () {
+
+            let selectedID = null;
+            let selectedPart = '';
+
+            $('.selectable-row').on('click', function () {
+
+                $('.selectable-row')
+                    .removeClass('table-primary');
+
+                $(this)
+                    .addClass('table-primary');
+
+                selectedID = $(this).data('id');
+                selectedPart = $(this).data('part');
+
+                $('#MoldEvaPartID').val(selectedID);
+
+                $('#btnEdit').prop('disabled', false);
+                $('#btnDelete').prop('disabled', false);
+            });
+
+            $('#btnEdit').on('click', function () {
+
+                if (!selectedID) {
+                    return;
+                }
+
+                window.location.href =
+                    '/MoldEvaluationPart/EditMoldEvaluationPart?id='
+                    + selectedID;
+            });
+
+            $('#btnDelete').on('click', function () {
+
+                if (!selectedID) {
+                    return;
+                }
+
+                const confirmDelete = confirm(
+                    '¿Está seguro de que desea eliminar la parte "' +
+                    selectedPart +
+                    '"?'
+                );
+
+                if (!confirmDelete) {
+                    return;
+                }
+
+                $('#deleteForm').attr(
+                    'action',
+                    '?handler=Delete'
+                );
+
+                $('#deleteForm').submit();
+            });
+
+            $('#searchPart').on('input', function () {
+
+                const value = $(this)
+                    .val()
+                    .trim()
+                    .toLowerCase();
+
+                $('#partsTableBody tr').each(function () {
+
+                    const partName = $(this)
+                        .find('td')
+                        .eq(0)
+                        .text()
+                        .trim()
+                        .toLowerCase();
+
+                    $(this).toggle(
+                        partName.includes(value)
+                    );
+                });
+            });
+
+        });
+    </script>
+}

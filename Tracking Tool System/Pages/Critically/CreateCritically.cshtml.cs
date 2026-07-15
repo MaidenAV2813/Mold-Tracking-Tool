@@ -42,8 +42,8 @@ namespace Tracking_Tool_System.Pages.Critically
                     CriticallyType = CriticallyType,
                     CreatedBy = critically,
                     ModifiedBy = critically,
-                    DateCreation = now,
-                    DateModification = now
+                    DateCreation = DateTime.Now,
+                    DateModification = DateTime.Now
 
                 };
 

@@ -42,8 +42,8 @@ namespace Tracking_Tool_System.Pages.Actuator
                     ActuatorType = ActuatorType,
                     CreatedBy = actuator,
                     ModifiedBy = actuator,
-                    DateCreation = now,
-                    DateModification = now
+                    DateCreation = DateTime.Now,
+                    DateModification = DateTime.Now
 
                 };
 

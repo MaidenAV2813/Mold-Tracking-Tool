@@ -51,8 +51,8 @@ namespace Tracking_Tool_System.Pages.Rol
                     RolStatus = RolStatus,
                     CreatedBy = user,
                     ModifiedBy = user,
-                    DateCreation = now,
-                    DateModification = now
+                    DateCreation = DateTime.Now,
+                    DateModification = DateTime.Now
 
                 };
 

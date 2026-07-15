@@ -47,8 +47,8 @@ namespace Tracking_Tool_System.Pages.Transaction
                     TransactionStatus = TransactionStatus,
                     CreatedBy = user,
                     ModifiedBy = user,
-                    DateCreation = now,
-                    DateModification = now
+                    DateCreation = DateTime.Now,
+                    DateModification = DateTime.Now
 
                 };
 

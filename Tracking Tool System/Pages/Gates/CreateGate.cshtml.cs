@@ -42,8 +42,8 @@ namespace Tracking_Tool_System.Pages.Gates
                     GateType = GateType,
                     CreatedBy = gate,
                     ModifiedBy = gate,
-                    DateCreation = now,
-                    DateModification = now
+                    DateCreation = DateTime.Now,
+                    DateModification = DateTime.Now
 
                 };
 

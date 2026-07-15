@@ -155,13 +155,39 @@
                 {
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-clipboard-check"></i>
-                                <p>
-                                    Evaluacion del Molde
-                                    @*<i class="fas fa-angle-left right"></i>*@
-                                </p>
+                            <i class="nav-icon fas fa-boxes"></i>
+                            <p>
+                                Evaluacion del molde
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
                         </a>
-                            
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Partes del molde"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/MoldEvaluationPart/MoldEvaluationPart_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Partes</p>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Evaluacion"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/MoldEvaluation/MoldEvaluation_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Evaluacion</p>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+
                     </li>
                 }
 
@@ -249,6 +275,16 @@
                                     <a asp-page="/ItemBom/ItemBom_List" class="nav-link">
                                         <i class="fas fa-minus nav-icon"></i>
                                         <p>BOM de Repuestos/Moldes</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (HasAccess("ListNumbers"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/ListNumber/ListNumber_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>ListNumbers</p>
                                     </a>
                                 </li>
                             }

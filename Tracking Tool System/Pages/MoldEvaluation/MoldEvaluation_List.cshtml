@@ -1,0 +1,187 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Evaluation.MoldEvaluation_ListModel
+
+@{
+    ViewData["Title"] = "Evaluaciones de moldes";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Evaluaciones de moldes</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div class="card-tools">
+
+                    <a asp-page="/MoldEvaluation/CreateMoldEvaluation"
+                       class="btn btn-primary btn-sm">
+
+                        <i class="fas fa-plus"></i> Nueva evaluación
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger">
+                </div>
+
+                <div class="row mb-3">
+
+                    <div class="col-md-4">
+
+                        <label>Buscar molde</label>
+
+                        <input type="text"
+                               id="searchMold"
+                               class="form-control"
+                               placeholder="Digite el número de molde..."
+                               autocomplete="off"
+                               oninput="this.value = this.value.toUpperCase();" />
+
+                    </div>
+
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-striped table-sm">
+
+                        <thead class="bg-primary text-white">
+
+                            <tr>
+                                <th class="text-center" style="width:180px;">Numero de Molde</th>
+                                <th class="text-center" >Porcentaje de la evaluación general</th>
+                                <th class="text-center" >Fecha de evaluación</th>
+                                <th class="text-center" >Próxima evaluación</th>
+                                <th class ="text-center" >Creado por</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="evaluationTableBody">
+
+                            @foreach (var evaluation in Model.GridList)
+                            {
+                                <tr class="selectable-row"
+                                    data-id="@evaluation.EvaluationID"
+                                    style="cursor:pointer;">
+
+                                    <td>@evaluation.MoldNumber</td>
+
+                                    <td class="text-center">
+
+                                        @if (@evaluation.GeneralScore.HasValue)
+                                        {
+                                            if (@evaluation.GeneralScore >= 90)
+                                            {
+                                                <span class="badge badge-success">
+                                                    @($"{@evaluation.GeneralScore:N2}%")
+                                                </span>
+                                            }
+                                            else if (@evaluation.GeneralScore >= 80)
+                                            {
+                                                <span class="badge badge-info">
+                                                    @($"{@evaluation.GeneralScore:N2}%")
+                                                </span>
+                                            }
+                                            else if (@evaluation.GeneralScore >= 70)
+                                            {
+                                                <span class="badge badge-warning">
+                                                    @($"{@evaluation.GeneralScore:N2}%")
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-danger">
+                                                    @($"{@evaluation.GeneralScore:N2}%")
+                                                </span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-secondary">
+                                                N/A
+                                            </span>
+                                        }
+
+                                    </td>
+
+                                    <td>
+                                        @evaluation.DateEvaluation?.ToString("MM-dd-yyyy")
+                                    </td>
+
+                                    <td>
+                                        @evaluation.NextEvaluationDate?.ToString("MM-dd-yyyy")
+                                    </td>
+
+                                    <td>@evaluation.CreatedBy</td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+
+    <script>
+        $(function () {
+
+            $('.selectable-row').on('click', function () {
+
+                $('.selectable-row')
+                    .removeClass('table-primary');
+
+                $(this)
+                    .addClass('table-primary');
+            });
+
+            $('#searchMold').on('input', function () {
+
+                const value = $(this)
+                    .val()
+                    .trim()
+                    .toLowerCase();
+
+                $('#evaluationTableBody tr').each(function () {
+
+                    const moldNumber = $(this)
+                        .find('td')
+                        .eq(0)
+                        .text()
+                        .trim()
+                        .toLowerCase();
+
+                    $(this).toggle(
+                        moldNumber.includes(value)
+                    );
+                });
+
+            });
+
+        });
+    </script>
+
+}

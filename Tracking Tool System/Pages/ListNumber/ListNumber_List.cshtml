@@ -1,0 +1,188 @@
+﻿@page
+@model Tracking_Tool_System.Pages.ListNumber.ListNumber_ListModel
+
+@{
+    ViewData["Title"] = "List Numbers";
+}
+
+<section class="content-header">
+
+    <div class="container-fluid">
+        <h1>Lista de ListNumbers</h1>
+    </div>
+
+</section>
+
+<section class="content">
+
+    <div class="container-fluid">
+
+        <div class="card">
+
+            <div class="card-header">
+                <div class="card-tools">
+
+                    <a asp-page="/ListNumber/CreateListNumber"
+                       class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Agregar un nuevo ListNumber
+                    </a>
+
+                    <a id="editBtn"
+                       class="btn btn-warning btn-sm @(Model.SelectedMoldID.HasValue ? "" : "disabled")"
+                       href="@(Model.SelectedMoldID.HasValue
+                                      ? Url.Page(
+                                          "/ListNumber/EditListNumber",
+                                          new { moldId = Model.SelectedMoldID.Value }
+                                        )
+                                  : "#")">
+                        <i class="fas fa-edit"></i> Editar ListNumbers
+                    </a>
+
+                    <button type="button"
+                            id="deleteBtn"
+                            class="btn btn-danger btn-sm"
+                            disabled>
+                        <i class="fas fa-trash"></i>
+                        Eliminar ListNumber
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="card-body">
+
+                <form method="get" id="filterForm" class="mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label asp-for="SelectedMoldID">Filtrar por Molde</label>
+
+                            <select asp-for="SelectedMoldID"
+                                    id="SelectedMoldID"
+                                    class="form-control"
+                                    onchange="document.getElementById('filterForm').submit();">
+
+                                <option value="">Todos los moldes</option>
+
+                                @foreach (var mold in Model.Mold)
+                                {
+                                    <option value="@mold.MoldID">
+                                        @mold.MoldNumber
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <form method="post"
+                      asp-page-handler="Delete"
+                      id="deleteForm">
+
+                    <input type="hidden"
+                           asp-for="SelectedMoldID" />
+
+                    <input type="hidden"
+                           asp-for="SelectedListNumberID"
+                           id="deleteListNumberID" />
+
+                </form>
+
+                <table id="ListNumberTable" class="table table-bordered table-striped">
+
+                    <thead class="bg-primary text-white">
+
+                        <tr>
+
+                            <th style="width:180px;">Numero de Molde</th>
+                            <th>ListNumber</th>
+                            <th>Descripcion</th>
+                            <th>Fecha de Creación</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.ListNumber)
+                        {
+                            <tr class="selectable-row"
+                                data-listnumber-id="@item.ListNumberID"
+                                data-mold-id="@item.MoldID"
+                                style="cursor:pointer;">
+
+                                <td style="white-space:nowrap;">@item.MoldNumber</td>
+                                <td>@item.ListNumber</td>
+                                <td>@item.Description</td>
+                                <td>@item.DateCreation?.ToString("MM/dd/yyyy")</td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div> 
+
+</section>
+
+@section Scripts
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const rows =
+                document.querySelectorAll(".selectable-row");
+
+            const deleteBtn =
+                document.getElementById("deleteBtn");
+
+            const deleteForm =
+                document.getElementById("deleteForm");
+
+            const deleteListNumberID =
+                document.getElementById(
+                    "deleteListNumberID"
+                );
+
+            let selectedListNumberID = null;
+
+            rows.forEach(function (row) {
+
+                row.addEventListener("click", function () {
+
+                    rows.forEach(function (otherRow) {
+                        otherRow.classList.remove(
+                            "table-primary"
+                        );
+                    });
+
+                    row.classList.add("table-primary");
+
+                    selectedListNumberID =
+                        row.dataset.listnumberId;
+
+                    deleteBtn.disabled = false;
+                });
+
+            });
+
+            deleteBtn.addEventListener("click", function () {
+
+                if (!selectedListNumberID) {
+                    return;
+                }
+
+            confirmarEliminacion(function () {
+                deleteListNumberID.value = selectedListNumberID;
+                deleteForm.submit();
+            },
+            "¿Está seguro de eliminar el número de parte seleccionado del molde?"
+            );
+            });
+
+        });
+    </script>
+}

@@ -97,7 +97,7 @@ namespace Tracking_Tool_System.Pages.InventoryTransactions
                     Qty = Qty,
                     Comments = Comments,
                     CreatedBy = user,
-                    DateCreation = now,
+                    DateCreation = DateTime.Now,
 
                 };
 

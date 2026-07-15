@@ -134,8 +134,8 @@ namespace Tracking_Tool_System.Pages.Mold
                     CounterType = CounterType,
                     ThreeLayer = ThreeLayer,
                     InitialCount = InitialCount,
-                    DateCreation = now,
-                    DateModification = now,
+                    DateCreation = DateTime.Now,
+                    DateModification = DateTime.Now,
                     CreatedBy = user,
                     ModifiedBy = user
 
