@@ -67,7 +67,9 @@
                                 <th>Parte del suplidor</th>
                                 <th>Suplidor</th>
                                 <th>Unidad de medida</th>
+                                <th>Criticidad</th>
                                 <th>Estado</th>
+                                <th>Plano</th>
                                 <th>Fecha de creación</th>                           
                             </tr>
                         </thead>
@@ -85,7 +87,9 @@
                                     <td>@part.ItemSupplierNumber</td>
                                     <td>@part.ActualSupplier</td>
                                     <td>@part.UOM</td>
+                                    <td>@part.ItemCritically</td>
                                     <td>@part.ItemStatus</td>
+                                    <td>@part.Plano</td>
                                     <td>@part.DateCreation?.ToString("MM-dd-yyyy")</td>
                                 </tr>
                                 }                        

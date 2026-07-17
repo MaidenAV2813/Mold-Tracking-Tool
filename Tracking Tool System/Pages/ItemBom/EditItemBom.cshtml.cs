@@ -49,7 +49,13 @@ namespace Tracking_Tool_System.Pages.ItemBom
         public string? UOM { get; set; }
 
         [BindProperty]
+        public int? ItemCritically { get; set; }
+
+        [BindProperty]
         public string? ItemStatus { get; set; }
+
+        [BindProperty]
+        public int? Plano { get; set; }
 
         public async Task<IActionResult> OnGet(int id)
         {
@@ -75,7 +81,9 @@ namespace Tracking_Tool_System.Pages.ItemBom
             ItemSupplierNumber = part.ItemSupplierNumber;
             ActualSupplier = part.ActualSupplier;
             UOM = part.UOM;
+            ItemCritically = part.ItemCritically;
             ItemStatus = part.ItemStatus;
+            Plano = part.Plano;
 
 
 
@@ -102,7 +110,9 @@ namespace Tracking_Tool_System.Pages.ItemBom
                 ItemSupplierNumber = ItemSupplierNumber,
                 ActualSupplier = ActualSupplier,
                 UOM = UOM,
+                ItemCritically= ItemCritically,
                 ItemStatus = ItemStatus,
+                Plano = Plano,
                 ModifiedBy = user,
                 DateModification = now
             };

@@ -79,7 +79,9 @@ namespace CAPA_NEGOCIO
                 entity.ItemSupplierNumber,
                 entity.ActualSupplier,
                 entity.UOM,
+                entity.ItemCritically,
                 entity.ItemStatus,
+                entity.Plano,
                 entity.DateCreation,
                 entity.DateModification,
                 entity.CreatedBy,
@@ -111,7 +113,9 @@ namespace CAPA_NEGOCIO
                     entity.ItemSupplierNumber,
                     entity.ActualSupplier,
                     entity.UOM,
+                    entity.ItemCritically,
                     entity.ItemStatus,
+                    entity.Plano,
                     entity.DateModification,
                     entity.ModifiedBy
                 });

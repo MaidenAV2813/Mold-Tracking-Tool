@@ -18,7 +18,9 @@ namespace CAPA_ENTITY
         public string? ItemSupplierNumber { get; set; }
         public string? ActualSupplier { get; set; }
         public string? UOM { get; set; }
+        public int? ItemCritically { get; set; }
         public string? ItemStatus { get; set; }
+        public int? Plano { get; set; }
 
     }
 }

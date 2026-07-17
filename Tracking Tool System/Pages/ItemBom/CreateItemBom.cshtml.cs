@@ -45,7 +45,13 @@ namespace Tracking_Tool_System.Pages.ItemBom
         public string? UOM { get; set; }
 
         [BindProperty]
+        public int? ItemCritically { get; set; }
+
+        [BindProperty]
         public string? ItemStatus { get; set; }
+
+        [BindProperty]
+        public int? Plano { get; set; }
 
         [BindProperty]
         public DateTime DateCreation { get; set; }
@@ -86,7 +92,9 @@ namespace Tracking_Tool_System.Pages.ItemBom
                     ItemSupplierNumber = ItemSupplierNumber,
                     ActualSupplier = ActualSupplier,
                     UOM = UOM,
+                    ItemCritically = ItemCritically,
                     ItemStatus = ItemStatus,
+                    Plano = Plano,
                     CreatedBy = user,
                     ModifiedBy = user,
                     DateCreation = DateTime.Now,
