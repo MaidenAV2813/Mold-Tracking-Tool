@@ -28,6 +28,9 @@ namespace Tracking_Tool_System.Pages.Mold
         public int? ActuatorID { get; set; }
 
         [BindProperty]
+        public int? CategorizationID { get; set; }
+
+        [BindProperty]
         public string? MoldNumber { get; set; }
 
         [BindProperty]
@@ -77,6 +80,8 @@ namespace Tracking_Tool_System.Pages.Mold
 
         public List<ActuatorTypeEntity> ActuatorList { get; set; } = new();
 
+        public List<CategorizationMoldEntity> CategorizationList { get; set; } = new();
+
         public async Task OnGet()
         {
             CriticallyList = (await _apiService
@@ -97,6 +102,11 @@ namespace Tracking_Tool_System.Pages.Mold
             ActuatorList = (await _apiService
                 .GetAsync<ActuatorTypeEntity>("Actuator"))
                 .OrderBy(x => x.ActuatorType)
+                .ToList();
+
+            CategorizationList = (await _apiService
+                .GetAsync<CategorizationMoldEntity>("Categorization"))
+                .OrderBy(x => x.CategorizationType)
                 .ToList();
         }
 
@@ -122,6 +132,7 @@ namespace Tracking_Tool_System.Pages.Mold
                     GateID = GateID,
                     CastingID = CastingID,
                     ActuatorID = ActuatorID,
+                    CategorizationID = CategorizationID,
                     MoldAssetNumber = MoldAssetNumber,
                     MoldNumber = MoldNumber,
                     MoldDescription = MoldDescription,

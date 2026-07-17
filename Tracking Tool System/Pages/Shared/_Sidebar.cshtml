@@ -144,6 +144,16 @@
                                     </a>
                                 </li>
                             }
+
+                            @if (HasAccess("Tipos de Categorización"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Categorization/Categorization_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Tipos de Categorización</p>
+                                    </a>
+                                </li>
+                            }
                                
                         </ul>
                             

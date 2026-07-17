@@ -40,6 +40,9 @@ namespace Tracking_Tool_System.Pages.Mold
         public int? ActuatorID { get; set; }
 
         [BindProperty]
+        public int? CategorizationID { get; set; }
+
+        [BindProperty]
         public string? ActuatorType { get; set; }
 
         public List<MoldEntity> Molds { get; set; } = new();
@@ -51,6 +54,8 @@ namespace Tracking_Tool_System.Pages.Mold
         public List<CastingMoldEntity> Casting { get; set; } = new();
 
         public List<ActuatorTypeEntity> Actuator { get; set; } = new();
+
+        public List<CategorizationMoldEntity> Categorization { get; set; } = new();
 
         [BindProperty]
         public String? MoldAssetNumber { get; set; }
@@ -98,6 +103,7 @@ namespace Tracking_Tool_System.Pages.Mold
             Gate = await _apiService.GetAsync<GateTypeEntity>("gates");
             Casting = await _apiService.GetAsync<CastingMoldEntity>("casting");
             Actuator = await _apiService.GetAsync<ActuatorTypeEntity>("actuator");
+            Categorization = await _apiService.GetAsync<CategorizationMoldEntity>("categorization");
 
             //Obtener el molde a editar
             var mold = (await _apiService.GetAsync<MoldEntity>("mold"))
@@ -118,6 +124,7 @@ namespace Tracking_Tool_System.Pages.Mold
             GateID = mold.GateID;
             CastingID = mold.CastingID;
             ActuatorID = mold.ActuatorID;
+            CategorizationID = mold.CategorizationID;
 
             CavityQty = mold.CavityQty;
             BlockCavityQty = mold.BlockCavityQty;
@@ -149,6 +156,7 @@ namespace Tracking_Tool_System.Pages.Mold
                 GateID = GateID,
                 CastingID = CastingID,
                 ActuatorID  = ActuatorID,
+                CategorizationID = CategorizationID,
                 MoldAssetNumber = MoldAssetNumber,
                 MoldNumber = MoldNumber,
                 MoldDescription = MoldDescription,

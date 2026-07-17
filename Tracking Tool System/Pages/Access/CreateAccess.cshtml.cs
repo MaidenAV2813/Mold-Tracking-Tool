@@ -32,6 +32,7 @@ namespace Tracking_Tool_System.Pages.Access
             "Tipos de Coladas",
             "Tipos de Criticidad",
             "Tipos de Actuadores",
+            "Tipos de Categorización",
             "Evaluacion del Molde",
             "Partes del molde",
             "Evaluacion",

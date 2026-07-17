@@ -73,6 +73,17 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Categorizacion</label>
+                        <select asp-for="CategorizationID" class="form-control">
+
+                            @foreach (var categorization in Model.Categorization)
+                            {
+                                <option value="@categorization.CategorizationID">@categorization.CategorizationType</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label>Numero de activo</label>
                         <input asp-for="MoldAssetNumber" class="form-control" />
                     </div>

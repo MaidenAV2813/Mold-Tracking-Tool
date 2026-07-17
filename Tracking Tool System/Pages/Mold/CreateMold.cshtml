@@ -97,6 +97,20 @@
                                 }
                             </select>
                         </div>
+
+                        <div class="col-md-4">
+                            <label>Categorización</label>
+                            <select asp-for="CategorizationID" class="form-control">
+                                <option value="">Seleccione la Categorización</option>
+
+                                @foreach (var item in Model.CategorizationList)
+                                {
+                                    <option value="@item.CategorizationID">
+                                        @item.CategorizationType
+                                    </option>
+                                }
+                            </select>
+                        </div>
                     </div>
 
                     <br />

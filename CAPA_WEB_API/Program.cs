@@ -25,6 +25,8 @@ builder.Services.AddScoped<IListNumber_Services, ListNumber_Services>();
 builder.Services.AddScoped<Ivw_EBS_List_Numbers_Services, vw_EBS_List_Numbers_Services>();
 builder.Services.AddScoped<IMoldEvaluationPart_Services,MoldEvaluationPart_Services>();
 builder.Services.AddScoped<IMoldEvaluation_Services,MoldEvaluation_Services>();
+builder.Services.AddScoped<IDashboard_Services, Dashboard_Services>();
+builder.Services.AddScoped<ICategorization_Services, Categorization_Services>();
 
 
 // Controllers

@@ -28,6 +28,10 @@
                         <i class="fas fa-edit"></i> Editar molde
                     </a>
                 </div>
+                <a asp-page="/Index"
+                   class="btn btn-secondary">
+                    Cancelar
+                </a>
 
             </div>
 
@@ -63,6 +67,7 @@
                             <th>Contador inicial</th> 
                             <th>Tipo de colada</th>
                             <th>Tipo de actuador</th>
+                            <th>Tipo de categorizacion</th>
                             <th>Criticidad</th>
                             <th>Tipo de gate</th>
                             <th>Fecha de creación</th>
@@ -88,6 +93,7 @@
                                 <td>@mold.InitialCount</td>
                                 <td>@mold.CastingType</td>
                                 <td>@mold.ActuatorType</td>
+                                <td>@mold.CategorizationType</td>
                                 <td>@mold.CriticallyType</td>
                                 <td>@mold.GateType</td>
                                 <td>@mold.DateCreation?.ToString("MM-dd-yyyy")</td>

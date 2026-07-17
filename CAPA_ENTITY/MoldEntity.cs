@@ -11,6 +11,7 @@ namespace CAPA_ENTITY
         public int? GateID { get; set; }
         public int? CastingID { get; set; }
         public int? ActuatorID { get; set; }
+        public int? CategorizationID { get; set; }
         public string? MoldAssetNumber { get; set; }
         public string? MoldNumber { get; set; }
         public string? MoldDescription { get; set; }
@@ -31,6 +32,8 @@ namespace CAPA_ENTITY
         public string? CriticallyType { get; set; }
 
         public string? GateType { get; set; }
+
+        public string? CategorizationType { get; set; }
 
 
     }
