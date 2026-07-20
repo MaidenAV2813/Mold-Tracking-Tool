@@ -64,5 +64,49 @@ namespace CAPA_WEB_API.Controllers
                 });
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var result = await _services.GetById(id);
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new DBEntity
+                {
+                    CodeError = ex.HResult,
+                    MsgError = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{id}/parts")]
+        public async Task<IActionResult> GetParts(int id)
+        {
+            try
+            {
+                var result =
+                    await _services.GetPartsByEvaluationID(id);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new DBEntity
+                {
+                    CodeError = ex.HResult,
+                    MsgError = ex.Message
+                });
+            }
+        }
     }
 }

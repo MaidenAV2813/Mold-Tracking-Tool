@@ -92,20 +92,23 @@
 
                 </div>
             </div>
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3>65</h3>
- 
-                            <p>Distribución de Espacio</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-pie-graph"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
+            @* <div class="card-header border-0">
+
+                <h3 class="card-title">
+                    Estado general de los moldes
+                </h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <div style="height:320px">
+
+                    <canvas id="evaluationChart"></canvas>
+
                 </div>
+
+            </div> *@
                 <div class="col-lg-6">
                 <div class="card">
 
@@ -177,18 +180,24 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="card">
-                        <div class="card-header border-0">
-                            <h3 class="card-title">Distribución por Subinventario</h3>
-                            <div class="card-tools">
-                                <a href="#" class="btn btn-sm btn-tool">
-                                    <i class="fas fa-download"></i>
-                                </a>
-                                <a href="#" class="btn btn-sm btn-tool">
-                                    <i class="fas fa-bars"></i>
-                                </a>
-                            </div>
+                    <div class="card-header border-0">
+
+                        <h3 class="card-title">
+                            Estado general de los moldes
+                        </h3>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div style="height:320px">
+
+                            <canvas id="evaluationChart"></canvas>
+
                         </div>
-                        <div class="card-body">
+
+                    </div>
+                        @* <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
                                 <p class="text-success text-xl">
                                     <i class="ion ion-ios-refresh-empty"></i>
@@ -225,7 +234,7 @@
                                 </p>
                             </div>
                             <!-- /.d-flex -->
-                        </div>
+                        </div> *@
                     </div>
                 </div>
                 <!-- /.col-md-6 -->
@@ -429,74 +438,74 @@
                         return item.MaintenanceCount;
                     });
 
-new Chart(
-    document.getElementById(
-        "maintenanceByMonthChart"
-    ).getContext("2d"),
-    {
-        type: "line",
-
-        data: {
-            labels: maintenanceLabels,
-
-            datasets: [
-                {
-                    label: "Mantenimientos realizados",
-                    data: maintenanceValues,
-                    fill: false,
-                    borderWidth: 3,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    lineTension: 0.3
-                }
-            ]
-        },
-
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-
-            legend: {
-                display: false
-            },
-
-            tooltips: {
-                callbacks: {
-                    label: function (tooltipItem) {
-                        return "Mantenimientos: " +
-                            tooltipItem.yLabel;
-                    }
-                }
-            },
-
-            scales: {
-                yAxes: [
+                new Chart(
+                    document.getElementById(
+                        "maintenanceByMonthChart"
+                    ).getContext("2d"),
                     {
-                        ticks: {
-                            beginAtZero: true,
-                            precision: 0,
-                            stepSize: 1
+                        type: "line",
+
+                        data: {
+                            labels: maintenanceLabels,
+
+                            datasets: [
+                                {
+                                    label: "Mantenimientos realizados",
+                                    data: maintenanceValues,
+                                    fill: false,
+                                    borderWidth: 3,
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7,
+                                    lineTension: 0.3
+                                }
+                            ]
                         },
 
-                        scaleLabel: {
-                            display: true,
-                            labelString:
-                                "Cantidad de mantenimientos"
-                        }
-                    }
-                ],
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
 
-                xAxes: [
-                    {
-                        gridLines: {
-                            display: false
+                            legend: {
+                                display: false
+                            },
+
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem) {
+                                        return "Mantenimientos: " +
+                                            tooltipItem.yLabel;
+                                    }
+                                }
+                            },
+
+                            scales: {
+                                yAxes: [
+                                    {
+                                        ticks: {
+                                            beginAtZero: true,
+                                            precision: 0,
+                                            stepSize: 1
+                                        },
+
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString:
+                                                "Cantidad de mantenimientos"
+                                        }
+                                    }
+                                ],
+
+                                xAxes: [
+                                    {
+                                        gridLines: {
+                                            display: false
+                                        }
+                                    }
+                                ]
+                            }
                         }
                     }
-                ]
-            }
-        }
-    }
-);
+                );
 
                 const spareLabels =
                     spareData.map(function (item) {
@@ -609,6 +618,80 @@ new Chart(
                         }
                     }
                 );
+
+                const evaluationChart =
+                new Chart(
+                    document.getElementById("evaluationChart"),
+                    {
+                        type: "bar",
+
+                        data:
+                        {
+                            labels:
+                            [
+                                "Verde",
+                                "Amarillo",
+                                "Rojo"
+                            ],
+
+                            datasets:
+                            [
+                                {
+                                    label: "Cantidad de moldes",
+
+                                    data:
+                                    [
+                                        @Model.Dashboard.GreenMolds,
+                                        @Model.Dashboard.YellowMolds,
+                                        @Model.Dashboard.RedMolds
+                                    ],
+
+                                    backgroundColor:
+                                    [
+                                        "#28a745",
+                                        "#ffc107",
+                                        "#dc3545"
+                                    ],
+
+                                    borderColor:
+                                    [
+                                        "#28a745",
+                                        "#ffc107",
+                                        "#dc3545"
+                                    ],
+
+                                    borderWidth:1
+                                }
+                            ]
+                        },
+
+                        options:
+                        {
+                            responsive:true,
+
+                            maintainAspectRatio:false,
+
+                            legend:
+                            {
+                                display:false
+                            },
+
+                            scales:
+                            {
+                                yAxes:
+                                [
+                                    {
+                                        ticks:
+                                        {
+                                            beginAtZero:true,
+                                            precision:0,
+                                            stepSize:1
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    });
             }
         );
     </script>

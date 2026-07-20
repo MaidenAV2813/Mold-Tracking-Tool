@@ -4,14 +4,14 @@ namespace CAPA_ENTITY
     public class DashboardEntity
     {
         public int ActiveMolds { get; set; }
-
         public int PendingEvaluationsCurrentMonth { get; set; }
-
         public int TotalSparesInventory { get; set; }
-
+        public int GreenMolds { get; set; }
+        public int YellowMolds { get; set; }
+        public int RedMolds { get; set; }
         public string MaintenanceByMonthJson { get; set; } = "[]";
-
         public string TopAssignedSparesJson { get; set; } = "[]";
+        
 
         public List<DashboardMaintenanceMonthEntity>
             MaintenanceByMonth

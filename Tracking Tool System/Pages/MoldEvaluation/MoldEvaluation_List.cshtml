@@ -74,67 +74,54 @@
 
                         </thead>
 
-                        <tbody id="evaluationTableBody">
-
-                            @foreach (var evaluation in Model.GridList)
+                        <tbody>
+                            @foreach (var item in Model.GridList)
                             {
-                                <tr class="selectable-row"
-                                    data-id="@evaluation.EvaluationID"
+                                <tr class="evaluation-row"
+                                    data-evaluation-id="@item.EvaluationID"
                                     style="cursor:pointer;">
 
-                                    <td>@evaluation.MoldNumber</td>
+                                    <td>@item.MoldNumber</td>
 
                                     <td class="text-center">
-
-                                        @if (@evaluation.GeneralScore.HasValue)
+                                        @if (item.GeneralScore.HasValue)
                                         {
-                                            if (@evaluation.GeneralScore >= 90)
+                                            if (item.GeneralScore >= 90)
                                             {
                                                 <span class="badge badge-success">
-                                                    @($"{@evaluation.GeneralScore:N2}%")
+                                                    @($"{item.GeneralScore:N2}%")
                                                 </span>
                                             }
-                                            else if (@evaluation.GeneralScore >= 80)
-                                            {
-                                                <span class="badge badge-info">
-                                                    @($"{@evaluation.GeneralScore:N2}%")
-                                                </span>
-                                            }
-                                            else if (@evaluation.GeneralScore >= 70)
+                                            else if (item.GeneralScore >= 70)
                                             {
                                                 <span class="badge badge-warning">
-                                                    @($"{@evaluation.GeneralScore:N2}%")
+                                                    @($"{item.GeneralScore:N2}%")
                                                 </span>
                                             }
                                             else
                                             {
                                                 <span class="badge badge-danger">
-                                                    @($"{@evaluation.GeneralScore:N2}%")
+                                                    @($"{item.GeneralScore:N2}%")
                                                 </span>
                                             }
                                         }
                                         else
                                         {
-                                            <span class="badge badge-secondary">
-                                                N/A
-                                            </span>
+                                            <span class="badge badge-secondary">N/A</span>
                                         }
-
                                     </td>
 
-                                    <td>
-                                        @evaluation.DateEvaluation?.ToString("MM-dd-yyyy")
+                                    <td class="text-center">
+                                        @item.DateEvaluation?.ToString("MM-dd-yyyy")
                                     </td>
 
-                                    <td>
-                                        @evaluation.NextEvaluationDate?.ToString("MM-dd-yyyy")
+                                    <td class="text-center">
+                                        @item.NextEvaluationDate?.ToString("MM-dd-yyyy")
                                     </td>
 
-                                    <td>@evaluation.CreatedBy</td>
-
+                                    <td>@item.CreatedBy</td>
                                 </tr>
                             }
-
                         </tbody>
 
                     </table>
@@ -187,5 +174,28 @@
 
         });
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
 
+            const rows =
+                document.querySelectorAll(".evaluation-row");
+
+            rows.forEach(function (row) {
+
+                row.addEventListener("click", function () {
+
+                    const evaluationId =
+                        row.dataset.evaluationId;
+
+                    if (!evaluationId) {
+                        return;
+                    }
+
+                    window.location.href =
+                        "/MoldEvaluation/MoldEvaluation_Detail?id=" +
+                        evaluationId;
+                });
+            });
+        });
+    </script>
 }
