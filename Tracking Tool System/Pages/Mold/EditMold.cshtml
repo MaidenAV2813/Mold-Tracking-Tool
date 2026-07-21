@@ -162,7 +162,100 @@
                         <label>Conteo Inicial</label>
                         <input asp-for="InitialCount" class="form-control" />
                     </div>
+                    <div class="form-group mt-4">
+                        <label>
+                            ¿Cuenta con al menos 25% de los repuestos críticos disponibles?
+                        </label>
 
+                        <select asp-for="Percentage_Spares_available"
+                                class="form-control">
+                            <option value="">Seleccione una opción</option>
+                            <option value="Si">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="row mt-4">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>
+                                    ¿Se le ha realizado una reparación mayor en los últimos 12 meses?
+                                </label>
+
+                                <select asp-for="Last_Reparir_12_Months"
+                                        class="form-control"
+                                        id="Last_Reparir_12_Months">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="Si">Sí</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8"
+                             id="LastRepairCommentDiv"
+                             style="display:none;">
+
+                            <div class="form-group">
+                                <label>Comentario de la reparación</label>
+
+                                <textarea asp-for="Comment_Last_Reparir_12_Months"
+                                          class="form-control"
+                                          id="Comment_Last_Reparir_12_Months"
+                                          rows="2"
+                                          maxlength="500"
+                                          placeholder="Describa la reparación realizada..."></textarea>
+
+                                <small class="text-muted">
+                                    Máximo 500 caracteres
+                                </small>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-4">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>
+                                    ¿Tuvo rechazo por parte de Calidad?
+                                </label>
+
+                                <select asp-for="Quality_Issue"
+                                        class="form-control"
+                                        id="Quality_Issue">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="Si">Sí</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8"
+                             id="QualityIssueCommentDiv"
+                             style="display:none;">
+
+                            <div class="form-group">
+                                <label>Comentario del rechazo</label>
+
+                                <textarea asp-for="Comment_Quality_Issue"
+                                          class="form-control"
+                                          id="Comment_Quality_Issue"
+                                          rows="2"
+                                          maxlength="500"
+                                          placeholder="Describa el mayor rechazo reportado por Calidad..."></textarea>
+
+                                <small class="text-muted">
+                                    Máximo 500 caracteres
+                                </small>
+                            </div>
+
+                        </div>
+
+                    </div>
                     <br />
                 </div>
 
@@ -180,27 +273,143 @@
 
 @section Scripts {
     <script>
-        function validateCounterType() {
-            let haveCounter = document.getElementById("HaveCounter");
-            let counterType = document.getElementById("CounterType");
+        document.addEventListener("DOMContentLoaded", function () {
 
-            if (haveCounter.value === "No") {
-                counterType.value = "N/A";
-                counterType.style.backgroundColor = "#e9ecef";
-                counterType.style.pointerEvents = "none";
-            } else {
-                counterType.style.backgroundColor = "";
-                counterType.style.pointerEvents = "";
+            const haveCounter =
+                document.getElementById("HaveCounter");
 
-                if (counterType.value === "N/A") {
-                    counterType.value = "";
+            const counterType =
+                document.getElementById("CounterType");
+
+            const lastRepairSelect =
+                document.getElementById("Last_Reparir_12_Months");
+
+            const lastRepairCommentDiv =
+                document.getElementById("LastRepairCommentDiv");
+
+            const lastRepairComment =
+                document.getElementById(
+                    "Comment_Last_Reparir_12_Months"
+                );
+
+            const qualityIssueSelect =
+                document.getElementById("Quality_Issue");
+
+            const qualityIssueCommentDiv =
+                document.getElementById(
+                    "QualityIssueCommentDiv"
+                );
+
+            const qualityIssueComment =
+                document.getElementById(
+                    "Comment_Quality_Issue"
+                );
+
+
+            function validateCounterType() {
+
+                if (!haveCounter || !counterType) {
+                    return;
+                }
+
+                if (haveCounter.value === "No") {
+
+                    counterType.value = "N/A";
+                    counterType.style.backgroundColor = "#e9ecef";
+                    counterType.style.pointerEvents = "none";
+
+                } else {
+
+                    counterType.style.backgroundColor = "";
+                    counterType.style.pointerEvents = "";
+
+                    if (counterType.value === "N/A") {
+                        counterType.value = "";
+                    }
                 }
             }
-        }
 
-        document.getElementById("HaveCounter")
-            .addEventListener("change", validateCounterType);
 
-        window.onload = validateCounterType;
+            function toggleLastRepair(clearComment) {
+
+                if (!lastRepairSelect ||
+                    !lastRepairCommentDiv) {
+                    return;
+                }
+
+                if (lastRepairSelect.value === "Si") {
+
+                    lastRepairCommentDiv.style.display = "block";
+
+                } else {
+
+                    lastRepairCommentDiv.style.display = "none";
+
+                    if (clearComment && lastRepairComment) {
+                        lastRepairComment.value = "";
+                    }
+                }
+            }
+
+
+            function toggleQualityIssue(clearComment) {
+
+                if (!qualityIssueSelect ||
+                    !qualityIssueCommentDiv) {
+                    return;
+                }
+
+                if (qualityIssueSelect.value === "Si") {
+
+                    qualityIssueCommentDiv.style.display = "block";
+
+                } else {
+
+                    qualityIssueCommentDiv.style.display = "none";
+
+                    if (clearComment && qualityIssueComment) {
+                        qualityIssueComment.value = "";
+                    }
+                }
+            }
+
+
+            if (haveCounter) {
+
+                haveCounter.addEventListener(
+                    "change",
+                    validateCounterType
+                );
+            }
+
+            if (lastRepairSelect) {
+
+                lastRepairSelect.addEventListener(
+                    "change",
+                    function () {
+                        toggleLastRepair(true);
+                    }
+                );
+            }
+
+            if (qualityIssueSelect) {
+
+                qualityIssueSelect.addEventListener(
+                    "change",
+                    function () {
+                        toggleQualityIssue(true);
+                    }
+                );
+            }
+
+
+            // Cargar el estado inicial del Edit.
+            validateCounterType();
+
+            // false evita borrar comentarios guardados.
+            toggleLastRepair(false);
+            toggleQualityIssue(false);
+
+        });
     </script>
 }

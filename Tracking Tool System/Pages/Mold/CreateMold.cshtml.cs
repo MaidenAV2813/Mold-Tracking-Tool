@@ -65,6 +65,22 @@ namespace Tracking_Tool_System.Pages.Mold
 
         [BindProperty]
         public string? ThreeLayer { get; set; }
+
+        [BindProperty]
+        public string? Percentage_Spares_available { get; set; }
+
+        [BindProperty]
+        public string? Last_Reparir_12_Months { get; set; }
+
+        [BindProperty]
+        public string? Comment_Last_Reparir_12_Months { get; set; }
+
+        [BindProperty]
+        public string? Quality_Issue { get; set; }
+
+        [BindProperty]
+        public string? Comment_Quality_Issue { get; set; }
+
         [BindProperty]
         public DateTime DateCreation { get; set; }
 
@@ -145,6 +161,11 @@ namespace Tracking_Tool_System.Pages.Mold
                     CounterType = CounterType,
                     ThreeLayer = ThreeLayer,
                     InitialCount = InitialCount,
+                    Percentage_Spares_available = Percentage_Spares_available,
+                    Last_Reparir_12_Months = Last_Reparir_12_Months,
+                    Comment_Last_Reparir_12_Months = Comment_Last_Reparir_12_Months,
+                    Quality_Issue = Quality_Issue,
+                    Comment_Quality_Issue = Comment_Quality_Issue,
                     DateCreation = DateTime.Now,
                     DateModification = DateTime.Now,
                     CreatedBy = user,

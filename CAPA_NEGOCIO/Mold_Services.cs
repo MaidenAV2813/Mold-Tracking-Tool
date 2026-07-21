@@ -84,6 +84,11 @@ namespace CAPA_NEGOCIO
                 entity.CounterType,
                 entity.ThreeLayer,
                 entity.InitialCount,
+                entity.Percentage_Spares_available,
+                entity.Last_Reparir_12_Months,
+                entity.Comment_Last_Reparir_12_Months,
+                entity.Quality_Issue,
+                entity.Comment_Quality_Issue,
                 entity.DateCreation,
                 entity.DateModification,
                 entity.CreatedBy,
@@ -123,6 +128,11 @@ namespace CAPA_NEGOCIO
                     entity.CounterType,
                     entity.ThreeLayer,
                     entity.InitialCount,
+                    entity.Percentage_Spares_available,
+                    entity.Last_Reparir_12_Months,
+                    entity.Comment_Last_Reparir_12_Months,
+                    entity.Quality_Issue,
+                    entity.Comment_Quality_Issue,
                     entity.DateModification,
                     entity.ModifiedBy
                 });

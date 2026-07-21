@@ -24,6 +24,11 @@ namespace CAPA_ENTITY
         public string? CounterType { get; set; }
         public string? ThreeLayer { get; set; }
         public int? InitialCount { get; set; }
+        public string? Percentage_Spares_available { get; set; }
+        public string? Last_Reparir_12_Months { get; set; }
+        public string? Comment_Last_Reparir_12_Months { get; set; }
+        public string? Quality_Issue { get; set; }
+        public string? Comment_Quality_Issue { get; set; }
 
         public string? CastingType { get; set; }
 

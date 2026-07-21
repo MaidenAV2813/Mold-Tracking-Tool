@@ -93,6 +93,21 @@ namespace Tracking_Tool_System.Pages.Mold
         [BindProperty]
         public int? InitialCount { get; set; }
 
+        [BindProperty]
+        public string? Percentage_Spares_available { get; set; }
+
+        [BindProperty]
+        public string? Last_Reparir_12_Months { get; set; }
+
+        [BindProperty]
+        public string? Comment_Last_Reparir_12_Months { get; set; }
+
+        [BindProperty]
+        public string? Quality_Issue { get; set; }
+
+        [BindProperty]
+        public string? Comment_Quality_Issue { get; set; }
+
         public async Task<IActionResult> OnGet(int id)
         {
 
@@ -119,34 +134,44 @@ namespace Tracking_Tool_System.Pages.Mold
             MoldStatus = mold.MoldStatus;
             MoldOrigin = mold.MoldOrigin;
             DigitalPlane = mold.DigitalPlane;
-
             CriticallyID = mold.CriticallyID;
             GateID = mold.GateID;
             CastingID = mold.CastingID;
             ActuatorID = mold.ActuatorID;
             CategorizationID = mold.CategorizationID;
-
             CavityQty = mold.CavityQty;
             BlockCavityQty = mold.BlockCavityQty;
             HaveCounter = mold.HaveCounter;
             CounterType = mold.CounterType;
             ThreeLayer = mold.ThreeLayer;
             InitialCount = mold.InitialCount;
+            Percentage_Spares_available = mold.Percentage_Spares_available;
+            Last_Reparir_12_Months = mold.Last_Reparir_12_Months;
+            Comment_Last_Reparir_12_Months = mold.Comment_Last_Reparir_12_Months;
+            Quality_Issue = mold.Quality_Issue;
+            Comment_Quality_Issue = mold.Comment_Quality_Issue;
 
             return Page();
         }
 
         public async Task<IActionResult> OnPost()
         {
-            
             var user = User.Identity?.Name ?? "System";
             var now = DateTime.Now;
-
-            var moldList = await _apiService.GetAsync<MoldEntity>("mold");
 
             if (HaveCounter == "No")
             {
                 CounterType = "N/A";
+            }
+
+            if (Last_Reparir_12_Months != "Si")
+            {
+                Comment_Last_Reparir_12_Months = null;
+            }
+
+            if (Quality_Issue != "Si")
+            {
+                Comment_Quality_Issue = null;
             }
 
             var entity = new MoldEntity
@@ -155,20 +180,38 @@ namespace Tracking_Tool_System.Pages.Mold
                 CriticallyID = CriticallyID,
                 GateID = GateID,
                 CastingID = CastingID,
-                ActuatorID  = ActuatorID,
+                ActuatorID = ActuatorID,
                 CategorizationID = CategorizationID,
+
                 MoldAssetNumber = MoldAssetNumber,
                 MoldNumber = MoldNumber,
                 MoldDescription = MoldDescription,
                 MoldStatus = MoldStatus,
                 MoldOrigin = MoldOrigin,
                 DigitalPlane = DigitalPlane,
+
                 CavityQty = CavityQty,
                 BlockCavityQty = BlockCavityQty,
                 HaveCounter = HaveCounter,
                 CounterType = CounterType,
                 ThreeLayer = ThreeLayer,
                 InitialCount = InitialCount,
+
+                Percentage_Spares_available =
+                    Percentage_Spares_available,
+
+                Last_Reparir_12_Months =
+                    Last_Reparir_12_Months,
+
+                Comment_Last_Reparir_12_Months =
+                    Comment_Last_Reparir_12_Months,
+
+                Quality_Issue =
+                    Quality_Issue,
+
+                Comment_Quality_Issue =
+                    Comment_Quality_Issue,
+
                 ModifiedBy = user,
                 DateModification = now
             };
@@ -177,10 +220,33 @@ namespace Tracking_Tool_System.Pages.Mold
 
             if (!response.IsSuccessStatusCode)
             {
+                // Debes volver a cargar estas listas porque el formulario las necesita.
+                Critically =
+                    await _apiService.GetAsync<CriticallyMoldEntity>("critically");
 
-                Molds = await _apiService.GetAsync<MoldEntity>("mold");
+                Gate =
+                    await _apiService.GetAsync<GateTypeEntity>("gates");
+
+                Casting =
+                    await _apiService.GetAsync<CastingMoldEntity>("casting");
+
+                Actuator =
+                    await _apiService.GetAsync<ActuatorTypeEntity>("actuator");
+
+                Categorization =
+                    await _apiService.GetAsync<CategorizationMoldEntity>(
+                        "categorization"
+                    );
+
                 var error = await response.Content.ReadAsStringAsync();
-                ModelState.AddModelError(string.Empty, error);
+
+                ModelState.AddModelError(
+                    string.Empty,
+                    string.IsNullOrWhiteSpace(error)
+                        ? "No fue posible actualizar el molde."
+                        : error
+                );
+
                 return Page();
             }
 

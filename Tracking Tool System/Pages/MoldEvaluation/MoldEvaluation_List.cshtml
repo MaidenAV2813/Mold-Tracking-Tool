@@ -58,73 +58,81 @@
 
                 </div>
 
-                <div class="table-responsive">
+                <div class="table-scroll-container">
 
-                    <table class="table table-bordered table-striped table-sm">
+                    <div class="horizontal-scroll">
+                        <div class="horizontal-scroll-content"></div>
+                    </div>
 
-                        <thead class="bg-primary text-white">
+                    <div class="table-responsive table-scroll">
 
-                            <tr>
-                                <th class="text-center" style="width:180px;">Numero de Molde</th>
-                                <th class="text-center" >Porcentaje de la evaluación general</th>
-                                <th class="text-center" >Fecha de evaluación</th>
-                                <th class="text-center" >Próxima evaluación</th>
-                                <th class ="text-center" >Creado por</th>
-                            </tr>
+                        <table class="table table-bordered table-striped table-sm2 text-nowrap">
 
-                        </thead>
+                            <thead class="bg-primary text-white">
 
-                        <tbody>
-                            @foreach (var item in Model.GridList)
-                            {
-                                <tr class="evaluation-row"
-                                    data-evaluation-id="@item.EvaluationID"
-                                    style="cursor:pointer;">
+                                <tr>
+                                    <th class="text-center" style="width:180px;">Numero de Molde</th>
+                                    <th class="text-center" >Porcentaje de la evaluación general</th>
+                                    <th class="text-center" >Fecha de evaluación</th>
+                                    <th class="text-center" >Próxima evaluación</th>
+                                    <th class ="text-center" >Creado por</th>
+                                </tr>
 
-                                    <td>@item.MoldNumber</td>
+                            </thead>
 
-                                    <td class="text-center">
-                                        @if (item.GeneralScore.HasValue)
-                                        {
-                                            if (item.GeneralScore >= 90)
+                            <tbody>
+                                @foreach (var item in Model.GridList)
+                                {
+                                    <tr class="evaluation-row"
+                                        data-evaluation-id="@item.EvaluationID"
+                                        style="cursor:pointer;">
+
+                                        <td>@item.MoldNumber</td>
+
+                                        <td class="text-center">
+                                            @if (item.GeneralScore.HasValue)
                                             {
-                                                <span class="badge badge-success">
-                                                    @($"{item.GeneralScore:N2}%")
-                                                </span>
-                                            }
-                                            else if (item.GeneralScore >= 70)
-                                            {
-                                                <span class="badge badge-warning">
-                                                    @($"{item.GeneralScore:N2}%")
-                                                </span>
+                                                if (item.GeneralScore >= 90)
+                                                {
+                                                    <span class="badge badge-success">
+                                                        @($"{item.GeneralScore:N2}%")
+                                                    </span>
+                                                }
+                                                else if (item.GeneralScore >= 70)
+                                                {
+                                                    <span class="badge badge-warning">
+                                                        @($"{item.GeneralScore:N2}%")
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-danger">
+                                                        @($"{item.GeneralScore:N2}%")
+                                                    </span>
+                                                }
                                             }
                                             else
                                             {
-                                                <span class="badge badge-danger">
-                                                    @($"{item.GeneralScore:N2}%")
-                                                </span>
+                                                <span class="badge badge-secondary">N/A</span>
                                             }
-                                        }
-                                        else
-                                        {
-                                            <span class="badge badge-secondary">N/A</span>
-                                        }
-                                    </td>
+                                        </td>
 
-                                    <td class="text-center">
-                                        @item.DateEvaluation?.ToString("MM-dd-yyyy")
-                                    </td>
+                                        <td class="text-center">
+                                            @item.DateEvaluation?.ToString("MM-dd-yyyy")
+                                        </td>
 
-                                    <td class="text-center">
-                                        @item.NextEvaluationDate?.ToString("MM-dd-yyyy")
-                                    </td>
+                                        <td class="text-center">
+                                            @item.NextEvaluationDate?.ToString("MM-dd-yyyy")
+                                        </td>
 
-                                    <td>@item.CreatedBy</td>
-                                </tr>
-                            }
-                        </tbody>
+                                        <td>@item.CreatedBy</td>
+                                    </tr>
+                                }
+                            </tbody>
 
-                    </table>
+                        </table>
+
+                    </div>
 
                 </div>
 

@@ -218,6 +218,109 @@
                              </select>
                         </div>
 
+
+                        <div class="row mt-4">
+
+                            <div class="col-md-12">
+
+                                <label>
+                                    ¿Cuenta con al menos 25% de los repuestos críticos disponibles?
+                                </label>
+
+                                <select asp-for="Percentage_Spares_available"
+                                        class="form-control">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="Si">Sí</option>
+                                    <option value="No">No</option>
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row mt-4 align-items-start">
+
+                            <div class="col-md-5">
+
+                                <label>
+                                    ¿Se le ha realizado una reparación mayor en los últimos 12 meses?
+                                </label>
+
+                                <select asp-for="Last_Reparir_12_Months"
+                                        class="form-control"
+                                        id="Last_Reparir_12_Months">
+
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="Si">Sí</option>
+                                    <option value="No">No</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-7"
+                                 id="LastRepairCommentDiv"
+                                 style="display:none;">
+
+                                <label>Comentario</label>
+
+                                <textarea asp-for="Comment_Last_Reparir_12_Months"
+                                          class="form-control"
+                                          rows="2"
+                                          maxlength="500"
+                                          placeholder="Describa la reparación realizada...">
+                                </textarea>
+
+                                <small class="text-muted">
+                                    Máximo 500 caracteres
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row mt-4 align-items-start">
+
+                            <div class="col-md-5">
+
+                                <label>
+                                    ¿Tuvo y cuál ha sido el mayor rechazo por parte de Calidad de este producto?
+                                </label>
+
+                                <select asp-for="Quality_Issue"
+                                        class="form-control"
+                                        id="Quality_Issue">
+
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="Si">Sí</option>
+                                    <option value="No">No</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-7"
+                                 id="QualityIssueCommentDiv"
+                                 style="display:none;">
+
+                                <label>Comentario</label>
+
+                                <textarea asp-for="Comment_Quality_Issue"
+                                          class="form-control"
+                                          rows="2"
+                                          maxlength="500"
+                                          placeholder="Describa el mayor rechazo reportado...">
+                                </textarea>
+
+                                <small class="text-muted">
+                                    Máximo 500 caracteres
+                                </small>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>
@@ -261,5 +364,74 @@
 
         window.onload = validateCounterType;
 
+    </script>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            function toggleLastRepair() {
+
+                const value =
+                    document.getElementById("Last_Reparir_12_Months").value;
+
+                const div =
+                    document.getElementById("LastRepairCommentDiv");
+
+                const txt =
+                    document.getElementById("Comment_Last_Reparir_12_Months");
+
+                if (value === "Si") {
+
+                    div.style.display = "block";
+
+                }
+                else {
+
+                    div.style.display = "none";
+
+                    if (txt)
+                        txt.value = "";
+                }
+            }
+
+
+            function toggleQualityIssue() {
+
+                const value =
+                    document.getElementById("Quality_Issue").value;
+
+                const div =
+                    document.getElementById("QualityIssueCommentDiv");
+
+                const txt =
+                    document.getElementById("Comment_Quality_Issue");
+
+                if (value === "Si") {
+
+                    div.style.display = "block";
+
+                }
+                else {
+
+                    div.style.display = "none";
+
+                    if (txt)
+                        txt.value = "";
+                }
+            }
+
+
+            document.getElementById("Last_Reparir_12_Months")
+                .addEventListener("change", toggleLastRepair);
+
+            document.getElementById("Quality_Issue")
+                .addEventListener("change", toggleQualityIssue);
+
+
+            toggleLastRepair();
+            toggleQualityIssue();
+
+        });
     </script>
 }
