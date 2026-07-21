@@ -165,7 +165,7 @@
                 {
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-boxes"></i>
+                            <i class="nav-icon fas fa-clipboard-list"></i>
                             <p>
                                 Evaluacion del molde
                                 <i class="fas fa-angle-left right"></i>
@@ -314,6 +314,18 @@
                                     @* <i class="fas fa-angle-left right"></i>*@
                                 </p>
                         </a>
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Reporte de Moldes"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Reports/ReportMold" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Reporte de Moldes</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
                     </li>
                 }
 

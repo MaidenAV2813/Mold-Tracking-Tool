@@ -46,6 +46,7 @@ namespace Tracking_Tool_System.Pages.Access
             "BOM de Repuestos/Moldes",
             "ListNumbers",
             "Reportes e Indicadores",
+            "Reporte de Moldes",
             "Mantenimientos del sistema",
             "Roles",
             "Usuarios",

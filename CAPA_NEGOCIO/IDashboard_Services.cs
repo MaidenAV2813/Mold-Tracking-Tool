@@ -1,4 +1,5 @@
-﻿using CAPA_ENTITY;
+﻿using System.Threading.Tasks;
+using CAPA_ENTITY;
 
 namespace CAPA_NEGOCIO
 {

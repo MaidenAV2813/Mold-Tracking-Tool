@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Json;
+using CAPA_ENTITY;
 
 namespace Tracking_Tool_System.Services
 {
@@ -49,6 +50,34 @@ namespace Tracking_Tool_System.Services
         public async Task<HttpResponseMessage> DeleteAsync(string endpoint)
         {
             return await _httpClient.DeleteAsync(endpoint);
+        }
+
+        public async Task<List<ReportMoldEntity>> GetReportMolds(
+        int? moldID = null,
+        string? moldStatus = null)
+        {
+            string url = "ReportMold";
+
+            List<string> parameters = new();
+
+            if (moldID.HasValue)
+            {
+                parameters.Add($"moldID={moldID.Value}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(moldStatus))
+            {
+                parameters.Add(
+                    $"moldStatus={Uri.EscapeDataString(moldStatus.Trim())}"
+                );
+            }
+
+            if (parameters.Any())
+            {
+                url += "?" + string.Join("&", parameters);
+            }
+
+            return await GetAsync<ReportMoldEntity>(url);
         }
 
     }

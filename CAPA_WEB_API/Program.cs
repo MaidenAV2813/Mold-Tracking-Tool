@@ -27,6 +27,7 @@ builder.Services.AddScoped<IMoldEvaluationPart_Services,MoldEvaluationPart_Servi
 builder.Services.AddScoped<IMoldEvaluation_Services,MoldEvaluation_Services>();
 builder.Services.AddScoped<IDashboard_Services, Dashboard_Services>();
 builder.Services.AddScoped<ICategorization_Services, Categorization_Services>();
+builder.Services.AddScoped<IReportMold_Services, ReportMold_Services>();
 
 
 // Controllers
