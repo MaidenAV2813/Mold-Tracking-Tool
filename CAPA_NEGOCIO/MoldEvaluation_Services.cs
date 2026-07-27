@@ -68,5 +68,49 @@ namespace CAPA_NEGOCIO
                     EvaluationID = evaluationID
                 });
         }
+
+        public async Task<IEnumerable<MoldEvaluationEntity>> GetReport(
+    int? moldID,
+    DateTime? startDate,
+    DateTime? endDate)
+        {
+            return await sql.QueryAsync<MoldEvaluationEntity>(
+                "sp_ReportMoldEvaluation",
+                new
+                {
+                    MoldID = moldID,
+                    StartDate = startDate,
+                    EndDate = endDate
+                });
+        }
+
+        public async Task<MoldEvaluationEntity> GetReportDetail(
+            int evaluationID)
+        {
+            var evaluation =
+                await sql.QueryFirstAsync<MoldEvaluationEntity>(
+                    "sp_ReportMoldEvaluationDetail",
+                    new
+                    {
+                        EvaluationID = evaluationID
+                    });
+
+            if (evaluation != null)
+            {
+                var parts =
+                    await sql.QueryAsync<MoldPartEvaluationEntity>(
+                        "sp_MoldPartEvaluation_GetByEvaluationID",
+                        new
+                        {
+                            EvaluationID = evaluationID
+                        });
+
+                evaluation.EvaluationParts =
+                    parts?.ToList()
+                    ?? new List<MoldPartEvaluationEntity>();
+            }
+
+            return evaluation;
+        }
     }
 }

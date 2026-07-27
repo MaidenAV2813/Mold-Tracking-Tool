@@ -11,7 +11,7 @@ namespace Tracking_Tool_System.Pages
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            HttpContext.Session.Clear();
+            //HttpContext.Session.Clear();
 
             return RedirectToPage("/Login");
         }

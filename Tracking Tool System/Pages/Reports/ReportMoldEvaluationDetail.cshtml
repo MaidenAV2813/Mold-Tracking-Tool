@@ -1,0 +1,409 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Reports.ReportMoldEvaluationDetailModel
+
+@{
+    ViewData["Title"] = "Detalle de Evaluación";
+}
+
+<div class="container-fluid">
+
+    <div class="card card-primary">
+
+        <div class="card-header">
+
+            <h3 class="card-title">
+                <i class="fas fa-clipboard-check mr-2"></i>
+                Detalle de Evaluación del Molde
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger">
+
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+
+                    @Model.ErrorMessage
+
+                </div>
+
+                <a asp-page="/Reports/ReportMoldEvaluation"
+                   class="btn btn-secondary">
+
+                    <i class="fas fa-arrow-left mr-1"></i>
+                    Regresar
+
+                </a>
+            }
+            else if (Model.Evaluation != null)
+            {
+                <div id="evaluationDetail">
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label>Número de molde</label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       value="@Model.Evaluation.MoldNumber"
+                                       readonly />
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-8">
+
+                            <div class="form-group">
+
+                                <label>Descripción del molde</label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       value="@Model.Evaluation.MoldDescription"
+                                       readonly />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Fecha de evaluación
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       value="@(Model.Evaluation.DateEvaluation?.ToString("MM-dd-yyyy"))"
+                                       readonly />
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Próxima evaluación
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       value="@(Model.Evaluation.NextEvaluationDate?.ToString("MM-dd-yyyy"))"
+                                       readonly />
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label>Calificación General</label>
+
+                                <br />
+
+                                @if (Model.Evaluation.GeneralScore.HasValue)
+                                {
+                                    if (Model.Evaluation.GeneralScore.Value >= 90)
+                                    {
+                                        <span class="badge badge-success score-badge">
+
+                                            @($"{Model.Evaluation.GeneralScore.Value:N2}%")
+
+                                        </span>
+                                    }
+                                    else if (Model.Evaluation.GeneralScore.Value >= 70)
+                                    {
+                                        <span class="badge badge-warning score-badge">
+
+                                            @($"{Model.Evaluation.GeneralScore.Value:N2}%")
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger score-badge">
+
+                                            @($"{Model.Evaluation.GeneralScore.Value:N2}%")
+
+                                        </span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary score-badge">
+                                        Sin calificación
+                                    </span>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <h5 class="mb-3">
+
+                        <i class="fas fa-tools mr-2"></i>
+                        Partes evaluadas
+
+                    </h5>
+
+                    @if (Model.Evaluation.EvaluationParts == null ||
+                         Model.Evaluation.EvaluationParts.Count == 0)
+                    {
+                        <div class="alert alert-warning">
+
+                            <i class="fas fa-info-circle mr-2"></i>
+
+                            La evaluación no contiene partes registradas.
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered
+                                table-striped
+                                table-hover"
+                                   id="evaluationPartsTable">
+
+                                <thead class="thead-dark">
+
+                                    <tr>
+                                        <th style="width: 80px;">
+                                            #
+                                        </th>
+
+                                        <th>
+                                            Parte
+                                        </th>
+
+                                        <th style="width: 160px;"
+                                            class="text-center">
+                                            Calificación
+                                        </th>
+
+                                        <th>
+                                            Observación
+                                        </th>
+
+                                        <th style="width: 150px;"
+                                            class="text-center">
+                                            Estado
+                                        </th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @{
+                                        int rowNumber = 1;
+                                    }
+
+                                    @foreach (
+                                        var part
+                                        in Model.Evaluation.EvaluationParts
+                                    )
+                                    {
+                                        string badgeClass;
+                                        string scoreStatus;
+
+                                        if (!part.Score.HasValue)
+                                        {
+                                            badgeClass =
+                                                "badge badge-secondary";
+
+                                            scoreStatus =
+                                                "No evaluado";
+                                        }
+                                        else if (part.Score.Value >= 90)
+                                        {
+                                            badgeClass =
+                                                "badge badge-success";
+
+                                            scoreStatus =
+                                                "Bueno";
+                                        }
+                                        else if (part.Score.Value >= 60)
+                                        {
+                                            badgeClass =
+                                                "badge badge-warning";
+
+                                            scoreStatus =
+                                                "Atención";
+                                        }
+                                        else
+                                        {
+                                            badgeClass =
+                                                "badge badge-danger";
+
+                                            scoreStatus =
+                                                "Crítico";
+                                        }
+
+                                        <tr>
+
+                                            <td class="text-center">
+                                                @rowNumber
+                                            </td>
+
+                                            <td>
+                                                @part.Parts
+                                            </td>
+
+                                            <td class="text-center">
+
+                                                @if (part.Score.HasValue)
+                                                {
+                                                    <strong>
+                                                        @part.Score.Value%
+                                                    </strong>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">
+                                                        Sin calificación
+                                                    </span>
+                                                }
+
+                                            </td>
+
+                                            <td>
+
+                                                @if (string.IsNullOrWhiteSpace(
+                                                    part.Observation))
+                                                {
+                                                    <span class="text-muted">
+                                                        Sin observaciones
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    @part.Observation
+                                                }
+
+                                            </td>
+
+                                            <td class="text-center">
+
+                                                <span class="@badgeClass"
+                                                      style="font-size: 90%;">
+
+                                                    @scoreStatus
+
+                                                </span>
+
+                                            </td>
+
+                                        </tr>
+
+                                        rowNumber++;
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    }
+
+                </div>
+
+                <div class="mt-4 d-print-none">
+
+                    <a asp-page="/Reports/ReportMoldEvaluation"
+                       class="btn btn-secondary">
+
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Regresar al reporte
+
+                    </a>
+
+                    <a asp-page="/Reports/ReportMoldEvaluationDetail"
+                       asp-page-handler="Export"
+                       asp-route-evaluationID="@Model.Evaluation.EvaluationID"
+                       class="btn btn-success ml-2">
+
+                        <i class="fas fa-file-excel mr-1"></i>
+                        Exportar detalle
+
+                    </a>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Styles
+{
+    <style>
+        @@media print {
+
+            .main-header,
+            .main-sidebar,
+            .main-footer,
+            .content-header,
+            .d-print-none {
+                display: none !important;
+            }
+
+            .content-wrapper {
+                margin-left: 0 !important;
+            }
+
+            .card {
+                border: none !important;
+                box-shadow: none !important;
+            }
+
+            .card-header {
+                background-color: white !important;
+                color: black !important;
+                border-bottom: 2px solid black !important;
+            }
+
+            .table {
+                width: 100% !important;
+                font-size: 11px;
+            }
+
+                .table th,
+                .table td {
+                    border: 1px solid black !important;
+                }
+
+            input.form-control {
+                border: none !important;
+                background-color: white !important;
+                padding-left: 0 !important;
+            }
+        }
+    </style>
+}

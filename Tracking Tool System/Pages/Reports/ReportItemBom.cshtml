@@ -1,0 +1,382 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Reports.ReportItemBomModel
+
+@{
+    ViewData["Title"] = "Reporte de Repuestos por Molde";
+}
+
+<div class="container-fluid">
+
+    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+
+            <i class="fas fa-exclamation-triangle mr-2"></i>
+
+            @Model.ErrorMessage
+
+        </div>
+    }
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h3 class="card-title">
+
+                <i class="fas fa-file-alt mr-2"></i>
+
+                Reporte de Repuestos por Molde
+
+            </h3>
+
+            <div class="card-tools d-flex align-items-center">
+
+                @if (Model.ReportList.Count > 0)
+                {
+                    <a asp-page="/Reports/ReportItemBom"
+                       asp-page-handler="Export"
+                       class="btn btn-success btn-sm mr-3">
+
+                        <i class="fas fa-file-excel mr-1"></i>
+
+                        Exportar Excel
+
+                    </a>
+                }
+
+                <a asp-page="/Index"
+                   class="btn btn-danger btn-sm mr-3">
+
+                    <i class="fas fa-times mr-1"></i>
+
+                    Cancelar
+
+                </a>
+
+                <span class="badge badge-primary">
+
+                    @Model.ReportList.Count registro(s)
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            @if (Model.ReportList.Count == 0)
+            {
+                <div class="alert alert-warning mb-0">
+
+                    <i class="fas fa-info-circle mr-2"></i>
+
+                    No se encontraron repuestos para mostrar.
+
+                </div>
+            }
+            else
+            {
+                <div id="topScrollbar"
+                     style="overflow-x: auto; overflow-y: hidden;">
+
+                    <div id="topScrollbarContent"
+                         style="height: 1px;">
+                    </div>
+
+                </div>
+
+                <div id="tableScrollbar"
+                     class="table-responsive">
+
+                    <table class="table table-bordered table-striped table-hover"
+                           id="reportItemBomTable"
+                           style="min-width: 2600px;">
+
+                        <thead class="thead-dark">
+
+                            <tr>
+
+                                <th style="min-width: 150px;">
+                                    Número de molde
+                                </th>
+
+                                <th style="min-width: 250px;">
+                                    Descripción del molde
+                                </th>
+
+                                <th style="min-width: 150px;">
+                                    Criticidad del molde
+                                </th>
+
+                                <th style="min-width: 150px;">
+                                    Número de parte
+                                </th>
+
+                                <th style="min-width: 300px;">
+                                    Descripción del repuesto
+                                </th>
+
+                                <th style="min-width: 160px;">
+                                    Categorización
+                                </th>
+
+                                <th style="min-width: 170px;">
+                                    Criticidad del repuesto
+                                </th>
+
+                                <th style="min-width: 150px;">
+                                    Índice de criticidad
+                                </th>
+
+                                <th style="min-width: 180px;">
+                                    Número de proveedor
+                                </th>
+
+                                <th style="min-width: 220px;">
+                                    Proveedor actual
+                                </th>
+
+                                <th style="min-width: 140px;">
+                                    Inventario total
+                                </th>
+
+                                <th style="min-width: 150px;">
+                                    Índice de rotación
+                                </th>
+
+                                <th style="min-width: 150px;">
+                                    Nivel de compra
+                                </th>
+
+                                <th style="min-width: 150px;">
+                                    Costo del repuesto
+                                </th>
+
+                                <th style="min-width: 150px;">
+                                    Inventario mínimo
+                                </th>
+
+                                <th style="min-width: 150px;">
+                                    Inventario máximo
+                                </th>
+
+                                <th style="min-width: 120px;">
+                                    25%
+                                </th>
+
+                                <th style="min-width: 120px;">
+                                    Plano
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model.ReportList)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @item.MoldNumber
+                                    </td>
+
+                                    <td>
+                                        @item.MoldDescription
+                                    </td>
+
+                                    <td>
+                                        @item.CriticallyType
+                                    </td>
+
+                                    <td>
+                                        @item.ItemNumber
+                                    </td>
+
+                                    <td>
+                                        @item.ItemDescription
+                                    </td>
+
+                                    <td>
+                                        @item.CategorizationType
+                                    </td>
+
+                                    <td class="text-center">
+                                        @item.ItemCritically
+                                    </td>
+
+                                    <td class="text-center">
+                                        @item.CriticalityIndex
+                                    </td>
+
+                                    <td>
+                                        @item.ItemSupplierNumber
+                                    </td>
+
+                                    <td>
+                                        @item.ActualSupplier
+                                    </td>
+
+                                    <td class="text-right">
+                                        @item.TotalQtyOnHand
+                                    </td>
+
+                                    <td class="text-right">
+                                        @item.IndexRotation
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        @if (
+                                            string.Equals(
+                                                item.PurchaseLevel,
+                                                "COMPRAR",
+                                                StringComparison.OrdinalIgnoreCase
+                                            )
+                                        )
+                                        {
+                                            <span class="badge badge-danger">
+
+                                                COMPRAR
+
+                                            </span>
+                                        }
+                                        else if (
+                                            string.Equals(
+                                                item.PurchaseLevel,
+                                                "NO COMPRAR",
+                                                StringComparison.OrdinalIgnoreCase
+                                            )
+                                        )
+                                        {
+                                            <span class="badge badge-success">
+
+                                                NO COMPRAR
+
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-secondary">
+
+                                                @item.PurchaseLevel
+
+                                            </span>
+                                        }
+
+                                    </td>
+
+                                    <td class="text-right">
+                                        @(item.ItemCost?.ToString("N2"))
+                                    </td>
+
+                                    <td class="text-right">
+                                        @item.ItemInvMin
+                                    </td>
+
+                                    <td class="text-right">
+                                        @item.ItemInvMax
+                                    </td>
+
+                                    <td class="text-right">
+                                        @item.Porcentage
+                                    </td>
+
+                                    <td class="text-right">
+                                        @item.Plano
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const topScrollbar =
+                    document.getElementById(
+                        "topScrollbar"
+                    );
+
+                const topScrollbarContent =
+                    document.getElementById(
+                        "topScrollbarContent"
+                    );
+
+                const tableScrollbar =
+                    document.getElementById(
+                        "tableScrollbar"
+                    );
+
+                const reportTable =
+                    document.getElementById(
+                        "reportItemBomTable"
+                    );
+
+                if (
+                    topScrollbar
+                    && topScrollbarContent
+                    && tableScrollbar
+                    && reportTable
+                ) {
+                    function updateTopScrollbarWidth() {
+
+                        topScrollbarContent.style.width =
+                            reportTable.scrollWidth + "px";
+                    }
+
+                    updateTopScrollbarWidth();
+
+                    topScrollbar.addEventListener(
+                        "scroll",
+                        function () {
+
+                            tableScrollbar.scrollLeft =
+                                topScrollbar.scrollLeft;
+                        }
+                    );
+
+                    tableScrollbar.addEventListener(
+                        "scroll",
+                        function () {
+
+                            topScrollbar.scrollLeft =
+                                tableScrollbar.scrollLeft;
+                        }
+                    );
+
+                    window.addEventListener(
+                        "resize",
+                        function () {
+
+                            updateTopScrollbarWidth();
+
+                        }
+                    );
+                }
+
+            }
+        );
+
+    </script>
+}

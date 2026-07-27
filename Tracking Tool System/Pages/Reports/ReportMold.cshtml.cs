@@ -139,137 +139,135 @@ namespace Tracking_Tool_System.Pages.Reports
                     workbook.Worksheets.Add("Reporte de Moldes");
 
                 // Encabezados
-                worksheet.Cell(1, 1).Value = "ID";
-                worksheet.Cell(1, 2).Value = "Número de molde";
-                worksheet.Cell(1, 3).Value = "Descripción";
-                worksheet.Cell(1, 4).Value = "Número de activo";
-                worksheet.Cell(1, 5).Value = "Estado";
-                worksheet.Cell(1, 6).Value = "Origen";
-                worksheet.Cell(1, 7).Value = "Plano digital";
-                worksheet.Cell(1, 8).Value = "Criticidad";
-                worksheet.Cell(1, 9).Value = "Gate";
-                worksheet.Cell(1, 10).Value = "Colada";
-                worksheet.Cell(1, 11).Value = "Actuador";
-                worksheet.Cell(1, 12).Value = "Categorización";
-                worksheet.Cell(1, 13).Value = "Cavidades";
-                worksheet.Cell(1, 14).Value = "Cavidades bloqueadas";
-                worksheet.Cell(1, 15).Value = "Tiene contador";
-                worksheet.Cell(1, 16).Value = "Tipo de contador";
-                worksheet.Cell(1, 17).Value = "Tres placas";
-                worksheet.Cell(1, 18).Value = "Conteo inicial";
-                worksheet.Cell(1, 19).Value = "Repuestos disponibles";
-                worksheet.Cell(1, 20).Value =
+
+                worksheet.Cell(1, 1).Value = "Número de molde";
+                worksheet.Cell(1, 2).Value = "Descripción";
+                worksheet.Cell(1, 3).Value = "Número de activo";
+                worksheet.Cell(1, 4).Value = "Estado";
+                worksheet.Cell(1, 5).Value = "Origen";
+                worksheet.Cell(1, 6).Value = "Plano digital";
+                worksheet.Cell(1, 7).Value = "Criticidad";
+                worksheet.Cell(1, 8).Value = "Gate";
+                worksheet.Cell(1, 9).Value = "Colada";
+                worksheet.Cell(1, 10).Value = "Actuador";
+                worksheet.Cell(1, 11).Value = "Categorización";
+                worksheet.Cell(1, 12).Value = "Cavidades";
+                worksheet.Cell(1, 13).Value = "Cavidades bloqueadas";
+                worksheet.Cell(1, 14).Value = "Tiene contador";
+                worksheet.Cell(1, 15).Value = "Tipo de contador";
+                worksheet.Cell(1, 16).Value = "Tres placas";
+                worksheet.Cell(1, 17).Value = "Conteo inicial";
+                worksheet.Cell(1, 18).Value = "Repuestos disponibles";
+                worksheet.Cell(1, 19).Value =
                     "Reparación últimos 12 meses";
-                worksheet.Cell(1, 21).Value =
+                worksheet.Cell(1, 20).Value =
                     "Comentario reparación";
-                worksheet.Cell(1, 22).Value =
+                worksheet.Cell(1, 21).Value =
                     "Rechazo de calidad";
-                worksheet.Cell(1, 23).Value =
+                worksheet.Cell(1, 22).Value =
                     "Comentario calidad";
-                worksheet.Cell(1, 24).Value = "Creado por";
-                worksheet.Cell(1, 25).Value = "Fecha creación";
-                worksheet.Cell(1, 26).Value = "Modificado por";
-                worksheet.Cell(1, 27).Value = "Fecha modificación";
+                worksheet.Cell(1, 23).Value = "Creado por";
+                worksheet.Cell(1, 24).Value = "Fecha creación";
+                worksheet.Cell(1, 25).Value = "Modificado por";
+                worksheet.Cell(1, 26).Value = "Fecha modificación";
 
                 int row = 2;
 
                 foreach (var item in reportList)
                 {
-                    worksheet.Cell(row, 1).Value =
-                        item.MoldID;
 
-                    worksheet.Cell(row, 2).Value =
+                    worksheet.Cell(row, 1).Value =
                         item.MoldNumber ?? "";
 
-                    worksheet.Cell(row, 3).Value =
+                    worksheet.Cell(row, 2).Value =
                         item.MoldDescription ?? "";
 
-                    worksheet.Cell(row, 4).Value =
+                    worksheet.Cell(row, 3).Value =
                         item.MoldAssetNumber ?? "";
 
-                    worksheet.Cell(row, 5).Value =
+                    worksheet.Cell(row, 4).Value =
                         item.MoldStatus ?? "";
 
-                    worksheet.Cell(row, 6).Value =
+                    worksheet.Cell(row, 5).Value =
                         item.MoldOrigin ?? "";
 
-                    worksheet.Cell(row, 7).Value =
+                    worksheet.Cell(row, 6).Value =
                         Convert.ToString(item.DigitalPlane);
 
-                    worksheet.Cell(row, 8).Value =
+                    worksheet.Cell(row, 7).Value =
                         item.CriticallyType ?? "";
 
-                    worksheet.Cell(row, 9).Value =
+                    worksheet.Cell(row, 8).Value =
                         item.GateType ?? "";
 
-                    worksheet.Cell(row, 10).Value =
+                    worksheet.Cell(row, 9).Value =
                         item.CastingType ?? "";
 
-                    worksheet.Cell(row, 11).Value =
+                    worksheet.Cell(row, 10).Value =
                         item.ActuatorType ?? "";
 
-                    worksheet.Cell(row, 12).Value =
+                    worksheet.Cell(row, 11).Value =
                         item.CategorizationType ?? "";
 
-                    worksheet.Cell(row, 13).Value =
+                    worksheet.Cell(row, 12).Value =
                         Convert.ToString(item.CavityQty);
 
-                    worksheet.Cell(row, 14).Value =
+                    worksheet.Cell(row, 13).Value =
                         Convert.ToString(item.BlockCavityQty);
 
-                    worksheet.Cell(row, 15).Value =
+                    worksheet.Cell(row, 14).Value =
                         Convert.ToString(item.HaveCounter);
 
-                    worksheet.Cell(row, 16).Value =
+                    worksheet.Cell(row, 15).Value =
                         item.CounterType ?? "";
 
-                    worksheet.Cell(row, 17).Value =
+                    worksheet.Cell(row, 16).Value =
                         Convert.ToString(item.ThreeLayer);
 
-                    worksheet.Cell(row, 18).Value =
+                    worksheet.Cell(row, 17).Value =
                         Convert.ToString(item.InitialCount);
 
-                    worksheet.Cell(row, 19).Value =
+                    worksheet.Cell(row, 18).Value =
                         Convert.ToString(
                             item.Percentage_Spares_available
                         );
 
-                    worksheet.Cell(row, 20).Value =
+                    worksheet.Cell(row, 19).Value =
                         Convert.ToString(
                             item.Last_Reparir_12_Months
                         );
 
-                    worksheet.Cell(row, 21).Value =
+                    worksheet.Cell(row, 20).Value =
                         item.Comment_Last_Reparir_12_Months ?? "";
 
-                    worksheet.Cell(row, 22).Value =
+                    worksheet.Cell(row, 21).Value =
                         Convert.ToString(item.Quality_Issue);
 
-                    worksheet.Cell(row, 23).Value =
+                    worksheet.Cell(row, 22).Value =
                         item.Comment_Quality_Issue ?? "";
 
-                    worksheet.Cell(row, 24).Value =
+                    worksheet.Cell(row, 23).Value =
                         item.CreatedBy ?? "";
 
                     if (item.DateCreation.HasValue)
                     {
-                        worksheet.Cell(row, 25).Value =
+                        worksheet.Cell(row, 24).Value =
                             item.DateCreation.Value;
 
-                        worksheet.Cell(row, 25)
+                        worksheet.Cell(row, 24)
                             .Style.DateFormat.Format =
                             "MM-dd-yyyy HH:mm:ss";
                     }
 
-                    worksheet.Cell(row, 26).Value =
+                    worksheet.Cell(row, 25).Value =
                         item.ModifiedBy ?? "";
 
                     if (item.DateModification.HasValue)
                     {
-                        worksheet.Cell(row, 27).Value =
+                        worksheet.Cell(row, 26).Value =
                             item.DateModification.Value;
 
-                        worksheet.Cell(row, 27)
+                        worksheet.Cell(row, 26)
                             .Style.DateFormat.Format =
                             "MM-dd-yyyy HH:mm:ss";
                     }
@@ -281,7 +279,7 @@ namespace Tracking_Tool_System.Pages.Reports
                     1,
                     1,
                     reportList.Count + 1,
-                    27
+                    26
                 );
 
                 dataRange.CreateTable();

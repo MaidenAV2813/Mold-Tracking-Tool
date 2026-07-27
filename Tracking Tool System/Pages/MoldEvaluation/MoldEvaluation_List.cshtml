@@ -6,12 +6,17 @@
 }
 
 <section class="content-header">
+
     <div class="container-fluid">
+
         <h1>Evaluaciones de moldes</h1>
+
     </div>
+
 </section>
 
 <section class="content">
+
     <div class="container-fluid">
 
         <div class="card">
@@ -23,14 +28,18 @@
                     <a asp-page="/MoldEvaluation/CreateMoldEvaluation"
                        class="btn btn-primary btn-sm">
 
-                        <i class="fas fa-plus"></i> Nueva evaluación
+                        <i class="fas fa-plus"></i>
+                        Nueva evaluación
 
                     </a>
 
                 </div>
+
                 <a asp-page="/Index"
                    class="btn btn-secondary">
+
                     Cancelar
+
                 </a>
 
             </div>
@@ -45,7 +54,9 @@
 
                     <div class="col-md-4">
 
-                        <label>Buscar molde</label>
+                        <label for="searchMold">
+                            Buscar molde
+                        </label>
 
                         <input type="text"
                                id="searchMold"
@@ -61,7 +72,10 @@
                 <div class="table-scroll-container">
 
                     <div class="horizontal-scroll">
-                        <div class="horizontal-scroll-content"></div>
+
+                        <div class="horizontal-scroll-content">
+                        </div>
+
                     </div>
 
                     <div class="table-responsive table-scroll">
@@ -71,63 +85,103 @@
                             <thead class="bg-primary text-white">
 
                                 <tr>
-                                    <th class="text-center" style="width:180px;">Numero de Molde</th>
-                                    <th class="text-center" >Porcentaje de la evaluación general</th>
-                                    <th class="text-center" >Fecha de evaluación</th>
-                                    <th class="text-center" >Próxima evaluación</th>
-                                    <th class ="text-center" >Creado por</th>
+
+                                    <th class="text-center"
+                                        style="width:180px;">
+                                        Número de molde
+                                    </th>
+
+                                    <th class="text-center">
+                                        Porcentaje de la evaluación general
+                                    </th>
+
+                                    <th class="text-center">
+                                        Fecha de evaluación
+                                    </th>
+
+                                    <th class="text-center">
+                                        Próxima evaluación
+                                    </th>
+
+                                    <th class="text-center">
+                                        Creado por
+                                    </th>
+
                                 </tr>
 
                             </thead>
 
-                            <tbody>
+                            <tbody id="evaluationTableBody">
+
                                 @foreach (var item in Model.GridList)
                                 {
                                     <tr class="evaluation-row"
                                         data-evaluation-id="@item.EvaluationID"
                                         style="cursor:pointer;">
 
-                                        <td>@item.MoldNumber</td>
+                                        <td>
+                                            @item.MoldNumber
+                                        </td>
 
                                         <td class="text-center">
+
                                             @if (item.GeneralScore.HasValue)
                                             {
                                                 if (item.GeneralScore >= 90)
                                                 {
                                                     <span class="badge badge-success">
+
                                                         @($"{item.GeneralScore:N2}%")
+
                                                     </span>
                                                 }
                                                 else if (item.GeneralScore >= 70)
                                                 {
                                                     <span class="badge badge-warning">
+
                                                         @($"{item.GeneralScore:N2}%")
+
                                                     </span>
                                                 }
                                                 else
                                                 {
                                                     <span class="badge badge-danger">
+
                                                         @($"{item.GeneralScore:N2}%")
+
                                                     </span>
                                                 }
                                             }
                                             else
                                             {
-                                                <span class="badge badge-secondary">N/A</span>
+                                                <span class="badge badge-secondary">
+                                                    N/A
+                                                </span>
                                             }
+
                                         </td>
 
                                         <td class="text-center">
-                                            @item.DateEvaluation?.ToString("MM-dd-yyyy")
+
+                                            @item.DateEvaluation?
+                                            .ToString("MM-dd-yyyy")
+
                                         </td>
 
                                         <td class="text-center">
-                                            @item.NextEvaluationDate?.ToString("MM-dd-yyyy")
+
+                                            @item.NextEvaluationDate?
+                                            .ToString("MM-dd-yyyy")
+
                                         </td>
 
-                                        <td>@item.CreatedBy</td>
+                                        <td>
+                                            @item.CreatedBy
+                                        </td>
+
                                     </tr>
                                 }
+
                             </tbody>
 
                         </table>
@@ -141,6 +195,7 @@
         </div>
 
     </div>
+
 </section>
 
 @section Scripts {
@@ -148,62 +203,49 @@
     <script>
         $(function () {
 
-            $('.selectable-row').on('click', function () {
-
-                $('.selectable-row')
-                    .removeClass('table-primary');
-
-                $(this)
-                    .addClass('table-primary');
-            });
-
             $('#searchMold').on('input', function () {
 
-                const value = $(this)
+                const searchValue = $(this)
                     .val()
                     .trim()
                     .toLowerCase();
 
-                $('#evaluationTableBody tr').each(function () {
+                $('#evaluationTableBody .evaluation-row')
+                    .each(function () {
 
-                    const moldNumber = $(this)
-                        .find('td')
-                        .eq(0)
-                        .text()
-                        .trim()
-                        .toLowerCase();
+                        const moldNumber = $(this)
+                            .find('td')
+                            .eq(0)
+                            .text()
+                            .trim()
+                            .toLowerCase();
 
-                    $(this).toggle(
-                        moldNumber.includes(value)
-                    );
-                });
-
+                        $(this).toggle(
+                            moldNumber.includes(searchValue)
+                        );
+                    });
             });
 
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+            $('.evaluation-row').on('click', function () {
 
-            const rows =
-                document.querySelectorAll(".evaluation-row");
+                $('.evaluation-row')
+                    .removeClass('table-primary');
 
-            rows.forEach(function (row) {
+                $(this)
+                    .addClass('table-primary');
 
-                row.addEventListener("click", function () {
+                const evaluationId =
+                    $(this).data('evaluation-id');
 
-                    const evaluationId =
-                        row.dataset.evaluationId;
+                if (!evaluationId) {
+                    return;
+                }
 
-                    if (!evaluationId) {
-                        return;
-                    }
-
-                    window.location.href =
-                        "/MoldEvaluation/MoldEvaluation_Detail?id=" +
-                        evaluationId;
-                });
+                window.location.href =
+                    '/MoldEvaluation/MoldEvaluation_Detail?id='
+                    + evaluationId;
             });
+
         });
     </script>
 }

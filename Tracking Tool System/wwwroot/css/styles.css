@@ -11709,3 +11709,23 @@ body {
     color: inherit;
 }
 
+html,
+body {
+    height: 100%;
+}
+
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-wrapper,
+.container-fluid,
+main {
+    flex: 1;
+}
+
+.main-footer {
+    margin-top: auto;
+}

@@ -8,5 +8,14 @@ namespace CAPA_NEGOCIO
         Task<MoldEvaluationEntity> GetById(int evaluationID);
         Task<IEnumerable<MoldPartEvaluationEntity>> GetPartsByEvaluationID(int evaluationID);
         Task<DBEntity> Create(MoldEvaluationEntity entity);
+        Task<IEnumerable<MoldEvaluationEntity>> GetReport(
+            int? moldID,
+            DateTime? startDate,
+            DateTime? endDate
+        );
+
+        Task<MoldEvaluationEntity> GetReportDetail(
+            int evaluationID
+        );
     }
 }

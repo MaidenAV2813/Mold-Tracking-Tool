@@ -17,41 +17,65 @@
         <div class="card">
 
             <div class="card-header">
-                <a asp-page="/Index"
-                   class="btn btn-secondary">
-                    Cancelar
-                </a>
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <a asp-page="/Index"
+                       class="btn btn-secondary">
+
+                        Cancelar
+
+                    </a>
+
+                    <a href="#"
+                       id="exportBtn"
+                       class="btn btn-success">
+
+                        <i class="fas fa-file-excel mr-1"></i>
+                        Exportar
+
+                    </a>
+
+                </div>
+
             </div>
+
             <div class="card-body">
 
                 <form method="get" id="filterForm" class="mb-3">
                     <div class="row">
 
                         <div class="col-md-4">
+
                             <label>Buscar número de parte</label>
                             <input type="text"
-                               id="searchpart"
-                               class="form-control"
-                               placeholder="Digite el número de parte..."
-                               oninput="this.value = this.value.toUpperCase();" />
+                                   id="searchpart"
+                                   class="form-control"
+                                   placeholder="Digite el número de parte..."
+                                   autocomplete="off"
+                                   oninput="this.value = this.value.toUpperCase();" />
                         </div>
 
                         <div class="col-md-4">
                             <label>Buscar localidad</label>
                             <select id="SearchLocation"
-                            class="form-control select2">
-                            <option value="">Todas las localidades</option>
+                                    class="form-control select2">
 
-                        @foreach (var loc in Model.LocationList)
-                        {
-                            <option value="@loc.LocationNumber">
-                                @loc.LocationNumber
-                            </option>
-                        }
-                    </select>
+                                <option value="">Todas las localidades</option>
+
+                                @foreach (var loc in Model.LocationList)
+                                {
+                                    <option value="@loc.LocationNumber">
+                                        @loc.LocationNumber
+                                    </option>
+                                }
+
+                            </select>
+
                         </div>
 
                     </div>
+
                 </form>
 
                 <div class="table-responsive">
@@ -67,18 +91,18 @@
                             </tr>
                         </thead>
 
-                        <tbody>                       
+                        <tbody id="inventoryTableBody">
                             @foreach (var part in Model.GridList)
                             {
-                            <tr onclick="selectRow(@part.ItemNumberID,'@part.ItemNumber')" style="cursor:pointer;">
-                                <td>@part.ItemNumber</td>
-                                <td>@part.LocationNumber</td>
-                                <td>@part.QtyOnHand</td>
-                                <td>@part.UOM</td>
-                                <td>@part.ItemStatus</td>
-                                <td>@part.ActualSupplier</td>
-                            </tr>
-                            }                        
+                                <tr style="cursor:pointer;">
+                                    <td>@part.ItemNumber</td>
+                                    <td>@part.LocationNumber</td>
+                                    <td>@part.QtyOnHand</td>
+                                    <td>@part.UOM</td>
+                                    <td>@part.ItemStatus</td>
+                                    <td>@part.ActualSupplier</td>
+                                </tr>
+                            }
                         </tbody>
 
                     </table>
@@ -90,40 +114,13 @@
     </div>
 </section>
 
-<script>
-    const searchInput = document.getElementById("searchpart");
-
-    searchInput.addEventListener("keyup", function () {
-        filterpart(this.value);
-    });
-
-    function filterpart(value) {
-        value = value.toLowerCase();
-
-        document.querySelectorAll("tbody tr").forEach(function (row) {
-            let ItemNumber = row.cells[0].innerText.toLowerCase();
-            row.style.display = ItemNumber.includes(value) ? "" : "none";
-        });
-    }
-
-    function selectRow(id, ItemNumber) {
-        document.querySelectorAll("tbody tr")
-            .forEach(r => r.classList.remove("table-primary"));
-
-        event.currentTarget.classList.add("table-primary");
-
-        searchInput.value = ItemNumber;
-
-        let editBtn = document.getElementById("editBtn");
-        editBtn.classList.remove("disabled");
-        editBtn.href = "/ItemBom/EditItemBom?id=" + id;
-    }
-</script>
-
-
 @section Scripts {
     <script>
         $(function () {
+
+            const exportPageUrl =
+                '@Url.Page("/InventoryBOH/InventoryBOH_List")';
+
             $('#SearchLocation').select2({
                 theme: 'bootstrap4',
                 placeholder: 'Digite o seleccione una localidad',
@@ -131,19 +128,122 @@
                 width: '100%'
             });
 
-        $(document).on('keyup', '.select2-search__field', function () {
-            this.value = this.value.toUpperCase();
-        });
+            $(document).on(
+                'input',
+                '.select2-search__field',
+                function () {
+                    this.value = this.value.toUpperCase();
+                }
+            );
+
+            function filterRows() {
+
+                const partValue =
+                    ($('#searchpart').val() || '')
+                        .trim()
+                        .toLowerCase();
+
+                const locationValue =
+                    ($('#SearchLocation').val() || '')
+                        .trim()
+                        .toLowerCase();
+
+                $('#inventoryTableBody tr').each(function () {
+
+                    const itemNumber =
+                        $(this)
+                            .find('td:eq(0)')
+                            .text()
+                            .trim()
+                            .toLowerCase();
+
+                    const locationNumber =
+                        $(this)
+                            .find('td:eq(1)')
+                            .text()
+                            .trim()
+                            .toLowerCase();
+
+                    const matchesPart =
+                        partValue === '' ||
+                        itemNumber.includes(partValue);
+
+                    const matchesLocation =
+                        locationValue === '' ||
+                        locationNumber === locationValue;
+
+                    $(this).toggle(
+                        matchesPart && matchesLocation
+                    );
+                });
+            }
+
+            $('#searchpart').on('input', function () {
+                filterRows();
+            });
 
             $('#SearchLocation').on('change', function () {
-                let locationValue = ($(this).val() || '').toLowerCase();
-
-                $('tbody tr').each(function () {
-                    let locationNumber = $(this).find('td:eq(1)').text().toLowerCase();
-
-                    $(this).toggle(locationValue === '' || locationNumber === locationValue);
-                });
+                filterRows();
             });
+
+            $('#inventoryTableBody').on(
+                'click',
+                'tr',
+                function () {
+
+                    $('#inventoryTableBody tr')
+                        .removeClass('table-primary');
+
+                    $(this).addClass('table-primary');
+                }
+            );
+
+            $('#exportBtn').on(
+                'click',
+                function (event) {
+
+                    event.preventDefault();
+
+                    const searchPart =
+                        ($('#searchpart').val() || '')
+                            .trim();
+
+                    const searchLocation =
+                        ($('#SearchLocation').val() || '')
+                            .trim();
+
+                    const parameters =
+                        new URLSearchParams();
+
+                    parameters.set(
+                        'handler',
+                        'Export'
+                    );
+
+                    if (searchPart !== '') {
+                        parameters.set(
+                            'searchPart',
+                            searchPart
+                        );
+                    }
+
+                    if (searchLocation !== '') {
+                        parameters.set(
+                            'searchLocation',
+                            searchLocation
+                        );
+                    }
+
+                    const exportUrl =
+                        exportPageUrl +
+                        '?' +
+                        parameters.toString();
+
+                    window.location.href = exportUrl;
+                }
+            );
+
+            filterRows();
         });
     </script>
 }

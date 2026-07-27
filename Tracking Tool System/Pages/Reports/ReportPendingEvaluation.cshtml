@@ -1,0 +1,283 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Reports.ReportPendingEvaluationModel
+
+@using System.Text.Json
+
+@{
+    ViewData["Title"] =
+        "Evaluaciones pendientes";
+
+    var monthLabels =
+        Model.ReportList
+            .OrderBy(item => item.MonthNumber)
+            .Select(item => item.MonthName ?? "")
+            .ToList();
+
+    var pendingValues =
+        Model.ReportList
+            .OrderBy(item => item.MonthNumber)
+            .Select(item => item.PendingQuantity)
+            .ToList();
+
+    var monthLabelsJson =
+        JsonSerializer.Serialize(monthLabels);
+
+    var pendingValuesJson =
+        JsonSerializer.Serialize(pendingValues);
+}
+
+<div class="container-fluid">
+
+    <!-- Filtros -->
+    <div class="card card-primary no-print">
+
+        <div class="card-header">
+
+            <h3 class="card-title">
+
+                <i class="fas fa-chart-bar mr-2"></i>
+
+                Evaluaciones pendientes por mes
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="get"
+                  asp-page="/Reports/ReportPendingEvaluation">
+
+                <div class="row">
+
+                    <div class="col-md-3">
+
+                        <div class="form-group">
+
+                            <label asp-for="Year">
+                                Año
+                            </label>
+
+                            <input asp-for="Year"
+                                   type="number"
+                                   min="2000"
+                                   max="2100"
+                                   class="form-control" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-9 d-flex align-items-end">
+
+                        <div class="form-group">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="fas fa-search mr-1"></i>
+                                Consultar
+
+                            </button>
+                            
+                        </div>
+
+                    </div>
+
+                </div>
+                <a asp-page="/Reports/ReportPendingEvaluation"
+                   asp-page-handler="Export"
+                   asp-route-year="@Model.SelectedYear"
+                   class="btn btn-success mr-2 mb-1">
+
+                    <i class="fas fa-file-excel mr-1"></i>
+                    Exportar detalle
+
+                </a>
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Error -->
+    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger no-print">
+
+            <i class="fas fa-exclamation-triangle mr-2"></i>
+
+            @Model.ErrorMessage
+
+        </div>
+    }
+
+    <!-- Gráfico -->
+    <div class="card">
+
+        <div class="card-header">
+
+            <h3 class="card-title">
+
+                <i class="fas fa-chart-bar mr-2"></i>
+
+                Distribución mensual de evaluaciones pendientes
+
+            </h3>
+
+            <div class="card-tools">
+
+                <span class="badge badge-primary">
+
+                    Año @Model.SelectedYear
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            @if (Model.ReportList.Count == 0)
+            {
+                <div class="alert alert-warning mb-0">
+
+                    <i class="fas fa-info-circle mr-2"></i>
+
+                    No se encontraron datos para el año seleccionado.
+
+                </div>
+            }
+            else
+            {
+                <div class="chart-container">
+
+                    <canvas id="pendingEvaluationChart"></canvas>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+    
+
+</div>
+
+@section Scripts
+{
+    <script src="~/plugins/chart.js/Chart.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const canvas =
+                document.getElementById("pendingEvaluationChart");
+
+            if (!canvas) {
+                console.warn(
+                    "No se encontró el canvas del gráfico."
+                );
+
+                return;
+            }
+
+            if (typeof Chart === "undefined") {
+                console.error(
+                    "Chart.js no se cargó correctamente."
+                );
+
+                return;
+            }
+
+            const labels =
+                @Html.Raw(monthLabelsJson);
+
+            const values =
+                @Html.Raw(pendingValuesJson);
+
+            console.log("Meses:", labels);
+            console.log("Pendientes:", values);
+
+            const context =
+                canvas.getContext("2d");
+
+            new Chart(context, {
+                type: "bar",
+
+                data: {
+                    labels: labels,
+
+                    datasets: [
+                        {
+                            label:
+                                "Evaluaciones pendientes",
+
+                            data: values,
+
+                            backgroundColor:
+                                "rgba(23, 162, 184, 0.65)",
+
+                            borderColor:
+                                "rgba(23, 162, 184, 1)",
+
+                            borderWidth: 1
+                        }
+                    ]
+                },
+
+                options: {
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    legend: {
+                        display: true,
+                        position: "top"
+                    },
+
+                    tooltips: {
+                        callbacks: {
+                            label: function (
+                                tooltipItem
+                            ) {
+                                return " Pendientes: "
+                                    + tooltipItem.yLabel;
+                            }
+                        }
+                    },
+
+                    scales: {
+                        yAxes: [
+                            {
+                                ticks: {
+                                    beginAtZero: true,
+                                    precision: 0,
+                                    stepSize: 1
+                                },
+
+                                scaleLabel: {
+                                    display: true,
+
+                                    labelString:
+                                        "Cantidad de evaluaciones"
+                                }
+                            }
+                        ],
+
+                        xAxes: [
+                            {
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: "Mes"
+                                }
+                            }
+                        ]
+                    }
+                }
+            });
+        });
+    </script>
+}

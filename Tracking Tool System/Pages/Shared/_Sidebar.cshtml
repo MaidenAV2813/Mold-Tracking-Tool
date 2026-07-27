@@ -97,7 +97,7 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-cogs"></i>
                                 <p> 
-                                    Configuracion del Molde
+                                    Configuración del Molde
                                 </p>
                             <i class="right fas fa-angle-left"></i>
                         </a>
@@ -167,7 +167,7 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-clipboard-list"></i>
                             <p>
-                                Evaluacion del molde
+                                Evaluación del molde
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -311,7 +311,8 @@
                             <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
                                     Reportes e Indicadores
-                                    @* <i class="fas fa-angle-left right"></i>*@
+                                    <i class="fas fa-angle-left right"></i>
+
                                 </p>
                         </a>
                         <ul class="nav nav-treeview">
@@ -322,6 +323,55 @@
                                     <a asp-page="/Reports/ReportMold" class="nav-link">
                                         <i class="fas fa-minus nav-icon"></i>
                                         <p>Reporte de Moldes</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Reporte de Evaluaciones de Moldes"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Reports/ReportMoldEvaluation" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>
+                                            Reporte de Evaluaciones<br />
+                                            de Moldes
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Reporte de Partes/BOM"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Reports/ReportItemBom" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>
+                                            Reporte de Partes/BOM
+                                            
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Reporte Evaluaciones Pendientes"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Reports/ReportPendingEvaluation" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>
+                                            Reporte Evaluaciones<br /> 
+                                            Pendientes
+
+                                        </p>
                                     </a>
                                 </li>
                             }

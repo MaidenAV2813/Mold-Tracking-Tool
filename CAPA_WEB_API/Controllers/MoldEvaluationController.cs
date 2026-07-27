@@ -108,5 +108,80 @@ namespace CAPA_WEB_API.Controllers
                 });
             }
         }
+
+        [HttpGet("report")]
+        public async Task<IActionResult> GetReport(
+        [FromQuery] int? moldID,
+        [FromQuery] DateTime? startDate,
+        [FromQuery] DateTime? endDate)
+        {
+            try
+            {
+                if (
+                    startDate.HasValue
+                    && endDate.HasValue
+                    && startDate.Value.Date >
+                       endDate.Value.Date
+                )
+                {
+                    return BadRequest(new DBEntity
+                    {
+                        CodeError = -1,
+                        MsgError =
+                            "La fecha inicial no puede ser mayor que la fecha final."
+                    });
+                }
+
+                var result =
+                    await _services.GetReport(
+                        moldID,
+                        startDate,
+                        endDate
+                    );
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new DBEntity
+                {
+                    CodeError = ex.HResult,
+                    MsgError = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("report/detail/{evaluationID}")]
+        public async Task<IActionResult> GetReportDetail(
+            int evaluationID)
+        {
+            try
+            {
+                var result =
+                    await _services.GetReportDetail(
+                        evaluationID
+                    );
+
+                if (result == null)
+                {
+                    return NotFound(new DBEntity
+                    {
+                        CodeError = -1,
+                        MsgError =
+                            "No se encontró la evaluación seleccionada."
+                    });
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new DBEntity
+                {
+                    CodeError = ex.HResult,
+                    MsgError = ex.Message
+                });
+            }
+        }
     }
 }

@@ -28,6 +28,8 @@ builder.Services.AddScoped<IMoldEvaluation_Services,MoldEvaluation_Services>();
 builder.Services.AddScoped<IDashboard_Services, Dashboard_Services>();
 builder.Services.AddScoped<ICategorization_Services, Categorization_Services>();
 builder.Services.AddScoped<IReportMold_Services, ReportMold_Services>();
+builder.Services.AddScoped<IReportItemBom_Services, ReportItemBom_Services>();
+builder.Services.AddScoped<IReportPendingEvaluation_Services,ReportPendingEvaluation_Services>();
 
 
 // Controllers

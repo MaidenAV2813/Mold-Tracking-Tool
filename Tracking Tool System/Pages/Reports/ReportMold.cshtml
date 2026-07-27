@@ -179,8 +179,8 @@
 
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Número de molde</th>
+
+                                    <th style="min-width:150px;">Número de molde</th>
                                     <th>Descripción</th>
                                     <th>Número de activo</th>
                                     <th>Estado</th>
@@ -213,8 +213,8 @@
                                 @foreach (var item in Model.ReportList)
                                 {
                                     <tr>
-                                        <td>@item.MoldID</td>
-                                        <td>@item.MoldNumber</td>
+
+                                        <td style="min-width:150px;">@item.MoldNumber</td>
                                         <td>@item.MoldDescription</td>
                                         <td>@item.MoldAssetNumber</td>
                                         <td>@item.MoldStatus</td>
