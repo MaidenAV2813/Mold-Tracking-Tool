@@ -30,31 +30,31 @@ namespace Tracking_Tool_System.Pages.Gates
             }
         }
 
-        public async Task<IActionResult> OnPostEliminar(int id)
-        {
-            try
-            {
-                var response = await _apiService.PostAsync("Gates/delete", new GateTypeEntity
-                {
-                    GateID = id
-                });
+        //public async Task<IActionResult> OnPostEliminar(int id)
+        //{
+        //    try
+        //    {
+        //        var response = await _apiService.PostAsync("Gates/delete", new GateTypeEntity
+        //        {
+        //            GateID = id
+        //        });
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    ModelState.AddModelError(string.Empty, error);
-                    GridList = await _apiService.GetAsync<GateTypeEntity>("Gates");
-                    return Page();
-                }
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            var error = await response.Content.ReadAsStringAsync();
+        //            ModelState.AddModelError(string.Empty, error);
+        //            GridList = await _apiService.GetAsync<GateTypeEntity>("Gates");
+        //            return Page();
+        //        }
 
-                return RedirectToPage("/Gates/Gate_List");
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                GridList = await _apiService.GetAsync<GateTypeEntity>("Gates");
-                return Page();
-            }
-        }
+        //        return RedirectToPage("/Gates/Gate_List");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ModelState.AddModelError(string.Empty, ex.Message);
+        //        GridList = await _apiService.GetAsync<GateTypeEntity>("Gates");
+        //        return Page();
+        //    }
+        //}
     }
 }

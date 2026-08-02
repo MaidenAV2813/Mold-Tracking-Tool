@@ -6,8 +6,9 @@ namespace CAPA_ENTITY
 {
     public class ActuatorTypeEntity : DBEntity
     {
-        public int ActuatorID { get; set; }
+        public int? ActuatorID { get; set; }
         public string? ActuatorType { get; set; }
-        
+        public Boolean ActuatorStatus { get; set; }
+
     }
 }

@@ -30,59 +30,85 @@ namespace Tracking_Tool_System.Pages.User
 
         public async Task OnGet()
         {
-            Roles = (await _apiService.GetAsync<RolEntity>("roles"))
-                .Where(x => x.RolStatus == true)
-                .ToList();
+            await LoadRoles();
         }
-        
+
         public async Task<IActionResult> OnPost()
         {
-            Roles = (await _apiService.GetAsync<RolEntity>("roles"))
-        .Where(x => x.RolStatus == true)
-        .ToList();
+            // Se vuelven a cargar los roles por si la página
+            // debe mostrarse nuevamente después de un error.
+            await LoadRoles();
 
-            if (!ModelState.IsValid)
-                return Page();
+            var currentUser =
+                User.Identity?.Name ?? "System";
 
-            if (RolID == null)
-            {
-                ModelState.AddModelError(string.Empty, "Debe seleccionar un rol.");
-                return Page();
-            }
-
-
-
-            var user = User.Identity?.Name ?? "System";
             var now = DateTime.Now;
 
             var entity = new UserEntity
             {
                 RolID = RolID,
-                Username = Username,
+                Username = Username?.Trim(),
                 EmpName = EmpName?.Trim(),
                 UserStatus = UserStatus,
-                CreatedBy = user,
-                ModifiedBy = user,
-                DateCreation = DateTime.Now,
-                DateModification = DateTime.Now
+
+                CreatedBy = currentUser,
+                ModifiedBy = currentUser,
+                DateCreation = now,
+                DateModification = now
             };
 
-            var response = await _apiService.PostAsync("users", entity);
-
-
-            var result = await response.Content.ReadFromJsonAsync<DBEntity>();
-
-            if (result != null && result.CodeError != 0)
+            try
             {
-                Roles = (await _apiService.GetAsync<RolEntity>("roles"))
-                    .Where(x => x.RolStatus == true)
-                    .ToList();
+                var response = await _apiService.PostAsync(
+                    "users",
+                    entity
+                );
 
-                ModelState.AddModelError(string.Empty, result.MsgError);
+                var result = await response.Content
+                    .ReadFromJsonAsync<DBEntity>();
+
+                if (result == null)
+                {
+                    TempData["ErrorMessage"] =
+                        "La API no devolvió una respuesta válida.";
+
+                    return Page();
+                }
+
+                if (result.CodeError != 0)
+                {
+                    TempData["ErrorMessage"] =
+                        result.MsgError ??
+                        "No fue posible crear el usuario.";
+
+                    return Page();
+                }
+
+                TempData["SuccessMessage"] =
+                    result.MsgError ??
+                    "Usuario creado correctamente.";
+
+                return RedirectToPage(
+                    "/User/User_List"
+                );
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] =
+                    "Ocurrió un error al crear el usuario. "
+                    + ex.Message;
+
                 return Page();
             }
+        }
 
-            return RedirectToPage("/User/User_List");
+        private async Task LoadRoles()
+        {
+            Roles = (await _apiService
+                .GetAsync<RolEntity>("roles"))
+                .Where(x => x.RolStatus == true)
+                .OrderBy(x => x.RolDescription)
+                .ToList();
         }
     }
 }

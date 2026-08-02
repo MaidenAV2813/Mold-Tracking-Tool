@@ -19,6 +19,9 @@ namespace Tracking_Tool_System.Pages.Critically
         public string? CriticallyType { get; set; }
 
         [BindProperty]
+        public bool CriticallyStatus { get; set; } = true;
+
+        [BindProperty]
         public DateTime DateCreation { get; set; }
 
         [BindProperty]
@@ -43,7 +46,8 @@ namespace Tracking_Tool_System.Pages.Critically
                     CreatedBy = critically,
                     ModifiedBy = critically,
                     DateCreation = DateTime.Now,
-                    DateModification = DateTime.Now
+                    DateModification = DateTime.Now,
+                    CriticallyStatus = CriticallyStatus
 
                 };
 
@@ -51,11 +55,21 @@ namespace Tracking_Tool_System.Pages.Critically
 
                 var result = await response.Content.ReadFromJsonAsync<DBEntity>();
 
-                if (result != null && result.CodeError != 0)
+                if (result == null)
                 {
-                    ModelState.AddModelError(string.Empty, result.MsgError);
+                    TempData["ErrorMessage"] = "La API no devolvió una respuesta válida.";
+
                     return Page();
                 }
+
+                if (result.CodeError != 0)
+                {
+                    TempData["ErrorMessage"] = result.MsgError ?? "No fue posible crear la criticidad.";
+
+                    return Page();
+                }
+
+                TempData["SuccessMessage"] = result.MsgError ?? "Criticidad creada correctamente.";
 
                 return RedirectToPage("/Critically/Critically_List");
             }

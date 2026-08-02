@@ -1,46 +1,53 @@
 ﻿@page
-@model Tracking_Tool_System.Pages.Critically.CreateCriticallyModel
+@model Tracking_Tool_System.Pages.Critically.EditModel
+
 @{
-	ViewData["Title"] = "Crear tipo de Criticidad";
+    ViewData["Title"] = "Editar Criticidad";
 }
+
 <section class="content-header">
     <div class="container-fluid">
-         <h1>Crear tipo de Criticidad</h1>
+        <h1>Modificar Criticidad</h1>
     </div>
 </section>
 
 <section class="content">
     <div class="container-fluid">
 
-        <div class="card card-primary">
+        <div class="card card-warning">
             <div class="card-header">
-                <h3 class="card-title">Información de Criticidad</h3>
+                <h3 class="card-title">Modificar</h3>
             </div>
 
             <form method="post">
                 <div class="card-body">
 
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="CriticallyID" />
 
                     <div class="form-group">
                         <label>Tipo de Criticidad</label>
-                        <input asp-for="CriticallyType" class="form-control" placeholder="Ingrese el tipo de criticidad" />
-                    </div>
+                        <input asp-for="CriticallyType" class="form-control" disabled />
+                        <input type="hidden" asp-for="CriticallyType" />
+                    </div>        
 
                     <div class="form-group">
                         <label>Estado</label>
                         <select asp-for="CriticallyStatus" class="form-control">
-                            <option value="true">Active</option>
-                            <option value="false">Inactive</option>
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
                         </select>
                     </div>
+
                 </div>
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-warning">Actualizar</button>
                     <a asp-page="/Critically/Critically_List" class="btn btn-secondary">Cancelar</a>
                 </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             </form>
+
         </div>
 
     </div>

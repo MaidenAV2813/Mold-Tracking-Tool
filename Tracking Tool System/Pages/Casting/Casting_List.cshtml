@@ -19,13 +19,17 @@
                     <a asp-page="/Casting/CreateCasting" class="btn btn-primary btn-sm">
                         <i class="fas fa-plus"></i> Agregar nuevo tipo de Colada
                     </a>
-                    <form method="post" asp-page-handler="Eliminar" id="deleteForm" style="display:inline;">
+
+                    <a id="editBtn" class="btn btn-warning btn-sm disabled">
+                        <i class="fas fa-edit"></i> Editar Colada
+                    </a>
+                    @* <form method="post" asp-page-handler="Eliminar" id="deleteForm" style="display:inline;">
                         <input type="hidden" name="id" id="deleteId" />
 
                         <button id="deleteBtn" type="submit" class="btn btn-danger btn-sm disabled">
                             <i class="fas fa-trash"></i> Eliminar tipo de Colada
                         </button>
-                    </form>
+                    </form> *@
                 </div>
                 <a asp-page="/Index"
                    class="btn btn-secondary">
@@ -39,6 +43,7 @@
                     <thead>
                         <tr>
                             <th>Tipo de Colada</th>
+                            <th>Estado</th>
                             <th>Fecha de creación</th>
                         </tr>
                     </thead>
@@ -48,6 +53,7 @@
                         {
                             <tr onclick="selectRow(@Castings.CastingID)" style="cursor:pointer;">
                                 <td>@Castings.CastingType</td>
+                                <td>@(Castings.CastingStatus ? "Active" : "Inactive")</td>
                                 <td>@Castings.DateCreation?.ToString("MM-dd-yyyy")</td>
                             </tr>
                         }
@@ -59,16 +65,16 @@
 </section>
 
 <script>
-    function selectRow(id) {
+    @* Remarca la linea seleccionada en la lista a modificar de gates*@
+        function selectRow(id) {
 
-        document.querySelectorAll("tbody tr")
-            .forEach(r => r.classList.remove("table-primary"));
+            document.querySelectorAll("tbody tr").forEach(r => r.classList.remove("table-primary"));
 
-        event.currentTarget.classList.add("table-primary");
+            event.currentTarget.classList.add("table-primary");
 
-        document.getElementById("deleteId").value = id;
+            let editBtn = document.getElementById("editBtn");
 
-        let deleteBtn = document.getElementById("deleteBtn");
-        deleteBtn.classList.remove("disabled");
-    }
+            editBtn.classList.remove("disabled");
+            editBtn.href = "/Casting/EditCasting?id=" + id;
+        }
 </script>

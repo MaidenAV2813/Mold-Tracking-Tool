@@ -193,7 +193,7 @@
                 let qtyToAssign = parseInt($(this).val()) || 0;
                 let qtyAvailable = parseInt($('#LocationQtyOnHand').val()) || 0;
 
-                if (qtyToAssign > qtyAvailable) {
+                if (qtyToAssign > QtyAsigned) {
                     alert('La cantidad a rebajar es mayor que el inventario disponible en la localidad.');
                     $(this).val('');
                     $(this).focus();

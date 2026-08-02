@@ -43,23 +43,17 @@ namespace CAPA_NEGOCIO
 
         //Metodo GetById
 
-        //public async Task<GateTypeEntity> GetById(GateTypeEntity entity)
+        public async Task<CriticallyMoldEntity?> GetById(CriticallyMoldEntity entity)
+        {
+            var result = await sql.QueryFirstAsync<CriticallyMoldEntity>(
+                "sp_Critically_GetById",
+                new
+                {
+                    CriticallyID = entity.CriticallyID
+                });
 
-        //{
-        //    try
-
-        //    {
-        //        var result = sql.QueryFirstAsync<GateTypeEntity>("sp_Gates_GetById", new
-
-        //        { entity.GateID });
-
-        //        return await result;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
+            return result;
+        }
 
         //Metodo Create
 
@@ -71,7 +65,8 @@ namespace CAPA_NEGOCIO
                 entity.CreatedBy,
                 entity.DateCreation,
                 entity.DateModification,
-                entity.ModifiedBy
+                entity.ModifiedBy,
+                entity.CriticallyStatus
             });
 
             return await result;
@@ -79,49 +74,49 @@ namespace CAPA_NEGOCIO
 
         //Metodo Update
 
-        //public async Task<DBEntity> Update(GateTypeEntity entity)
-
-        //{
-        //    try
-
-        //    {
-        //        var result = sql.ExecuteAsync("sp_Gates_Update", new
-
-        //        {
-        //            entity.GateID,
-        //            entity.GateType,
-        //            entity.DateModification,
-        //            entity.ModifiedBy
-        //        });
-
-        //        return await result;
-        //    }
-
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        //Metodo Delete
-        public async Task<DBEntity> Delete(CriticallyMoldEntity entity)
+        public async Task<DBEntity> Update(CriticallyMoldEntity entity)
 
         {
             try
 
             {
-                var result = sql.ExecuteAsync("sp_Critically_DeleteByGateID", new
+                var result = sql.ExecuteAsync("sp_Critically_Update", new
+
                 {
                     entity.CriticallyID,
+                    entity.CriticallyStatus,
+                    entity.DateModification,
+                    entity.ModifiedBy
                 });
 
                 return await result;
             }
+
             catch (Exception)
             {
                 throw;
             }
         }
+
+        //Metodo Delete
+        //public async Task<DBEntity> Delete(CriticallyMoldEntity entity)
+
+        //{
+        //    try
+
+        //    {
+        //        var result = sql.ExecuteAsync("sp_Critically_DeleteByGateID", new
+        //        {
+        //            entity.CriticallyID,
+        //        });
+
+        //        return await result;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
         
     }
 

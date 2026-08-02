@@ -304,7 +304,7 @@ namespace Tracking_Tool_System.Pages.Reports
 
                         worksheet.Cell(currentRow, 4).Style.NumberFormat.Format = "0.00\"%\"";
 
-                        if (item.GeneralScore.Value >= 90)
+                        if (item.GeneralScore.Value >= 85)
                         {
                             worksheet.Cell(currentRow, 4)
                                 .Style.Fill.BackgroundColor =

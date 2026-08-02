@@ -42,55 +42,27 @@ namespace CAPA_WEB_API.Controllers
 
         //Edit Metodos
 
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    try
-        //    {
-        //        var result = await _gatesServices.GetById(new GateTypeEntity
-        //        {
-        //            GateID = id
-        //        });
-
-        //        if (result == null)
-        //            return NotFound();
-
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(new DBEntity
-        //        {
-        //            CodeError = ex.HResult,
-        //            MsgError = ex.Message
-        //        });
-        //    }
-        //}
-
-        //[HttpPut("Update")]
-        //public async Task<IActionResult> Update([FromBody] GateTypeEntity entity)
-        //{
-        //    try
-        //    {
-        //        var result = await _gatesServices.Update(entity);
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(new DBEntity
-        //        {
-        //            CodeError = ex.HResult,
-        //            MsgError = ex.Message
-        //        });
-        //    }
-        //}
-
-        [HttpPost("delete")]
-        public async Task<IActionResult> Delete([FromBody] GateTypeEntity entity)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var result = await _gatesServices.Delete(entity);
+                var result = await _gatesServices.GetById(
+                    new GateTypeEntity
+                    {
+                        GateID = id
+                    });
+
+                if (result == null)
+                {
+                    return NotFound(new DBEntity
+                    {
+                        CodeError = -1,
+                        MsgError =
+                            "No se encontró el tipo de Gate seleccionado."
+                    });
+                }
+
                 return Ok(result);
             }
             catch (Exception ex)
@@ -102,6 +74,42 @@ namespace CAPA_WEB_API.Controllers
                 });
             }
         }
+
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update([FromBody] GateTypeEntity entity)
+        {
+            try
+            {
+                var result = await _gatesServices.Update(entity);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new DBEntity
+                {
+                    CodeError = ex.HResult,
+                    MsgError = ex.Message
+                });
+            }
+        }
+
+        //[HttpPost("delete")]
+        //public async Task<IActionResult> Delete([FromBody] GateTypeEntity entity)
+        //{
+        //    try
+        //    {
+        //        var result = await _gatesServices.Delete(entity);
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new DBEntity
+        //        {
+        //            CodeError = ex.HResult,
+        //            MsgError = ex.Message
+        //        });
+        //    }
+        //}
 
     }
 }

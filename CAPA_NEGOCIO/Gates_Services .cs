@@ -43,24 +43,17 @@ namespace CAPA_NEGOCIO
 
         //Metodo GetById
 
-        //public async Task<GateTypeEntity> GetById(GateTypeEntity entity)
+        public async Task<GateTypeEntity?> GetById(GateTypeEntity entity)
+        {
+            var result = await sql.QueryFirstAsync<GateTypeEntity>(
+                "sp_Gates_GetById",
+                new
+                {
+                    GateID = entity.GateID
+                });
 
-        //{
-        //    try
-
-        //    {
-        //        var result = sql.QueryFirstAsync<GateTypeEntity>("sp_Gates_GetById", new
-
-        //        { entity.GateID });
-
-        //        return await result;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
-
+            return result;
+        }
         //Metodo Create
 
         public async Task<DBEntity> Create(GateTypeEntity entity)
@@ -71,7 +64,8 @@ namespace CAPA_NEGOCIO
                 entity.CreatedBy,
                 entity.DateCreation,
                 entity.DateModification,
-                entity.ModifiedBy
+                entity.ModifiedBy,
+                entity.GateStatus
             });
 
             return await result;
@@ -79,49 +73,49 @@ namespace CAPA_NEGOCIO
 
         //Metodo Update
 
-        //public async Task<DBEntity> Update(GateTypeEntity entity)
-
-        //{
-        //    try
-
-        //    {
-        //        var result = sql.ExecuteAsync("sp_Gates_Update", new
-
-        //        {
-        //            entity.GateID,
-        //            entity.GateType,
-        //            entity.DateModification,
-        //            entity.ModifiedBy
-        //        });
-
-        //        return await result;
-        //    }
-
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        //Metodo Delete
-        public async Task<DBEntity> Delete(GateTypeEntity entity)
+        public async Task<DBEntity> Update(GateTypeEntity entity)
 
         {
             try
 
             {
-                var result = sql.ExecuteAsync("sp_Gate_DeleteByGateID", new
+                var result = sql.ExecuteAsync("sp_Gates_Update", new
+
                 {
                     entity.GateID,
+                    entity.GateStatus,
+                    entity.DateModification,
+                    entity.ModifiedBy
                 });
 
                 return await result;
             }
+
             catch (Exception)
             {
                 throw;
             }
         }
+
+        //Metodo Delete
+        //public async Task<DBEntity> Delete(GateTypeEntity entity)
+
+        //{
+        //    try
+
+        //    {
+        //        var result = sql.ExecuteAsync("sp_Gate_DeleteByGateID", new
+        //        {
+        //            entity.GateID,
+        //        });
+
+        //        return await result;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
         
     }
 

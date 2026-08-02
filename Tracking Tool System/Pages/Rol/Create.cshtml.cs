@@ -2,7 +2,6 @@ using CAPA_ENTITY;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Tracking_Tool_System.Services;
-using System.Security.Claims;
 
 namespace Tracking_Tool_System.Pages.Rol
 {
@@ -24,53 +23,62 @@ namespace Tracking_Tool_System.Pages.Rol
         [BindProperty]
         public bool RolStatus { get; set; } = true;
 
-        [BindProperty]
-        public DateTime DateCreation { get; set; }
-
-        [BindProperty]
-        public DateTime DateModification { get; set; } = DateTime.Now;
-
         public void OnGet()
         {
         }
 
         public async Task<IActionResult> OnPost()
         {
-            if (!ModelState.IsValid)
-                return Page();
-
             try
             {
-                var user = User.Identity?.Name ?? "System";
+                var currentUser =
+                    User.Identity?.Name ?? "System";
+
                 var now = DateTime.Now;
 
                 var entity = new RolEntity
                 {
-                    RolDescription = RolDescription,
-                    RolType = RolType,
-                    RolStatus = RolStatus,
-                    CreatedBy = user,
-                    ModifiedBy = user,
-                    DateCreation = DateTime.Now,
-                    DateModification = DateTime.Now
+                    RolDescription = RolDescription?.Trim(),
 
+                    RolType = RolType?.Trim(),
+
+                    RolStatus = RolStatus,
+
+                    CreatedBy = currentUser,
+
+                    ModifiedBy = currentUser,
+
+                    DateCreation = now,
+
+                    DateModification = now
                 };
 
-                var response = await _apiService.PostAsync("roles", entity);
+                var response = await _apiService.PostAsync("roles",entity);
 
                 var result = await response.Content.ReadFromJsonAsync<DBEntity>();
 
-                if (result != null && result.CodeError != 0)
+                if (result == null)
                 {
-                    ModelState.AddModelError(string.Empty, result.MsgError);
+                    TempData["ErrorMessage"] = "La API no devolvió una respuesta válida.";
+
                     return Page();
                 }
+
+                if (result.CodeError != 0)
+                {
+                    TempData["ErrorMessage"] = result.MsgError ?? "No fue posible crear el rol.";
+
+                    return Page();
+                }
+
+                TempData["SuccessMessage"] = result.MsgError ?? "Rol creado correctamente.";
 
                 return RedirectToPage("/Rol/Rol_List");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, ex.Message);
+                TempData["ErrorMessage"] = "Ocurrió un error al crear el rol." + ex.Message;
+
                 return Page();
             }
         }

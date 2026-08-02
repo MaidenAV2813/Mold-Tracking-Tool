@@ -1,47 +1,53 @@
 ﻿@page
-@model Tracking_Tool_System.Pages.Gates.CreateGateModel
+@model Tracking_Tool_System.Pages.Gates.EditModel
+
 @{
-	ViewData["Title"] = "Crear tipo de Gate";
+    ViewData["Title"] = "Editar Gate";
 }
+
 <section class="content-header">
     <div class="container-fluid">
-         <h1>Crear tipo de Gate</h1>
+        <h1>Modificar Gate</h1>
     </div>
 </section>
 
 <section class="content">
     <div class="container-fluid">
 
-        <div class="card card-primary">
+        <div class="card card-warning">
             <div class="card-header">
-                <h3 class="card-title">Información del tipo de Gate</h3>
+                <h3 class="card-title">Modificar</h3>
             </div>
 
             <form method="post">
                 <div class="card-body">
 
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="GateID" />
 
                     <div class="form-group">
                         <label>Tipo de Gate</label>
-                        <input asp-for="GateType" class="form-control" placeholder="Ingrese el tipo de Gate" />
-                    </div>
+                        <input asp-for="GateType" class="form-control" disabled />
+                        <input type="hidden" asp-for="GateType" />
+                    </div>        
 
                     <div class="form-group">
                         <label>Estado</label>
                         <select asp-for="GateStatus" class="form-control">
-                            <option value="true">Active</option>
-                            <option value="false">Inactive</option>
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
                         </select>
                     </div>
 
                 </div>
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-warning">Actualizar</button>
                     <a asp-page="/Gates/Gate_List" class="btn btn-secondary">Cancelar</a>
                 </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             </form>
+
         </div>
 
     </div>

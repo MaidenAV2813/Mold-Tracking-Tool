@@ -8,5 +8,6 @@ namespace CAPA_ENTITY
     {
         public int? CastingID { get; set; }
         public string? CastingType { get; set; }
+        public Boolean CastingStatus { get; set; }
     }
 }

@@ -30,31 +30,31 @@ namespace Tracking_Tool_System.Pages.Critically
             }
         }
 
-        public async Task<IActionResult> OnPostEliminar(int id)
-        {
-            try
-            {
-                var response = await _apiService.PostAsync("Critically/delete", new CriticallyMoldEntity
-                {
-                    CriticallyID = id
-                });
+        //public async Task<IActionResult> OnPostEliminar(int id)
+        //{
+        //    try
+        //    {
+        //        var response = await _apiService.PostAsync("Critically/delete", new CriticallyMoldEntity
+        //        {
+        //            CriticallyID = id
+        //        });
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    ModelState.AddModelError(string.Empty, error);
-                    GridList = await _apiService.GetAsync<CriticallyMoldEntity>("Critically");
-                    return Page();
-                }
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            var error = await response.Content.ReadAsStringAsync();
+        //            ModelState.AddModelError(string.Empty, error);
+        //            GridList = await _apiService.GetAsync<CriticallyMoldEntity>("Critically");
+        //            return Page();
+        //        }
 
-                return RedirectToPage("/Critically/Critically_List");
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                GridList = await _apiService.GetAsync<CriticallyMoldEntity>("Critically");
-                return Page();
-            }
-        }
+        //        return RedirectToPage("/Critically/Critically_List");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ModelState.AddModelError(string.Empty, ex.Message);
+        //        GridList = await _apiService.GetAsync<CriticallyMoldEntity>("Critically");
+        //        return Page();
+        //    }
+        //}
     }
 }

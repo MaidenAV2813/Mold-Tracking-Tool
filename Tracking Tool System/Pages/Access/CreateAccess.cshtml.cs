@@ -59,59 +59,110 @@ namespace Tracking_Tool_System.Pages.Access
 
         public async Task OnGet()
         {
-
-            Roles = (await _apiService.GetAsync<RolEntity>("roles"))
-                .Where(x => x.RolStatus == true)
-                .ToList();
+            await LoadRoles();
         }
-        
+
         public async Task<IActionResult> OnPost()
         {
-            Roles = (await _apiService.GetAsync<RolEntity>("roles"))
-                .Where(x => x.RolStatus == true)
-                .ToList();
-
-            if (!ModelState.IsValid)
-                return Page();
+            // Se cargan nuevamente los roles por si hay que retornar la página.
+            await LoadRoles();
 
             if (RolID == null)
             {
-                ModelState.AddModelError(string.Empty, "Debe seleccionar un rol.");
+                TempData["ErrorMessage"] =
+                    "Debe seleccionar un rol.";
+
                 return Page();
             }
 
-            if (SelectedModules == null || !SelectedModules.Any())
+            if (SelectedModules == null ||
+                !SelectedModules.Any())
             {
-                ModelState.AddModelError(string.Empty, "Debe seleccionar al menos un módulo.");
+                TempData["ErrorMessage"] =
+                    "Debe seleccionar al menos un módulo.";
+
                 return Page();
             }
 
-            var user = User.Identity?.Name ?? "System";
+            var currentUser =
+                User.Identity?.Name ?? "System";
+
             var now = DateTime.Now;
 
-            foreach (var module in SelectedModules)
+            try
             {
-                var entity = new AccessEntity
+                foreach (var module in SelectedModules)
                 {
-                    RolID = RolID,
-                    AccessDescription = module.Trim(),
-                    CreatedBy = user,
-                    ModifiedBy = user,
-                    DateCreation = DateTime.Now,
-                    DateModification = DateTime.Now
-                };
+                    var entity = new AccessEntity
+                    {
+                        RolID = RolID,
+                        AccessDescription =
+                            module.Trim(),
 
-                var response = await _apiService.PostAsync("access", entity);
+                        CreatedBy =
+                            currentUser,
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    ModelState.AddModelError(string.Empty, error);
-                    return Page();
+                        ModifiedBy =
+                            currentUser,
+
+                        DateCreation =
+                            now,
+
+                        DateModification =
+                            now
+                    };
+
+                    var response =
+                        await _apiService.PostAsync(
+                            "access",
+                            entity
+                        );
+
+                    var result =
+                        await response.Content
+                            .ReadFromJsonAsync<DBEntity>();
+
+                    if (result == null)
+                    {
+                        TempData["ErrorMessage"] =
+                            "La API no devolvió una respuesta válida.";
+
+                        return Page();
+                    }
+
+                    if (result.CodeError != 0)
+                    {
+                        TempData["ErrorMessage"] =
+                            result.MsgError ??
+                            "No fue posible asignar los accesos.";
+
+                        return Page();
+                    }
                 }
-            }
 
-            return RedirectToPage("/Access/Access_List");
+                TempData["SuccessMessage"] =
+                    "Los accesos fueron asignados correctamente.";
+
+                return RedirectToPage(
+                    "/Access/Access_List"
+                );
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] =
+                    "Ocurrió un error al asignar los accesos. "
+                    + ex.Message;
+
+                return Page();
+            }
+        }
+
+        private async Task LoadRoles()
+        {
+            Roles = (await _apiService
+                .GetAsync<RolEntity>("roles"))
+                .Where(x => x.RolStatus == true)
+                .ToList();
         }
     }
 }

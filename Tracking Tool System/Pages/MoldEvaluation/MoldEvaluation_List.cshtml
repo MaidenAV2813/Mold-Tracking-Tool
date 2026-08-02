@@ -127,7 +127,7 @@
 
                                             @if (item.GeneralScore.HasValue)
                                             {
-                                                if (item.GeneralScore >= 90)
+                                                if (item.GeneralScore >= 85)
                                                 {
                                                     <span class="badge badge-success">
 
@@ -163,15 +163,13 @@
 
                                         <td class="text-center">
 
-                                            @item.DateEvaluation?
-                                            .ToString("MM-dd-yyyy")
+                                            @item.DateEvaluation?.ToString("MM-dd-yyyy")
 
                                         </td>
 
                                         <td class="text-center">
 
-                                            @item.NextEvaluationDate?
-                                            .ToString("MM-dd-yyyy")
+                                            @item.NextEvaluationDate?.ToString("MM-dd-yyyy")
 
                                         </td>
 

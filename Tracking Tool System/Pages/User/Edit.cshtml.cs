@@ -73,17 +73,17 @@ namespace Tracking_Tool_System.Pages.User
             var user = User.Identity?.Name ?? "System";
             var now = DateTime.Now;
 
-            var accessList = await _apiService.GetAsync<AccessEntity>("access");
+            //var accessList = await _apiService.GetAsync<AccessEntity>("access");
 
-            bool rolTieneAccesos = accessList.Any(x => x.RolID == RolID);
+            //bool rolTieneAccesos = accessList.Any(x => x.RolID == RolID);
 
-            if (!rolTieneAccesos)
-            {
-                Roles = await _apiService.GetAsync<RolEntity>("roles");
+            //if (!rolTieneAccesos)
+            //{
+            //    Roles = await _apiService.GetAsync<RolEntity>("roles");
 
-                ModelState.AddModelError(string.Empty, "No se puede asignar este rol porque no tiene accesos configurados.");
-                return Page();
-            }
+            //    ModelState.AddModelError(string.Empty, "No se puede asignar este rol porque no tiene accesos configurados.");
+            //    return Page();
+            //}
 
 
 

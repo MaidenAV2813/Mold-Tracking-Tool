@@ -30,31 +30,31 @@ namespace Tracking_Tool_System.Pages.Casting
             }
         }
 
-        public async Task<IActionResult> OnPostEliminar(int id)
-        {
-            try
-            {
-                var response = await _apiService.PostAsync("Casting/delete", new CastingMoldEntity
-                {
-                    CastingID = id
-                });
+        //public async Task<IActionResult> OnPostEliminar(int id)
+        //{
+        //    try
+        //    {
+        //        var response = await _apiService.PostAsync("Casting/delete", new CastingMoldEntity
+        //        {
+        //            CastingID = id
+        //        });
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    ModelState.AddModelError(string.Empty, error);
-                    GridList = await _apiService.GetAsync<CastingMoldEntity>("Casting");
-                    return Page();
-                }
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            var error = await response.Content.ReadAsStringAsync();
+        //            ModelState.AddModelError(string.Empty, error);
+        //            GridList = await _apiService.GetAsync<CastingMoldEntity>("Casting");
+        //            return Page();
+        //        }
 
-                return RedirectToPage("/Casting/Casting_List");
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                GridList = await _apiService.GetAsync<CastingMoldEntity>("Casting");
-                return Page();
-            }
-        }
+        //        return RedirectToPage("/Casting/Casting_List");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ModelState.AddModelError(string.Empty, ex.Message);
+        //        GridList = await _apiService.GetAsync<CastingMoldEntity>("Casting");
+        //        return Page();
+        //    }
+        //}
     }
 }

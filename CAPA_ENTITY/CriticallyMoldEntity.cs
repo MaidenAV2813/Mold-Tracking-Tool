@@ -8,5 +8,6 @@ namespace CAPA_ENTITY
     {
         public int? CriticallyID { get; set; }
         public string? CriticallyType { get; set; }
+        public Boolean CriticallyStatus { get; set; }
     }
 }

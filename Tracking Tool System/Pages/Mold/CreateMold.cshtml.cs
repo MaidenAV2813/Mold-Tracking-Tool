@@ -102,26 +102,31 @@ namespace Tracking_Tool_System.Pages.Mold
         {
             CriticallyList = (await _apiService
                 .GetAsync<CriticallyMoldEntity>("Critically"))
+                .Where(x => x.CriticallyStatus == true)
                 .OrderBy(x => x.CriticallyType)
                 .ToList();
 
             GateList = (await _apiService
-                .GetAsync<GateTypeEntity>("Gates"))
+                .GetAsync<GateTypeEntity>("gates"))
+                .Where(x => x.GateStatus == true)
                 .OrderBy(x => x.GateType)
                 .ToList();
 
             CastingList = (await _apiService
                 .GetAsync<CastingMoldEntity>("Casting"))
+                .Where(x => x.CastingStatus == true)
                 .OrderBy(x => x.CastingType)
                 .ToList();
 
             ActuatorList = (await _apiService
                 .GetAsync<ActuatorTypeEntity>("Actuator"))
+                .Where(x => x.ActuatorStatus == true)
                 .OrderBy(x => x.ActuatorType)
                 .ToList();
 
             CategorizationList = (await _apiService
                 .GetAsync<CategorizationMoldEntity>("Categorization"))
+                //.Where(x => x.CategorizationStatus == true)
                 .OrderBy(x => x.CategorizationType)
                 .ToList();
         }

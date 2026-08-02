@@ -30,31 +30,31 @@ namespace Tracking_Tool_System.Pages.Actuator
             }
         }
 
-        public async Task<IActionResult> OnPostEliminar(int id)
-        {
-            try
-            {
-                var response = await _apiService.PostAsync("Actuator/delete", new ActuatorTypeEntity
-                {
-                    ActuatorID = id
-                });
+        //public async Task<IActionResult> OnPostEliminar(int id)
+        //{
+        //    try
+        //    {
+        //        var response = await _apiService.PostAsync("Actuator/delete", new ActuatorTypeEntity
+        //        {
+        //            ActuatorID = id
+        //        });
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    ModelState.AddModelError(string.Empty, error);
-                    GridList = await _apiService.GetAsync<ActuatorTypeEntity>("Actuator");
-                    return Page();
-                }
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            var error = await response.Content.ReadAsStringAsync();
+        //            ModelState.AddModelError(string.Empty, error);
+        //            GridList = await _apiService.GetAsync<ActuatorTypeEntity>("Actuator");
+        //            return Page();
+        //        }
 
-                return RedirectToPage("/Actuator/Actuator_List");
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                GridList = await _apiService.GetAsync<ActuatorTypeEntity>("Actuator");
-                return Page();
-            }
-        }
+        //        return RedirectToPage("/Actuator/Actuator_List");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ModelState.AddModelError(string.Empty, ex.Message);
+        //        GridList = await _apiService.GetAsync<ActuatorTypeEntity>("Actuator");
+        //        return Page();
+        //    }
+        //}
     }
 }

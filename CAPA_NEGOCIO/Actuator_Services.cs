@@ -43,23 +43,15 @@ namespace CAPA_NEGOCIO
 
         //Metodo GetById
 
-        //public async Task<GateTypeEntity> GetById(GateTypeEntity entity)
+        public async Task<ActuatorTypeEntity?> GetById(ActuatorTypeEntity entity)
+        {
+            var result = await sql.QueryFirstAsync<ActuatorTypeEntity>("sp_Actuator_GetById",new
+                {
+                    ActuatorID = entity.ActuatorID
+                });
 
-        //{
-        //    try
-
-        //    {
-        //        var result = sql.QueryFirstAsync<GateTypeEntity>("sp_Gates_GetById", new
-
-        //        { entity.GateID });
-
-        //        return await result;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
+            return result;
+        }
 
         //Metodo Create
 
@@ -71,7 +63,8 @@ namespace CAPA_NEGOCIO
                 entity.CreatedBy,
                 entity.DateCreation,
                 entity.DateModification,
-                entity.ModifiedBy
+                entity.ModifiedBy,
+                entity.ActuatorStatus
             });
 
             return await result;
@@ -79,49 +72,49 @@ namespace CAPA_NEGOCIO
 
         //Metodo Update
 
-        //public async Task<DBEntity> Update(GateTypeEntity entity)
-
-        //{
-        //    try
-
-        //    {
-        //        var result = sql.ExecuteAsync("sp_Gates_Update", new
-
-        //        {
-        //            entity.GateID,
-        //            entity.GateType,
-        //            entity.DateModification,
-        //            entity.ModifiedBy
-        //        });
-
-        //        return await result;
-        //    }
-
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        //Metodo Delete
-        public async Task<DBEntity> Delete(ActuatorTypeEntity entity)
+        public async Task<DBEntity> Update(ActuatorTypeEntity entity)
 
         {
             try
 
             {
-                var result = sql.ExecuteAsync("sp_ActuatorType_DeleteByGateID", new
+                var result = sql.ExecuteAsync("sp_Actuator_Update", new
+
                 {
                     entity.ActuatorID,
+                    entity.ActuatorStatus,
+                    entity.DateModification,
+                    entity.ModifiedBy
                 });
 
                 return await result;
             }
+
             catch (Exception)
             {
                 throw;
             }
         }
+
+        //Metodo Delete
+        //public async Task<DBEntity> Delete(ActuatorTypeEntity entity)
+
+        //{
+        //    try
+
+        //    {
+        //        var result = sql.ExecuteAsync("sp_ActuatorType_DeleteByGateID", new
+        //        {
+        //            entity.ActuatorID,
+        //        });
+
+        //        return await result;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
         
     }
 

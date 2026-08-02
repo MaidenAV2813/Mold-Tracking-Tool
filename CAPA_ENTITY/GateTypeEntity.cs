@@ -8,5 +8,6 @@ namespace CAPA_ENTITY
     {
         public int? GateID { get; set; }
         public string? GateType { get; set; }
+        public Boolean GateStatus { get; set; }
     }
 }
