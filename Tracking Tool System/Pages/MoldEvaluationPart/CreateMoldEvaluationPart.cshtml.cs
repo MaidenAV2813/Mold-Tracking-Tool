@@ -19,6 +19,9 @@ namespace Tracking_Tool_System.Pages.MoldEvaluationPart
         [BindProperty]
         public string? Parts { get; set; }
 
+        [BindProperty]
+        public bool PartsStatus { get; set; } = true;
+
         public void OnGet()
         {
         }
@@ -40,7 +43,7 @@ namespace Tracking_Tool_System.Pages.MoldEvaluationPart
             var entity = new MoldEvaluationPartEntity
             {
                 Parts = Parts.Trim(),
-
+                PartsStatus = PartsStatus,
                 DateCreation = DateTime.Now,
                 DateModification = DateTime.Now,
 

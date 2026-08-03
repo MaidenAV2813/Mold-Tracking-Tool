@@ -8,6 +8,6 @@ namespace CAPA_ENTITY
     {
         public int? MoldEvaPartID { get; set; }
         public string? Parts { get; set; }
-
+        public Boolean PartsStatus { get; set; }
     }
 }

@@ -29,39 +29,39 @@ namespace Tracking_Tool_System.Pages.MoldEvaluationPart
             return Page();
         }
 
-        public async Task<IActionResult> OnPostDelete()
-        {
-            if (MoldEvaPartID == null)
-            {
-                ModelState.AddModelError(
-                    string.Empty,
-                    "Debe seleccionar una parte para eliminar.");
+        //public async Task<IActionResult> OnPostDelete()
+        //{
+        //    if (MoldEvaPartID == null)
+        //    {
+        //        ModelState.AddModelError(
+        //            string.Empty,
+        //            "Debe seleccionar una parte para eliminar.");
 
-                await LoadGrid();
+        //        await LoadGrid();
 
-                return Page();
-            }
+        //        return Page();
+        //    }
 
-            var response = await _apiService.DeleteAsync(
-                $"MoldEvaluationPart/{MoldEvaPartID}");
+        //    var response = await _apiService.DeleteAsync(
+        //        $"MoldEvaluationPart/{MoldEvaPartID}");
 
-            var result = await response.Content
-                .ReadFromJsonAsync<DBEntity>();
+        //    var result = await response.Content
+        //        .ReadFromJsonAsync<DBEntity>();
 
-            if (result != null && result.CodeError != 0)
-            {
-                ModelState.AddModelError(
-                    string.Empty,
-                    result.MsgError ?? "No fue posible eliminar la parte.");
+        //    if (result != null && result.CodeError != 0)
+        //    {
+        //        ModelState.AddModelError(
+        //            string.Empty,
+        //            result.MsgError ?? "No fue posible eliminar la parte.");
 
-                await LoadGrid();
+        //        await LoadGrid();
 
-                return Page();
-            }
+        //        return Page();
+        //    }
 
-            return RedirectToPage(
-                "/MoldEvaluationPart/MoldEvaluationPart_List");
-        }
+        //    return RedirectToPage(
+        //        "/MoldEvaluationPart/MoldEvaluationPart_List");
+        //}
 
         private async Task LoadGrid()
         {

@@ -21,6 +21,9 @@ namespace Tracking_Tool_System.Pages.MoldEvaluationPart
         [BindProperty]
         public string? Parts { get; set; }
 
+        [BindProperty]
+        public bool PartsStatus { get; set; }
+
         public async Task<IActionResult> OnGet(int id)
         {
             var entity = await _apiService
@@ -34,6 +37,7 @@ namespace Tracking_Tool_System.Pages.MoldEvaluationPart
 
             MoldEvaPartID = entity.MoldEvaPartID;
             Parts = entity.Parts;
+            PartsStatus = entity.PartsStatus;
 
             return Page();
         }
@@ -64,6 +68,7 @@ namespace Tracking_Tool_System.Pages.MoldEvaluationPart
             {
                 MoldEvaPartID = MoldEvaPartID,
                 Parts = Parts.Trim(),
+                PartsStatus = PartsStatus,
 
                 DateModification = DateTime.Now,
                 ModifiedBy = user

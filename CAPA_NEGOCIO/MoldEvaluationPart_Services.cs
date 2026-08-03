@@ -36,7 +36,8 @@ namespace CAPA_NEGOCIO
                     entity.DateCreation,
                     entity.DateModification,
                     entity.CreatedBy,
-                    entity.ModifiedBy
+                    entity.ModifiedBy,
+                    entity.PartsStatus
                 });
         }
 
@@ -47,16 +48,17 @@ namespace CAPA_NEGOCIO
                     entity.MoldEvaPartID,
                     entity.Parts,
                     entity.DateModification,
-                    entity.ModifiedBy
+                    entity.ModifiedBy,
+                    entity.PartsStatus
                 });
         }
 
-        public async Task<DBEntity> Delete(MoldEvaluationPartEntity entity)
-        {
-            return await sql.ExecuteAsync("sp_MoldEvaluationPart_Delete",new
-                {
-                    entity.MoldEvaPartID
-                });
-        }
+        //public async Task<DBEntity> Delete(MoldEvaluationPartEntity entity)
+        //{
+        //    return await sql.ExecuteAsync("sp_MoldEvaluationPart_Delete",new
+        //        {
+        //            entity.MoldEvaPartID
+        //        });
+        //}
     }
 }

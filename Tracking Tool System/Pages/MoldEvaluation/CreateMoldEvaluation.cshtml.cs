@@ -228,6 +228,7 @@ namespace Tracking_Tool_System.Pages.MoldEvaluation
                     "MoldEvaluationPart");
 
             EvaluationParts = parts
+                .Where(x => x.PartsStatus == true)
                 .OrderBy(x => x.Parts)
                 .Select(x => new MoldPartEvaluationEntity
                 {

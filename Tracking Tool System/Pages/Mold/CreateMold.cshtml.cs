@@ -126,7 +126,7 @@ namespace Tracking_Tool_System.Pages.Mold
 
             CategorizationList = (await _apiService
                 .GetAsync<CategorizationMoldEntity>("Categorization"))
-                //.Where(x => x.CategorizationStatus == true)
+                .Where(x => x.CategorizationStatus == true)
                 .OrderBy(x => x.CategorizationType)
                 .ToList();
         }

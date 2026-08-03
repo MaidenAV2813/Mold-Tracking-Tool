@@ -8,6 +8,6 @@ namespace CAPA_NEGOCIO
         Task<MoldEvaluationPartEntity> GetById(MoldEvaluationPartEntity entity);
         Task<DBEntity> Create(MoldEvaluationPartEntity entity);
         Task<DBEntity> Update(MoldEvaluationPartEntity entity);
-        Task<DBEntity> Delete(MoldEvaluationPartEntity entity);
+        //Task<DBEntity> Delete(MoldEvaluationPartEntity entity);
     }
 }

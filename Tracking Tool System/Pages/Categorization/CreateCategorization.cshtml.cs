@@ -19,6 +19,9 @@ namespace Tracking_Tool_System.Pages.Categorization
         public string? CategorizationType { get; set; }
 
         [BindProperty]
+        public bool CategorizationStatus { get; set; } = true;
+
+        [BindProperty]
         public DateTime DateCreation { get; set; }
 
         [BindProperty]
@@ -43,7 +46,8 @@ namespace Tracking_Tool_System.Pages.Categorization
                     CreatedBy = categorization,
                     ModifiedBy = categorization,
                     DateCreation = DateTime.Now,
-                    DateModification = DateTime.Now
+                    DateModification = DateTime.Now,
+                    CategorizationStatus = CategorizationStatus
 
                 };
 
@@ -51,11 +55,21 @@ namespace Tracking_Tool_System.Pages.Categorization
 
                 var result = await response.Content.ReadFromJsonAsync<DBEntity>();
 
-                if (result != null && result.CodeError != 0)
+                if (result == null)
                 {
-                    ModelState.AddModelError(string.Empty, result.MsgError);
+                    TempData["ErrorMessage"] = "La API no devolvió una respuesta válida.";
+
                     return Page();
                 }
+
+                if (result.CodeError != 0)
+                {
+                    TempData["ErrorMessage"] = result.MsgError ?? "No fue posible crear la categorización.";
+
+                    return Page();
+                }
+
+                TempData["SuccessMessage"] = result.MsgError ?? "Categorización creada correctamente.";
 
                 return RedirectToPage("/Categorization/Categorization_List");
             }

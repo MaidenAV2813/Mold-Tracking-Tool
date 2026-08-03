@@ -38,7 +38,7 @@
 
                     </button>
 
-                    <button type="button"
+                    @* <button type="button"
                             id="btnDelete"
                             class="btn btn-danger btn-sm"
                             disabled>
@@ -46,7 +46,7 @@
                         <i class="fas fa-trash"></i>
                         Eliminar
 
-                    </button>
+                    </button> *@
 
                 </div>
                 <a asp-page="/Index"
@@ -93,6 +93,7 @@
 
                                 <tr>
                                     <th>Parte</th>
+                                    <th>Estado</th>
                                     <th>Fecha de creación</th>
                                 </tr>
 
@@ -108,7 +109,7 @@
                                         style="cursor:pointer;">
 
                                         <td>@item.Parts</td>
-
+                                        <td>@(item.PartsStatus ? "Activo" : "Inactivo")</td>
                                         <td>
                                             @item.DateCreation?.ToString("MM-dd-yyyy")
                                         </td>
@@ -166,29 +167,29 @@
                     + selectedID;
             });
 
-            $('#btnDelete').on('click', function () {
+            // $('#btnDelete').on('click', function () {
 
-                if (!selectedID) {
-                    return;
-                }
+            //     if (!selectedID) {
+            //         return;
+            //     }
 
-                const confirmDelete = confirm(
-                    '¿Está seguro de que desea eliminar la parte "' +
-                    selectedPart +
-                    '"?'
-                );
+            //     const confirmDelete = confirm(
+            //         '¿Está seguro de que desea eliminar la parte "' +
+            //         selectedPart +
+            //         '"?'
+            //     );
 
-                if (!confirmDelete) {
-                    return;
-                }
+            //     if (!confirmDelete) {
+            //         return;
+            //     }
 
-                $('#deleteForm').attr(
-                    'action',
-                    '?handler=Delete'
-                );
+            //     $('#deleteForm').attr(
+            //         'action',
+            //         '?handler=Delete'
+            //     );
 
-                $('#deleteForm').submit();
-            });
+            //     $('#deleteForm').submit();
+            // });
 
             $('#searchPart').on('input', function () {
 

@@ -8,5 +8,6 @@ namespace CAPA_ENTITY
     {
         public int? CategorizationID { get; set; }
         public string? CategorizationType { get; set; }
+        public Boolean CategorizationStatus { get; set; }
     }
 }

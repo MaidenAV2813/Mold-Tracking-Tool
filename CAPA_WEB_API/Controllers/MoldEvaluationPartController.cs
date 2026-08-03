@@ -95,25 +95,25 @@ namespace CAPA_WEB_API.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            try
-            {
-                return Ok(await _services.Delete(
-                    new MoldEvaluationPartEntity
-                    {
-                        MoldEvaPartID = id
-                    }));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new DBEntity
-                {
-                    CodeError = ex.HResult,
-                    MsgError = ex.Message
-                });
-            }
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    try
+        //    {
+        //        return Ok(await _services.Delete(
+        //            new MoldEvaluationPartEntity
+        //            {
+        //                MoldEvaPartID = id
+        //            }));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new DBEntity
+        //        {
+        //            CodeError = ex.HResult,
+        //            MsgError = ex.Message
+        //        });
+        //    }
+        //}
     }
 }

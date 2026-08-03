@@ -53,7 +53,7 @@
                         {
                             <tr onclick="selectRow(@Actuador.ActuatorID)" style="cursor:pointer;">
                                 <td>@Actuador.ActuatorType</td>
-                                <td>@(Actuador.ActuatorStatus ? "Active" : "Inactive")</td>
+                                <td>@(Actuador.ActuatorStatus ? "Activo" : "Inactivo")</td>
                                 <td>@Actuador.DateCreation?.ToString("MM-dd-yyyy")</td>
                             </tr>
                         }
