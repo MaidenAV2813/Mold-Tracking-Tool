@@ -84,6 +84,7 @@
                         <thead class="bg-primary text-white">
                             <tr>
                                 <th>Número de parte</th>
+                                <th>Descripción</th>
                                 <th>Localidad</th>
                                 <th>Cantidad</th>
                                 <th>Unidad de medida</th>
@@ -97,6 +98,7 @@
                             {
                                 <tr style="cursor:pointer;">
                                     <td>@part.ItemNumber</td>
+                                    <td>@part.ItemDescription</td>
                                     <td>@part.LocationNumber</td>
                                     <td>@part.QtyOnHand</td>
                                     <td>@part.UOM</td>
@@ -160,7 +162,7 @@
 
                     const locationNumber =
                         $(this)
-                            .find('td:eq(1)')
+                            .find('td:eq(2)')
                             .text()
                             .trim()
                             .toLowerCase();

@@ -121,7 +121,7 @@ namespace Tracking_Tool_System.Pages.InventoryBOH
                 worksheet.Cell("A1").Value =
                     "BALANCE DE INVENTARIO";
 
-                worksheet.Range("A1:F1").Merge();
+                worksheet.Range("A1:G1").Merge();
 
                 worksheet.Cell("A1")
                     .Style.Font.Bold = true;
@@ -137,7 +137,7 @@ namespace Tracking_Tool_System.Pages.InventoryBOH
                     $"Fecha de generación: " +
                     $"{DateTime.Now:MM-dd-yyyy HH:mm:ss}";
 
-                worksheet.Range("A2:F2").Merge();
+                worksheet.Range("A2:G2").Merge();
 
                 worksheet.Cell("A2")
                     .Style.Alignment.Horizontal =
@@ -186,18 +186,21 @@ namespace Tracking_Tool_System.Pages.InventoryBOH
                     "Número de parte";
 
                 worksheet.Cell(headerRow, 2).Value =
-                    "Localidad";
+                    "Descripción";
 
                 worksheet.Cell(headerRow, 3).Value =
-                    "Cantidad";
+                    "Localidad";
 
                 worksheet.Cell(headerRow, 4).Value =
-                    "Unidad de medida";
+                    "Cantidad";
 
                 worksheet.Cell(headerRow, 5).Value =
-                    "Estado";
+                    "Unidad de medida";
 
                 worksheet.Cell(headerRow, 6).Value =
+                    "Estado";
+
+                worksheet.Cell(headerRow, 7).Value =
                     "Suplidor";
 
                 var headerRange =
@@ -205,7 +208,7 @@ namespace Tracking_Tool_System.Pages.InventoryBOH
                         headerRow,
                         1,
                         headerRow,
-                        6
+                        7
                     );
 
                 headerRange.Style.Font.Bold = true;
@@ -227,23 +230,26 @@ namespace Tracking_Tool_System.Pages.InventoryBOH
                         item.ItemNumber ?? string.Empty;
 
                     worksheet.Cell(currentRow, 2).Value =
+                        item.ItemDescription ?? string.Empty;
+
+                    worksheet.Cell(currentRow, 3).Value =
                         item.LocationNumber ?? string.Empty;
 
                     if (item.QtyOnHand.HasValue)
                     {
-                        worksheet.Cell(currentRow, 3).Value =
+                        worksheet.Cell(currentRow, 4).Value =
                             Convert.ToDouble(
                                 item.QtyOnHand.Value
                             );
                     }
 
-                    worksheet.Cell(currentRow, 4).Value =
+                    worksheet.Cell(currentRow, 5).Value =
                         item.UOM ?? string.Empty;
 
-                    worksheet.Cell(currentRow, 5).Value =
+                    worksheet.Cell(currentRow, 6).Value =
                         item.ItemStatus ?? string.Empty;
 
-                    worksheet.Cell(currentRow, 6).Value =
+                    worksheet.Cell(currentRow, 7).Value =
                         item.ActualSupplier ?? string.Empty;
 
                     currentRow++;
@@ -273,7 +279,7 @@ namespace Tracking_Tool_System.Pages.InventoryBOH
                         headerRow,
                         1,
                         currentRow - 1,
-                        6
+                        7
                     );
 
                 dataRange.Style.Border.OutsideBorder =
@@ -301,25 +307,26 @@ namespace Tracking_Tool_System.Pages.InventoryBOH
                         headerRow,
                         1,
                         currentRow - 1,
-                        6
+                        7
                     ).SetAutoFilter();
                 }
 
                 worksheet.SheetView
                     .FreezeRows(headerRow);
 
-                worksheet.Column(1).Width = 25;
-                worksheet.Column(2).Width = 20;
+                worksheet.Column(1).Width = 20;
+                worksheet.Column(2).Width = 25;
                 worksheet.Column(3).Width = 15;
-                worksheet.Column(4).Width = 20;
+                worksheet.Column(4).Width = 15;
                 worksheet.Column(5).Width = 20;
-                worksheet.Column(6).Width = 40;
+                worksheet.Column(6).Width = 10;
+                worksheet.Column(7).Width = 20;
 
-                worksheet.Columns(1, 6)
+                worksheet.Columns(1, 7)
                     .Style.Alignment.Vertical =
                         XLAlignmentVerticalValues.Center;
 
-                worksheet.Column(6)
+                worksheet.Column(7)
                     .Style.Alignment.WrapText = true;
 
                 using var stream =
