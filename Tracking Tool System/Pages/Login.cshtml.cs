@@ -81,7 +81,7 @@ namespace Tracking_Tool_System.Pages
                 new Claim("UserID", usuarioSistema.UserID.ToString()),
                 new Claim("RolID", usuarioSistema.RolID.ToString() ?? ""),
                 new Claim("RolType", usuarioSistema.RolType ?? ""),
-                new Claim("EmpName", usuarioSistema.EmpName ?? "")
+                new Claim("EmpName", usuarioSistema.EmpName ?? ""),
             };
 
             foreach (var acceso in accesosUsuario)
