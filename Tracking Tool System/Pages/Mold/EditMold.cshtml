@@ -1,0 +1,419 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Mold.EditMoldModel
+
+@{
+    ViewData["Title"] = "Editar Molde";
+    //ViewData["Title"] = "Editar Molde";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Modificar Molde</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Modificar</h3>
+            </div>
+
+            <form method="post">
+                <div class="card-body">
+
+                    <input type="hidden" asp-for="MoldID" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                    <div class="form-group">
+                        <label>Criticidad</label>
+                        <select asp-for="CriticallyID" class="form-control">
+                            
+                            @foreach (var critically in Model.Critically)
+                            {
+                                <option value="@critically.CriticallyID">@critically.CriticallyType</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gate</label>
+                        <select asp-for="GateID" class="form-control">
+                            
+                            @foreach (var gate in Model.Gate)
+                            {
+                                <option value="@gate.GateID">@gate.GateType</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Colada</label>
+                        <select asp-for="CastingID" class="form-control">
+                            
+                            @foreach (var casting in Model.Casting)
+                            {
+                                <option value="@casting.CastingID">@casting.CastingType</option>
+                            }
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Actuador</label>
+                        <select asp-for="ActuatorID" class="form-control">
+                            
+                            @foreach (var actuator in Model.Actuator)
+                            {
+                                <option value="@actuator.ActuatorID">@actuator.ActuatorType</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Categorizacion</label>
+                        <select asp-for="CategorizationID" class="form-control">
+
+                            @foreach (var categorization in Model.Categorization)
+                            {
+                                <option value="@categorization.CategorizationID">@categorization.CategorizationType</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Numero de activo</label>
+                        <input asp-for="MoldAssetNumber" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Numero de molde</label>
+                        <input asp-for="MoldNumber" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripcion del molde</label>
+                        <input asp-for="MoldDescription" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select asp-for="MoldStatus" class="form-control">
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ubicacion</label>
+                        <input asp-for="MoldOrigin" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Plano</label>
+                        <select asp-for="DigitalPlane" class="form-control">
+                            <option value="Fisico">Fisico</option>
+                            <option value="Digital">Digital</option>
+                            <option value="Fisico/Digital">Fisico/Digital</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cantidad de cavidades</label>
+                        <input asp-for="CavityQty" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cantidad de cavidades bloqueadas</label>
+                        <input asp-for="BlockCavityQty" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tiene contador</label>
+                        <select asp-for="HaveCounter" class="form-control"
+                            id="HaveCounter">
+                            <option value="Si">Si</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de contador</label>
+                        <select asp-for="CounterType"
+                                class="form-control"
+                                id="CounterType">
+                            <option value="Empotrado">Empotrado</option>
+                            <option value="Externo">Externo</option>
+                            <option value="N/A">N/A</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Molde de tres placas</label>
+                        <select asp-for="ThreeLayer" class="form-control">
+                            <option value="Si">Si</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Conteo Inicial</label>
+                        <input asp-for="InitialCount" class="form-control" />
+                    </div>
+                    <div class="form-group mt-4">
+                        <label>
+                            ¿Cuenta con al menos 25% de los repuestos críticos disponibles?
+                        </label>
+
+                        <select asp-for="Percentage_Spares_available"
+                                class="form-control">
+                            <option value="">Seleccione una opción</option>
+                            <option value="Si">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="row mt-4">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>
+                                    ¿Se le ha realizado una reparación mayor en los últimos 12 meses?
+                                </label>
+
+                                <select asp-for="Last_Reparir_12_Months"
+                                        class="form-control"
+                                        id="Last_Reparir_12_Months">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="Si">Sí</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8"
+                             id="LastRepairCommentDiv"
+                             style="display:none;">
+
+                            <div class="form-group">
+                                <label>Comentario de la reparación</label>
+
+                                <textarea asp-for="Comment_Last_Reparir_12_Months"
+                                          class="form-control"
+                                          id="Comment_Last_Reparir_12_Months"
+                                          rows="2"
+                                          maxlength="500"
+                                          placeholder="Describa la reparación realizada..."></textarea>
+
+                                <small class="text-muted">
+                                    Máximo 500 caracteres
+                                </small>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-4">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>
+                                    ¿Tuvo rechazo por parte de Calidad?
+                                </label>
+
+                                <select asp-for="Quality_Issue"
+                                        class="form-control"
+                                        id="Quality_Issue">
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="Si">Sí</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8"
+                             id="QualityIssueCommentDiv"
+                             style="display:none;">
+
+                            <div class="form-group">
+                                <label>Comentario del rechazo</label>
+
+                                <textarea asp-for="Comment_Quality_Issue"
+                                          class="form-control"
+                                          id="Comment_Quality_Issue"
+                                          rows="2"
+                                          maxlength="500"
+                                          placeholder="Describa el mayor rechazo reportado por Calidad..."></textarea>
+
+                                <small class="text-muted">
+                                    Máximo 500 caracteres
+                                </small>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <br />
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-warning">Actualizar</button>
+                    <a asp-page="/Mold/Mold_List" class="btn btn-secondary"><i 
+                        class="fas fa-arrow-left mr-1"></i>
+                        Regresar
+                    </a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const haveCounter =
+                document.getElementById("HaveCounter");
+
+            const counterType =
+                document.getElementById("CounterType");
+
+            const lastRepairSelect =
+                document.getElementById("Last_Reparir_12_Months");
+
+            const lastRepairCommentDiv =
+                document.getElementById("LastRepairCommentDiv");
+
+            const lastRepairComment =
+                document.getElementById(
+                    "Comment_Last_Reparir_12_Months"
+                );
+
+            const qualityIssueSelect =
+                document.getElementById("Quality_Issue");
+
+            const qualityIssueCommentDiv =
+                document.getElementById(
+                    "QualityIssueCommentDiv"
+                );
+
+            const qualityIssueComment =
+                document.getElementById(
+                    "Comment_Quality_Issue"
+                );
+
+
+            function validateCounterType() {
+
+                if (!haveCounter || !counterType) {
+                    return;
+                }
+
+                if (haveCounter.value === "No") {
+
+                    counterType.value = "N/A";
+                    counterType.style.backgroundColor = "#e9ecef";
+                    counterType.style.pointerEvents = "none";
+
+                } else {
+
+                    counterType.style.backgroundColor = "";
+                    counterType.style.pointerEvents = "";
+
+                    if (counterType.value === "N/A") {
+                        counterType.value = "";
+                    }
+                }
+            }
+
+
+            function toggleLastRepair(clearComment) {
+
+                if (!lastRepairSelect ||
+                    !lastRepairCommentDiv) {
+                    return;
+                }
+
+                if (lastRepairSelect.value === "Si") {
+
+                    lastRepairCommentDiv.style.display = "block";
+
+                } else {
+
+                    lastRepairCommentDiv.style.display = "none";
+
+                    if (clearComment && lastRepairComment) {
+                        lastRepairComment.value = "";
+                    }
+                }
+            }
+
+
+            function toggleQualityIssue(clearComment) {
+
+                if (!qualityIssueSelect ||
+                    !qualityIssueCommentDiv) {
+                    return;
+                }
+
+                if (qualityIssueSelect.value === "Si") {
+
+                    qualityIssueCommentDiv.style.display = "block";
+
+                } else {
+
+                    qualityIssueCommentDiv.style.display = "none";
+
+                    if (clearComment && qualityIssueComment) {
+                        qualityIssueComment.value = "";
+                    }
+                }
+            }
+
+
+            if (haveCounter) {
+
+                haveCounter.addEventListener(
+                    "change",
+                    validateCounterType
+                );
+            }
+
+            if (lastRepairSelect) {
+
+                lastRepairSelect.addEventListener(
+                    "change",
+                    function () {
+                        toggleLastRepair(true);
+                    }
+                );
+            }
+
+            if (qualityIssueSelect) {
+
+                qualityIssueSelect.addEventListener(
+                    "change",
+                    function () {
+                        toggleQualityIssue(true);
+                    }
+                );
+            }
+
+
+            // Cargar el estado inicial del Edit.
+            validateCounterType();
+
+            // false evita borrar comentarios guardados.
+            toggleLastRepair(false);
+            toggleQualityIssue(false);
+
+        });
+    </script>
+}

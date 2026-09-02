@@ -39,5 +39,51 @@ namespace CAPA_WEB_API.Controllers
                 });
             }
         }
+
+        //Edit Metodos
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var result = await _rolesServices.GetById(new RolEntity
+                {
+                    RolID = id
+                });
+
+                if (result == null)
+                    return NotFound();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new DBEntity
+                {
+                    CodeError = ex.HResult,
+                    MsgError = ex.Message
+                });
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] RolEntity entity)
+        {
+            try
+            {
+                var result = await _rolesServices.Update(entity);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new DBEntity
+                {
+                    CodeError = ex.HResult,
+                    MsgError = ex.Message
+                });
+            }
+        }
+
     }
 }

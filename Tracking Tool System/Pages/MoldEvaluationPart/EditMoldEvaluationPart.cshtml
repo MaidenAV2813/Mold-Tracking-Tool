@@ -1,0 +1,97 @@
+﻿@page
+@model Tracking_Tool_System.Pages.MoldEvaluationPart.EditMoldEvaluationPartModel
+
+@{
+    ViewData["Title"] = "Editar parte";
+}
+
+<section class="content-header">
+
+    <div class="container-fluid">
+
+        <h1>Editar parte de evaluación</h1>
+
+    </div>
+
+</section>
+
+<section class="content">
+
+    <div class="container-fluid">
+
+        <div class="card card-warning">
+
+            <div class="card-header">
+
+                <h3 class="card-title">
+                    Modificar parte de evaluación
+                </h3>
+
+            </div>
+
+            <form method="post">
+
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger">
+                    </div>
+
+                    <input asp-for="MoldEvaPartID"
+                           type="hidden" />
+
+                    <div class="form-group">
+
+                        <label asp-for="Parts">
+                            Parte
+                        </label>
+
+                        <input asp-for="Parts"
+                               class="form-control"
+                               disabled
+                               maxlength="150"
+                               autocomplete="off" />
+
+                        <span asp-validation-for="Parts"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select asp-for="PartsStatus" class="form-control">
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+
+                    <button type="submit"
+                            class="btn btn-warning">
+
+                        <i class="fas fa-save"></i>
+                        Actualizar
+
+                    </button>
+
+                    <a asp-page="/MoldEvaluationPart/MoldEvaluationPart_List"
+                       class="btn btn-secondary">
+
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Regresar
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>

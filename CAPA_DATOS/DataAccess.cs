@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
 using CAPA_ENTITY;
 
-
 namespace CAPA_DATOS
 {
     public class DataAccess : IDataAccess
@@ -14,15 +13,11 @@ namespace CAPA_DATOS
         public DataAccess(IConfiguration _Config)
         {
             config = _Config;
-
-
         }
-
 
         public SqlConnection DbConnection => new SqlConnection(
             config.GetConnectionString("DefaultConnection")
         );
-
 
         public async Task<IEnumerable<T>> QueryAsync<T>(string sp, object Param = null, int? Timeout = null)
         {
@@ -36,15 +31,12 @@ namespace CAPA_DATOS
                         , commandTimeout: Timeout);
 
                     return await result;
-
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
 
         public async Task<IEnumerable<dynamic>> QueryAsync(string sp, object Param = null, int? Timeout = null)
@@ -59,7 +51,6 @@ namespace CAPA_DATOS
                         , commandTimeout: Timeout);
 
                     return await result;
-
                 }
             }
             catch (Exception)

@@ -1,68 +1,84 @@
+using CAPA_ENTITY;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
-using System.Data;
+using Tracking_Tool_System.Services;
 
 namespace Tracking_Tool_System.Pages.Rol
 {
     public class CreateModel : PageModel
     {
-        private readonly IConfiguration _configuration;
+        private readonly ApiService _apiService;
 
-        public CreateModel(IConfiguration configuration)
+        public CreateModel(ApiService apiService)
         {
-            _configuration = configuration;
+            _apiService = apiService;
         }
 
-        // 🔹 Campos del formulario
         [BindProperty]
-        public string RolDescription { get; set; }
+        public string? RolDescription { get; set; }
 
         [BindProperty]
-        public string RolType { get; set; }
+        public string? RolType { get; set; }
 
         [BindProperty]
-        public bool Status { get; set; } = true;
+        public bool RolStatus { get; set; } = true;
 
-        // 🔹 Cargar página
         public void OnGet()
         {
         }
 
-        // 🔹 Guardar datos
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
             try
             {
-                string connectionString = _configuration.GetConnectionString("DefaultConnection");
+                var currentUser =
+                    User.Identity?.Name ?? "System";
 
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                var now = DateTime.Now;
+
+                var entity = new RolEntity
                 {
-                    conn.Open();
+                    RolDescription = RolDescription?.Trim(),
 
-                    SqlCommand cmd = new SqlCommand("sp_Rol_Insert", conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    RolType = RolType?.Trim(),
 
-                    cmd.Parameters.AddWithValue("@RolDescription", RolDescription);
-                    cmd.Parameters.AddWithValue("@RolType", RolType);
-                    cmd.Parameters.AddWithValue("@Status", Status);
-                    cmd.Parameters.AddWithValue("@CreatedBy", User.Identity?.Name ?? "System");
+                    RolStatus = RolStatus,
 
-                    cmd.ExecuteNonQuery();
+                    CreatedBy = currentUser,
+
+                    ModifiedBy = currentUser,
+
+                    DateCreation = now,
+
+                    DateModification = now
+                };
+
+                var response = await _apiService.PostAsync("roles",entity);
+
+                var result = await response.Content.ReadFromJsonAsync<DBEntity>();
+
+                if (result == null)
+                {
+                    TempData["ErrorMessage"] = "La API no devolvió una respuesta válida.";
+
+                    return Page();
                 }
 
-                // 🔹 Redirige al listado
-                return RedirectToPage("/Rol/Index");
+                if (result.CodeError != 0)
+                {
+                    TempData["ErrorMessage"] = result.MsgError ?? "No fue posible crear el rol.";
+
+                    return Page();
+                }
+
+                TempData["SuccessMessage"] = result.MsgError ?? "Rol creado correctamente.";
+
+                return RedirectToPage("/Rol/Rol_List");
             }
             catch (Exception ex)
             {
-                // 🔴 Muestra error en pantalla
-                ModelState.AddModelError(string.Empty, ex.Message);
+                TempData["ErrorMessage"] = "Ocurrió un error al crear el rol." + ex.Message;
+
                 return Page();
             }
         }

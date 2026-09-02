@@ -1,303 +1,434 @@
-﻿<!-- Main Sidebar Container -->
+﻿@{
+    bool HasAccess(string accessName)
+    {
+        return User.Claims.Any(c =>
+            c.Type == "Access" &&
+            c.Value.Equals(accessName, StringComparison.OrdinalIgnoreCase));
+    }
+}
+
+<!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-        <div class="brand-link">
-            <img src="~/Template/dist/img/ICU-Medical-Logoz.png"
-                alt="AdminLTE Logo"
-                class="brand-image img-circle elevation-1"
-                style="opacity: .8">
-                <span class="brand-text font-weight-light">
-                    Tracking Tool System
-                </span>
+    <div class="brand-link">
+        <img src="~/Template/dist/img/ICU-Medical-Logoz.png"
+            alt="AdminLTE Logo"
+            class="brand-image img-circle elevation-1"
+            style="opacity: .8">
+        <span class="brand-text font-weight-light">
+            Tracking Tool System
+        </span>
+    </div>
+ 
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+
+            <div class="image">
+                <img src="~/Template/dist/img/user.png" 
+                    class="img-circle elevation-2" 
+                    alt="User Image">
+            </div>
+
+            <div class="info">
+                <a href="#" class="d-block">@(User.FindFirst("DisplayName")?.Value ?? 
+                    User.Identity?.Name ?? "Username")</a>
+            </div>
+
         </div>
  
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="~/Template/dist/img/user.png" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">@(User.FindFirst("DisplayName")?.Value ?? User.Identity?.Name ?? "Username")</a>
-                    </div>
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" 
+                    placeholder="Search" aria-label="Search">
+
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
                 </div>
+
+            </div>
+
+        </div>
  
-                <!-- SidebarSearch Form -->
-                <div class="form-inline">
-                    <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-sidebar">
-                                <i class="fas fa-search fa-fw"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
- 
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" 
+                data-widget="treeview" 
+                role="menu" 
+                data-accordion="false">
+                     
+                @if (HasAccess("Registro del Molde"))
+                {
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-clipboard-list"></i>
+                            <p>
+                                Registro del Molde
+                            </p>
+                            <i class="right fas fa-angle-left"></i>
+                        </a>
 
-                     with font-awesome or any other icon font library -->
-                     @*
-                        <li class="nav-item menu-open">
-                            <a href="#" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
+                        <ul class="nav nav-treeview">
 
-                                    Dashboard
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
+                            @if (HasAccess("Lista de moldes"))
+                            {
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-page="/Dashboards/DashboardConsumibles">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard Ingreso</p>
+                                    <a asp-page="/Mold/Mold_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Lista de moldes</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-page="/Dashboards/DashboarPickeo">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard Pickeo</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>General</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        *@
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-clipboard-list"></i>
-                                <p>
-
-                                    Registro del Molde
-                                    @*<i class="right fas fa-angle-left"></i>*@
-                                </p>
-                            </a>
-                            @*
-                             <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-page="/Kitting/Pedidos">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Pedidos</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-page="/Kitting/Checking">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Checkeo</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-page="/Kitting/Buggies">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Buggies</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-page="/Kitting/Entregas">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Entregas</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-page="pages/charts/inline.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Reportes</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            *@
-                        </li>
+                            }         
                         
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        </ul>
+                            
+                    </li>
+
+                }
+
+                @if (HasAccess("Configuración del Molde"))
+                {
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-cogs"></i>
-                                <p>
-
-                                    Configuracion del Molde
-                                    @*<i class="right fas fa-angle-left"></i>*@
+                                <p> 
+                                    Configuración del Molde
                                 </p>
-                            </a>
-                            @*
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-page="/MFG/Solicitudes">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Solicitudes</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-page="pages/charts/uplot.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Reportes</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            *@
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-clipboard-check"></i>
-                                <p>
+                            <i class="right fas fa-angle-left"></i>
+                        </a>
 
-                                    Evaluacion del Molde
-                                    @*<i class="fas fa-angle-left right"></i>*@
-                                </p>
-                            </a>
-                            @*
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-page="/Plan/Grid">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Daily</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-page="pages/UI/icons.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Reportes</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            *@
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-wrench"></i>
-                                <p>
+                        <ul class="nav nav-treeview">
 
+                            @if (HasAccess("Tipos de Gates"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Gates/Gate_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                            <p>Tipos de Gates</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (HasAccess("Tipos de Coladas"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Casting/Casting_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                            <p>Tipos de Coladas</p>
+                                    </a>
+                                </li>
+
+                            }
+                                
+                            @if (HasAccess("Tipos de Criticidad"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Critically/Critically_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                            <p>Tipos de Criticidad</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (HasAccess("Tipos de Actuadores"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Actuator/Actuator_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                            <p>Tipos de Actuadores</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (HasAccess("Tipos de Categorización"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Categorization/Categorization_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Tipos de Categorización</p>
+                                    </a>
+                                </li>
+                            }
+                               
+                        </ul>
+                            
+                    </li>
+
+                }
+
+                @if (HasAccess("Evaluación del Molde"))
+                {
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-clipboard-list"></i>
+                            <p>
+                                Evaluación del molde
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Partes del molde"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/MoldEvaluationPart/MoldEvaluationPart_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Partes</p>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Evaluación"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/MoldEvaluation/MoldEvaluation_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Evaluación</p>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+
+                    </li>
+                }
+
+                @if (HasAccess("Mantenimiento del Molde"))
+                {
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-wrench"></i>
+                                <p>
                                     Mantenimiento del Molde
-                                    @*<i class="fas fa-angle-left right"></i>*@
-                                </p>
-                            </a>
-                            @*
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-page="/Ingenieria/Tarjetas">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Crear</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-page="pages/forms/advanced.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Modificar</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-page="pages/forms/editors.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Reportes</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            *@
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-boxes"></i>   
-                                <p>
-
-                                    Inventario de repuestos
-                                    @*<i class="fas fa-angle-left right"></i>*@
-                                </p>
-                            </a>
-                           
-                        </li>
-
-                       
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-line"></i>
-                                <p>
-
-                                    Reportes e Indicadores
-                                    @* <i class="fas fa-angle-left right"></i>*@
-                                </p>
-                            </a>
-                            @*
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-page="/Ingenieria/Tarjetas">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Crear</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/forms/advanced.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Modificar</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/forms/editors.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Reportes</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            *@
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-
-                                    Mantenimientos
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                @*<li class="nav-item">
-                                    <a asp-page="pages/tables/simple.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Usuarios</p>
-                                    </a>
-                                </li>*@
+                        </a>
+                        <ul class="nav nav-treeview">
 
+                            @if (HasAccess("Consultar ordenes"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/PartMaintenance/CreatePartMaintenance" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Consultar de ordenes</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+
+                @if (HasAccess("Inventario de Repuestos"))
+                {
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-boxes"></i>   
+                                <p>
+                                    Inventario de Repuestos
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Localidades"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Location/Location_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Localidades</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (HasAccess("Tipos de Transacciones"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Transaction/Transaction_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Tipos de Transacciones</p>
+                                    </a>
+                                </li>
+
+                            }
+                                
+                            @if (HasAccess("Inventario"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/InventoryBOH/InventoryBOH_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Inventario</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (HasAccess("Transacciones de Inventario"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/InventoryTransactions/InventoryTransactions_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Transacciones de Inventario</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (HasAccess("BOM de Repuestos/Moldes"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/ItemBom/ItemBom_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>BOM de Repuestos/Moldes</p>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (HasAccess("ListNumbers"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/ListNumber/ListNumber_List" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>ListNumbers</p>
+                                    </a>
+                                </li>
+                            }
+                               
+                        </ul>
+
+                    </li>
+                }
+
+                @if (HasAccess("Reportes e Indicadores"))
+                {
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-chart-line"></i>
+                                <p>
+                                    Reportes e Indicadores
+                                    <i class="fas fa-angle-left right"></i>
+
+                                </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Reporte de Moldes"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Reports/ReportMold" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>Reporte de Moldes</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Reporte de Evaluaciones de Moldes"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Reports/ReportMoldEvaluation" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>
+                                            Reporte de Evaluaciones<br />
+                                            de Moldes
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Reporte de Partes/BOM"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Reports/ReportItemBom" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>
+                                            Reporte de Partes/BOM
+                                            
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        <ul class="nav nav-treeview">
+
+                            @if (HasAccess("Reporte Evaluaciones Pendientes"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-page="/Reports/ReportPendingEvaluation" class="nav-link">
+                                        <i class="fas fa-minus nav-icon"></i>
+                                        <p>
+                                            Reporte Evaluaciones<br /> 
+                                            Pendientes
+
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+
+                @if (HasAccess("Mantenimientos del sistema") || HasAccess("Roles") || HasAccess("Usuarios") || HasAccess("Accesos") || HasAccess("Reportes"))
+                {
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" role="button">
+                            <i class="nav-icon fas fa-tools"></i>
+                                <p>
+                                    Mantenimientos del sistema
+                                </p>
+                            <i class="right fas fa-angle-left"></i>
+                        </a>
+
+                        <ul class="nav nav-treeview">
+                            @if (HasAccess("Roles"))
+                            {
                                 <li class="nav-item">
                                     <a asp-page="/Rol/Rol_List" class="nav-link">
-                                        <i class="nav-icon fas fa-user-shield"></i>
-                                        <p>Roles</p>
+                                        <i class="fas fa-user-shield nav-icon"></i>
+                                            <p>Roles</p>
                                     </a>
                                 </li>
+                            }
 
+                            @if (HasAccess("Usuarios"))
+                            {
                                 <li class="nav-item">
-                                    <a asp-page="pages/tables/data.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Accesos</p>
+                                    <a asp-page="/User/User_List" class="nav-link">
+                                        <i class="fas fa-user nav-icon"></i>
+                                            <p>Usuarios</p>
                                     </a>
                                 </li>
-                                @*<li class="nav-item">
-                                    <a asp-page="pages/tables/jsgrid.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Historico</p>
-                                    </a>
-                                </li>*@
+                            }
+
+                            @if (HasAccess("Accesos"))
+                            {
                                 <li class="nav-item">
-                                    <a asp-page="pages/tables/jsgrid.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Reportes</p>
+                                    <a asp-page="/Access/Access_List" class="nav-link">
+                                        <i class="fas fa-lock nav-icon"></i>
+                                            <p>Accesos</p>
                                     </a>
                                 </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
-            </div>
-            <!-- /.sidebar -->
-        </aside>
+                            }
+
+                        </ul>
+                    </li>
+                }
+            </ul>
+
+        </nav>
+
+    </div>
+
+</aside>
  

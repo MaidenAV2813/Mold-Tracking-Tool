@@ -1,0 +1,252 @@
+﻿@page
+@model Tracking_Tool_System.Pages.InventoryBOH.InventoryBOH_ListModel
+
+@{
+    ViewData["Title"] = "Balance de inventario";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Balance de inventario</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <a asp-page="/Index"
+                       class="btn btn-secondary">
+
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Regresar
+
+                    </a>
+
+                    <a href="#"
+                       id="exportBtn"
+                       class="btn btn-success">
+
+                        <i class="fas fa-file-excel mr-1"></i>
+                        Exportar
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                <form method="get" id="filterForm" class="mb-3">
+                    <div class="row">
+
+                        <div class="col-md-4">
+
+                            <label>Buscar número de parte</label>
+                            <input type="text"
+                                   id="searchpart"
+                                   class="form-control"
+                                   placeholder="Digite el número de parte..."
+                                   autocomplete="off"
+                                   oninput="this.value = this.value.toUpperCase();" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Buscar localidad</label>
+                            <select id="SearchLocation"
+                                    class="form-control select2">
+
+                                <option value="">Todas las localidades</option>
+
+                                @foreach (var loc in Model.LocationList)
+                                {
+                                    <option value="@loc.LocationNumber">
+                                        @loc.LocationNumber
+                                    </option>
+                                }
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-sm2 text-nowrap">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>Número de parte</th>
+                                <th>Descripción</th>
+                                <th>Localidad</th>
+                                <th>Cantidad</th>
+                                <th>Unidad de medida</th>
+                                <th>Estado</th>
+                                <th>Suplidor</th>                           
+                            </tr>
+                        </thead>
+
+                        <tbody id="inventoryTableBody">
+                            @foreach (var part in Model.GridList)
+                            {
+                                <tr style="cursor:pointer;">
+                                    <td>@part.ItemNumber</td>
+                                    <td>@part.ItemDescription</td>
+                                    <td>@part.LocationNumber</td>
+                                    <td>@part.QtyOnHand</td>
+                                    <td>@part.UOM</td>
+                                    <td>@part.ItemStatus</td>
+                                    <td>@part.ActualSupplier</td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(function () {
+
+            const exportPageUrl =
+                '@Url.Page("/InventoryBOH/InventoryBOH_List")';
+
+            $('#SearchLocation').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Digite o seleccione una localidad',
+                allowClear: true,
+                width: '100%'
+            });
+
+            $(document).on(
+                'input',
+                '.select2-search__field',
+                function () {
+                    this.value = this.value.toUpperCase();
+                }
+            );
+
+            function filterRows() {
+
+                const partValue =
+                    ($('#searchpart').val() || '')
+                        .trim()
+                        .toLowerCase();
+
+                const locationValue =
+                    ($('#SearchLocation').val() || '')
+                        .trim()
+                        .toLowerCase();
+
+                $('#inventoryTableBody tr').each(function () {
+
+                    const itemNumber =
+                        $(this)
+                            .find('td:eq(0)')
+                            .text()
+                            .trim()
+                            .toLowerCase();
+
+                    const locationNumber =
+                        $(this)
+                            .find('td:eq(2)')
+                            .text()
+                            .trim()
+                            .toLowerCase();
+
+                    const matchesPart =
+                        partValue === '' ||
+                        itemNumber.includes(partValue);
+
+                    const matchesLocation =
+                        locationValue === '' ||
+                        locationNumber === locationValue;
+
+                    $(this).toggle(
+                        matchesPart && matchesLocation
+                    );
+                });
+            }
+
+            $('#searchpart').on('input', function () {
+                filterRows();
+            });
+
+            $('#SearchLocation').on('change', function () {
+                filterRows();
+            });
+
+            $('#inventoryTableBody').on(
+                'click',
+                'tr',
+                function () {
+
+                    $('#inventoryTableBody tr')
+                        .removeClass('table-primary');
+
+                    $(this).addClass('table-primary');
+                }
+            );
+
+            $('#exportBtn').on(
+                'click',
+                function (event) {
+
+                    event.preventDefault();
+
+                    const searchPart =
+                        ($('#searchpart').val() || '')
+                            .trim();
+
+                    const searchLocation =
+                        ($('#SearchLocation').val() || '')
+                            .trim();
+
+                    const parameters =
+                        new URLSearchParams();
+
+                    parameters.set(
+                        'handler',
+                        'Export'
+                    );
+
+                    if (searchPart !== '') {
+                        parameters.set(
+                            'searchPart',
+                            searchPart
+                        );
+                    }
+
+                    if (searchLocation !== '') {
+                        parameters.set(
+                            'searchLocation',
+                            searchLocation
+                        );
+                    }
+
+                    const exportUrl =
+                        exportPageUrl +
+                        '?' +
+                        parameters.toString();
+
+                    window.location.href = exportUrl;
+                }
+            );
+
+            filterRows();
+        });
+    </script>
+}

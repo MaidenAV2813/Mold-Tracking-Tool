@@ -7,7 +7,7 @@
 
 <section class="content-header">
     <div class="container-fluid">
-        <h1>Roles</h1>
+        <h1>Lista de Roles</h1>
     </div>
 </section>
 
@@ -16,7 +16,7 @@
 
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Lista de roles</h3>
+                
 
                 <div class="card-tools">
                     <a asp-page="/Rol/Create" class="btn btn-primary btn-sm">
@@ -26,41 +26,41 @@
                         <i class="fas fa-edit"></i> Editar Rol
                     </a>
                 </div>
+                <a asp-page="/Index"
+                   class="btn btn-secondary">
+                    <i class="fas fa-arrow-left mr-1"></i>
+                    Regresar
+                </a>
             </div>
 
             <div class="card-body">
 
                 <table class="table table-bordered table-striped">
-                    <thead>
+                    <thead class="bg-primary text-white">
                         <tr>
-                            @*<th>ID</th>*@
+                            <th>Tipo de Rol</th>
                             <th>Descripción</th>
-                            <th>Tipo</th>
                             <th>Estado</th>
-                            <th>Fecha de creación</th>
-                            
+                            <th>Fecha de creación</th>                           
                         </tr>
                     </thead>
 
-                    <tbody>
-                        
+                    <tbody>                       
                             @foreach (var role in Model.GridList)
                             {
                                 <tr onclick="selectRow(@role.RolID)" style="cursor:pointer;">
-                                    @*<td>@role.RolID</td>*@
-                                    <td>@role.RolDescription</td>
                                     <td>@role.RolType</td>
-                                   @*  <td>@(role.Status ? "Active" : "Inactive")</td>
-                                    <td>@role.DateCreation.ToString("yyyy-MM-dd")</td> *@
-                                    
+                                    <td>@role.RolDescription</td>
+                                    <td>@(role.RolStatus ? "Active" : "Inactive")</td>
+                                    <td>@role.DateCreation?.ToString("MM-dd-yyyy")</td>
                                 </tr>
-                            }
-                        
+                            }                        
                     </tbody>
 
                 </table>
 
             </div>
+
         </div>
 
     </div>
@@ -68,7 +68,7 @@
 <script> @* Remarca la linea seleccionada en la lista a modificar de roles*@
     function selectRow(id) {
 
-        document.querySelectorAll("tr").forEach(r => r.classList.remove("table-primary"));
+        document.querySelectorAll("tbody tr").forEach(r => r.classList.remove("table-primary"));
 
         event.currentTarget.classList.add("table-primary");
 

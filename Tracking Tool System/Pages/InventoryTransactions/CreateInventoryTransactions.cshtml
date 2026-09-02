@@ -1,0 +1,140 @@
+﻿@page
+@model Tracking_Tool_System.Pages.InventoryTransactions.CreateInventoryTransactionsModel
+
+@{
+    ViewData["Title"] = "Crear Transaccion"; 
+}
+
+        <section class="content-header">
+            <div class="container-fluid">
+            <h1>Crear transaccion</h1>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Información de la transaccion</h3>
+                    </div>
+
+                    <form method="post">
+                        <div class="card-body">
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <div class="form-group">
+                                <label>Tipo de transaccion</label>
+                                <select asp-for="TransactionTypeID" class="form-control">
+                                    <option value="">Seleccione el tipo de transaccion</option>
+
+                                    @foreach (var transaccion in Model.TransactionList)
+                                    {
+                                        <option value="@transaccion.TransactionTypeID">
+                                            @transaccion.TransactionType
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Parte</label>
+                                <select asp-for="ItemNumberID" class="form-control">
+                                    <option value="">Seleccione el numero de parte</option>
+
+                                    @foreach (var item in Model.ItemBomList)
+                                    {
+                                        <option value="@item.ItemNumberID">
+                                            @item.ItemNumber
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            
+                            
+
+                            <div class="form-group">
+                                <label>Localidad</label>
+                                <select asp-for="LocationID" class="form-control">
+                                    <option value="">Seleccione la localidad a transaccionar</option>
+
+                                    @foreach (var localidad in Model.LocationList)
+                                    {
+                                        <option value="@localidad.LocationID">
+                                            @localidad.LocationNumber
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Cantidad</label>
+                                <input asp-for="Qty" class="form-control"
+                                    placeholder="Ingrese la cantidad" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Comentarios</label>
+                                <input asp-for="Comments" class="form-control"
+                                    placeholder="Ingrese un comentario" />
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a asp-page="/InventoryTransactions/InventoryTransactions_List" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left mr-1"></i>
+                                Regresar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </section>
+
+<script>
+
+    document.getElementById("TransactionTypeID").addEventListener("change", function () {
+
+        let tipo = this.options[this.selectedIndex].text.toUpperCase();
+        let qty = document.getElementById("Qty");
+
+        if (qty.value === "")
+            return;
+
+        let valor = Math.abs(parseInt(qty.value) || 0);
+
+        if (tipo.includes("NEGATIVE"))
+        {
+            qty.value = -valor;
+        }
+        else if (tipo.includes("RECEIPT") ||
+                 tipo.includes("POSITIVE"))
+        {
+            qty.value = valor;
+        }
+    });
+
+    document.getElementById("Qty").addEventListener("input", function () {
+
+        let tipo = document.getElementById("TransactionTypeID");
+        let texto = tipo.options[tipo.selectedIndex].text.toUpperCase();
+
+        let valor = Math.abs(parseInt(this.value) || 0);
+
+        if (texto.includes("NEGATIVE"))
+        {
+            this.value = -valor;
+        }
+        else if (texto.includes("RECEIPT") ||
+                 texto.includes("POSITIVE"))
+        {
+            this.value = valor;
+        }
+    });
+
+</script>

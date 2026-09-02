@@ -22,156 +22,182 @@
     <section class="content">
         <section class="container-fluid">
             <div class="row">
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3>0</h3>
-                            <p>Cantidad total de Moldes</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-ios-barcode"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info">
+
+                    <div class="inner">
+                        <h3>@Model.Dashboard.ActiveMolds</h3>
+                        <p>Cantidad de moldes activos</p>
                     </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3>0<sup style="font-size: 20px">%</sup></h3>
- 
-                            <p>Evaluaciones pendientes mes en curso</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
+
+                    <div class="icon">
+                        <i class="ion ion-ios-barcode"></i>
                     </div>
+
+                    <a asp-page="/Mold/Mold_List"
+                       class="small-box-footer">
+                        Más info
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+
                 </div>
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-warning">
-                        <div class="inner">
-                            <h3>44</h3>
- 
-                            <p>Usuarios</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-person-add"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success">
+
+                    <div class="inner">
+                        <h3>
+                            @Model.Dashboard.PendingEvaluationsCurrentMonth
+                        </h3>
+
+                        <p>
+                            Evaluaciones pendientes<br />
+                            mes en curso
+                        </p>
                     </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3>65</h3>
- 
-                            <p>Distribución de Espacio</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-pie-graph"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
+
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
                     </div>
+
+                    <a asp-page="/MoldEvaluation/MoldEvaluation_List"
+                       class="small-box-footer">
+                        Más info
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+
                 </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-warning">
+
+                    <div class="inner">
+                        <h3>@Model.Dashboard.TotalSparesInventory</h3>
+
+                        <p>
+                            Cantidad de tipos de repuestos (spares)<br />
+                            
+                        </p>
+                    </div>
+
+                    <div class="icon">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+
+                    <a href="#"
+                       class="small-box-footer">
+                        Más info
+                        <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+
+                </div>
+            </div>
+            @* <div class="card-header border-0">
+
+                <h3 class="card-title">
+                    Estado general de los moldes
+                </h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <div style="height:320px">
+
+                    <canvas id="evaluationChart"></canvas>
+
+                </div>
+
+            </div> *@
                 <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header border-0">
-                            <div class="d-flex justify-content-between">
-                                <h3 class="card-title">Solicitudes de la Semana</h3>
-                                <a href="javascript:void(0);">Reporte</a>
-                            </div>
+                <div class="card">
+
+                    <div class="card-header border-0">
+
+                        <div class="d-flex justify-content-between">
+
+                            <h3 class="card-title">
+                                Mantenimientos realizados por mes
+                            </h3>
+
+                            <a href="#">
+                                Reporte
+                            </a>
+
                         </div>
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <p class="d-flex flex-column">
-                                    <span class="text-bold text-lg">820</span>
-                                    <span>Solicitudes</span>
-                                </p>
-                                <p class="ml-auto d-flex flex-column text-right">
-                                    <span class="text-success">
-                                        <i class="fas fa-arrow-up"></i> 12.5%
-                                    </span>
-                                    <span class="text-muted">Crecimiento</span>
-                                </p>
-                            </div>
-                            <!-- /.d-flex -->
- 
-                            <div class="position-relative mb-4">
-                                <canvas id="visitors-chart" height="200"></canvas>
-                            </div>
- 
-                            <div class="d-flex flex-row justify-content-end">
-                                <span class="mr-2">
-                                    <i class="fas fa-square text-primary"></i> Semana Actual
-                                </span>
- 
-                                <span>
-                                    <i class="fas fa-square text-gray"></i> Semana Pasada
-                                </span>
-                            </div>
-                        </div>
+
                     </div>
+
+                    <div class="card-body">
+
+                        <div class="position-relative mb-4"
+                             style="height: 280px;">
+
+                            <canvas id="maintenanceByMonthChart">
+                            </canvas>
+
+                        </div>
+
+                    </div>
+
+                </div>
                     <!-- /.card -->
                 </div>
                 <!-- /.col-md-6 -->
                 <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header border-0">
-                            <div class="d-flex justify-content-between">
-                                <h3 class="card-title">Ordenes</h3>
-                                <a href="javascript:void(0);">Reporte</a>
-                            </div>
+                <div class="card">
+
+                    <div class="card-header border-0">
+
+                        <div class="d-flex justify-content-between">
+
+                            <h3 class="card-title">
+                                Top 10 repuestos más asignados
+                            </h3>
+
+                            <a href="#">
+                                Reporte
+                            </a>
+
                         </div>
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <p class="d-flex flex-column">
-                                    <span class="text-bold text-lg">$18,230.00</span>
-                                    <span>Ordenes a lo largo del Tiempo</span>
-                                </p>
-                                <p class="ml-auto d-flex flex-column text-right">
-                                    <span class="text-success">
-                                        <i class="fas fa-arrow-up"></i> 33.1%
-                                    </span>
-                                    <span class="text-muted">Crecimiento</span>
-                                </p>
-                            </div>
-                            <!-- /.d-flex -->
- 
-                            <div class="position-relative mb-4">
-                                <canvas id="sales-chart" height="200"></canvas>
-                            </div>
- 
-                            <div class="d-flex flex-row justify-content-end">
-                                <span class="mr-2">
-                                    <i class="fas fa-square text-primary"></i> Este Año
-                                </span>
- 
-                                <span>
-                                    <i class="fas fa-square text-gray"></i> Año Pasado
-                                </span>
-                            </div>
-                        </div>
+
                     </div>
+
+                    <div class="card-body">
+
+                        <div class="position-relative mb-4"
+                             style="height: 280px;">
+
+                            <canvas id="topAssignedSparesChart">
+                            </canvas>
+
+                        </div>
+
+                    </div>
+
+                </div>
                     <!-- /.card -->
                 </div>
                 <div class="col-lg-6">
                     <div class="card">
-                        <div class="card-header border-0">
-                            <h3 class="card-title">Distribución por Subinventario</h3>
-                            <div class="card-tools">
-                                <a href="#" class="btn btn-sm btn-tool">
-                                    <i class="fas fa-download"></i>
-                                </a>
-                                <a href="#" class="btn btn-sm btn-tool">
-                                    <i class="fas fa-bars"></i>
-                                </a>
-                            </div>
+                    <div class="card-header border-0">
+
+                        <h3 class="card-title">
+                            Estado general de los moldes
+                        </h3>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div style="height:320px">
+
+                            <canvas id="evaluationChart"></canvas>
+
                         </div>
-                        <div class="card-body">
+
+                    </div>
+                        @* <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
                                 <p class="text-success text-xl">
                                     <i class="ion ion-ios-refresh-empty"></i>
@@ -208,11 +234,11 @@
                                 </p>
                             </div>
                             <!-- /.d-flex -->
-                        </div>
+                        </div> *@
                     </div>
                 </div>
                 <!-- /.col-md-6 -->
-                <div class="col-lg-6">
+                @* <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header border-0">
                             <h3 class="card-title">Materiales</h3>
@@ -301,7 +327,7 @@
                                                             <i class="fas fa-search"></i>
                                                         </a>
                                                     </td>
-                                                </tr>
+                                            </tr>
                                                 <tr>
                                                     <td>
                                                         <img src="~/Template/dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
@@ -324,14 +350,14 @@
                                                                 <i class="fas fa-search"></i>
                                                             </a>
                                                         </td>
-                                                    </tr>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                     <!-- /.card -->
-                                </div>
-                                <div class="col-lg-6">
+                                </div> *@
+@*                                 <div class="col-lg-6">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title">Card title</h5>
@@ -350,7 +376,7 @@
  
                                 </div>
  
-                            </div>
+                            </div> *@
                             <!-- /.row -->
     </section><!-- /.container-fluid -->
     </section>
@@ -380,4 +406,294 @@
 <script src="~/Template/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="~/Template/dist/js/pages/dashboard3.js"></script>
+
+@section Scripts
+{
+    <script>
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const maintenanceData =
+                    @Html.Raw(
+                        System.Text.Json.JsonSerializer.Serialize(
+                            Model.Dashboard.MaintenanceByMonth
+                        )
+                    );
+
+                const spareData =
+                    @Html.Raw(
+                        System.Text.Json.JsonSerializer.Serialize(
+                            Model.Dashboard.TopAssignedSpares
+                        )
+                    );
+
+                const maintenanceLabels =
+                    maintenanceData.map(function (item) {
+                        return item.MonthName;
+                    });
+
+                const maintenanceValues =
+                    maintenanceData.map(function (item) {
+                        return item.MaintenanceCount;
+                    });
+
+                new Chart(
+                    document.getElementById(
+                        "maintenanceByMonthChart"
+                    ).getContext("2d"),
+                    {
+                        type: "line",
+
+                        data: {
+                            labels: maintenanceLabels,
+
+                            datasets: [
+                                {
+                                    label: "Mantenimientos realizados",
+                                    data: maintenanceValues,
+                                    fill: false,
+                                    borderWidth: 3,
+                                    pointRadius: 5,
+                                    pointHoverRadius: 7,
+                                    lineTension: 0.3
+                                }
+                            ]
+                        },
+
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+
+                            legend: {
+                                display: false
+                            },
+
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem) {
+                                        return "Mantenimientos: " +
+                                            tooltipItem.yLabel;
+                                    }
+                                }
+                            },
+
+                            scales: {
+                                yAxes: [
+                                    {
+                                        ticks: {
+                                            beginAtZero: true,
+                                            precision: 0,
+                                            stepSize: 1
+                                        },
+
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString:
+                                                "Cantidad de mantenimientos"
+                                        }
+                                    }
+                                ],
+
+                                xAxes: [
+                                    {
+                                        gridLines: {
+                                            display: false
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                );
+
+                const spareLabels =
+                    spareData.map(function (item) {
+
+                        const description =
+                            item.ItemDescription || "";
+
+                        if (description.length > 35) {
+                            return description.substring(
+                                0,
+                                35
+                            ) + "...";
+                        }
+
+                        return description ||
+                            item.ItemNumber;
+                    });
+
+                const spareValues =
+                    spareData.map(function (item) {
+                        return item.TotalAssigned;
+                    });
+
+                new Chart(
+                    document.getElementById(
+                        "topAssignedSparesChart"
+                    ).getContext("2d"),
+                    {
+                        type: "horizontalBar",
+
+                        data: {
+                            labels: spareLabels,
+
+                            datasets: [
+                                {
+                                    label:
+                                        "Cantidad asignada",
+
+                                    data:
+                                        spareValues,
+
+                                    backgroundColor:
+                                        "rgba(0, 123, 255, 0.75)",
+
+                                    borderColor:
+                                        "rgba(0, 123, 255, 1)",
+
+                                    borderWidth: 1
+                                }
+                            ]
+                        },
+
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+
+                            legend: {
+                                display: true
+                            },
+
+                            scales: {
+                                xAxes: [
+                                    {
+                                        ticks: {
+                                            beginAtZero: true,
+                                            precision: 0
+                                        }
+                                    }
+                                ]
+                            },
+
+                            tooltips: {
+                                callbacks: {
+                                    title: function (
+                                        tooltipItems,
+                                        data
+                                    ) {
+                                        const index =
+                                            tooltipItems[0]
+                                                .index;
+
+                                        const spare =
+                                            spareData[index];
+
+                                        return spare.ItemNumber;
+                                    },
+
+                                    label: function (
+                                        tooltipItem
+                                    ) {
+                                        return (
+                                            "Cantidad asignada: " +
+                                            tooltipItem.xLabel
+                                        );
+                                    },
+
+                                    afterLabel: function (
+                                        tooltipItem
+                                    ) {
+                                        const spare =
+                                            spareData[
+                                                tooltipItem.index
+                                            ];
+
+                                        return spare
+                                            .ItemDescription;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                );
+
+                const evaluationChart =
+                new Chart(
+                    document.getElementById("evaluationChart"),
+                    {
+                        type: "bar",
+
+                        data:
+                        {
+                            labels:
+                            [
+                                "Verde",
+                                "Amarillo",
+                                "Rojo"
+                            ],
+
+                            datasets:
+                            [
+                                {
+                                    label: "Cantidad de moldes",
+
+                                    data:
+                                    [
+                                        @Model.Dashboard.GreenMolds,
+                                        @Model.Dashboard.YellowMolds,
+                                        @Model.Dashboard.RedMolds
+                                    ],
+
+                                    backgroundColor:
+                                    [
+                                        "#28a745",
+                                        "#ffc107",
+                                        "#dc3545"
+                                    ],
+
+                                    borderColor:
+                                    [
+                                        "#28a745",
+                                        "#ffc107",
+                                        "#dc3545"
+                                    ],
+
+                                    borderWidth:1
+                                }
+                            ]
+                        },
+
+                        options:
+                        {
+                            responsive:true,
+
+                            maintainAspectRatio:false,
+
+                            legend:
+                            {
+                                display:false
+                            },
+
+                            scales:
+                            {
+                                yAxes:
+                                [
+                                    {
+                                        ticks:
+                                        {
+                                            beginAtZero:true,
+                                            precision:0,
+                                            stepSize:1
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    });
+            }
+        );
+    </script>
+}
  

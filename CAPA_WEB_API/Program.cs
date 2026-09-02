@@ -7,6 +7,29 @@ var builder = WebApplication.CreateBuilder(args);
 // Registrar servicios
 builder.Services.AddScoped<IDataAccess, DataAccess>();
 builder.Services.AddScoped<IRoles_Services, Roles_Services>();
+builder.Services.AddScoped<IUsers_Services, Users_Services>();
+builder.Services.AddScoped<IAccess_Services, Access_Services>();
+builder.Services.AddScoped<IGates_Services, Gates_Services>();
+builder.Services.AddScoped<ICasting_Services, Casting_Services>();
+builder.Services.AddScoped<ICritically_Services, Critically_Services>();
+builder.Services.AddScoped<IActuator_Services, Actuator_Services>();
+builder.Services.AddScoped<IMold_Services, Mold_Services>();
+builder.Services.AddScoped<ILocation_Services, Location_Services>();
+builder.Services.AddScoped<ITransaction_Services, Transaction_Services>();
+builder.Services.AddScoped<IItemBom_Services, ItemBom_Services>();
+builder.Services.AddScoped<IInventoryBOH_Services, InventoryBOH_Services>();
+builder.Services.AddScoped<IInventoryTransactions_Services, InventoryTransactions_Services>();
+builder.Services.AddScoped<IPartMaintenance_Services, PartMaintenance_Services>();
+builder.Services.AddScoped<Ivw_EBS_WorkOrders_Services, vw_EBS_WorkOrders_Services>();
+builder.Services.AddScoped<IListNumber_Services, ListNumber_Services>();
+builder.Services.AddScoped<Ivw_EBS_List_Numbers_Services, vw_EBS_List_Numbers_Services>();
+builder.Services.AddScoped<IMoldEvaluationPart_Services,MoldEvaluationPart_Services>();
+builder.Services.AddScoped<IMoldEvaluation_Services,MoldEvaluation_Services>();
+builder.Services.AddScoped<IDashboard_Services, Dashboard_Services>();
+builder.Services.AddScoped<ICategorization_Services, Categorization_Services>();
+builder.Services.AddScoped<IReportMold_Services, ReportMold_Services>();
+builder.Services.AddScoped<IReportItemBom_Services, ReportItemBom_Services>();
+builder.Services.AddScoped<IReportPendingEvaluation_Services,ReportPendingEvaluation_Services>();
 
 
 // Controllers

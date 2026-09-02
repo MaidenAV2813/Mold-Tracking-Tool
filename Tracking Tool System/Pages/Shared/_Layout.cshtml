@@ -33,10 +33,14 @@
         <link rel="stylesheet" href="~/Template/plugins/dropzone/min/dropzone.min.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="~/Template/dist/css/adminlte.min.css">
-        <link rel="stylesheet" href="~/css/site.css">
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
+        
+
         @await RenderSectionAsync("styles", required: false)
+        
+       
     </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
 
         <partial name="_navbar" />
@@ -49,6 +53,85 @@
         <partial name="_Footer" />
 
     </div>
+
+    <!-- jQuery -->
+    <script src="~/Template/plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap 4 -->
+    <script src="~/Template/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AdminLTE -->
+    <script src="~/Template/dist/js/adminlte.min.js"></script>
+
+    <script src="~/Template/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+
+    <script src="~/Template/plugins/select2/js/select2.full.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/Template/plugins/chart.js/Chart.min.js"></script>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+            mostrarExito(
+            @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    TempData["SuccessMessage"]?.ToString()
+                )
+            )
+            );
+            });
+        </script>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+            mostrarError(
+            @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    TempData["ErrorMessage"]?.ToString()
+                )
+            )
+            );
+            });
+        </script>
+    }
+
+    @if (TempData["WarningMessage"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+            mostrarAdvertencia(
+            @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    TempData["WarningMessage"]?.ToString()
+                )
+            )
+            );
+            });
+        </script>
+    }
+
+    @if (TempData["InfoMessage"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+            mostrarInformacion(
+            @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    TempData["InfoMessage"]?.ToString()
+                )
+            )
+            );
+            });
+        </script>
+    }
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

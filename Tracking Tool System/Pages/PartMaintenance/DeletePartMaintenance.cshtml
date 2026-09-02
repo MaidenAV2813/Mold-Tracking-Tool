@@ -1,0 +1,78 @@
+﻿@page
+@model Tracking_Tool_System.Pages.PartMaintenance.DeletePartMaintenanceModel
+
+@{
+    ViewData["Title"] = "Eliminar repuesto asignado";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Eliminar repuesto asignado</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">Confirmar eliminación</h3>
+            </div>
+
+            <form method="post">
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="PartMaintenanceID" />
+                    <input type="hidden" asp-for="OrderNum" />
+
+                    <div class="alert alert-warning">
+                        ¿Está seguro que desea eliminar este repuesto asignado?
+                        Al eliminarlo, la cantidad será devuelta al inventario de la localidad correspondiente.
+                    </div>
+
+                    <div class="form-group">
+                        <label>Número de Orden PM</label>
+                        <input asp-for="OrderNum" class="form-control" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Número de Parte</label>
+                        <input asp-for="ItemNumber" class="form-control" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <input asp-for="ItemDescription" class="form-control" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Localidad</label>
+                        <input asp-for="LocationNumber" class="form-control" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <input asp-for="QtyAsigned" class="form-control" readonly />
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash-alt"></i> Eliminar
+                    </button>
+
+                    <a asp-page="/PartMaintenance/CreatePartMaintenance"
+                       asp-route-orderNum="@Model.OrderNum"
+                       class="btn btn-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Regresar
+                    </a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</section>

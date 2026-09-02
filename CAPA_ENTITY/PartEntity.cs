@@ -11,6 +11,6 @@ namespace CAPA_ENTITY
         public string? ItemNumber { get; set; }
         public string? Descriptión { get; set; }
         public DateTime? DateCreation { get; set; }
-        public DateTime DateModification { get; set; }
+        public DateTime? DateModification { get; set; }
     }
 }

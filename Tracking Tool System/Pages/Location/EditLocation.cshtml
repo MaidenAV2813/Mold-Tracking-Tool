@@ -1,0 +1,60 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Location.EditLocationModel
+
+@{
+    ViewData["Title"] = "Editar Localidad";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Modificar Localidad</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Modificar</h3>
+            </div>
+
+            <form method="post">
+                <div class="card-body">
+
+                    <input type="hidden" asp-for="LocationID" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label>Localidad</label>
+                        <input asp-for="LocationNumber"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select asp-for="LocationStatus" class="form-control">
+                            <option value="Activa">Activa</option>
+                            <option value="Inactiva">Inactiva</option>
+                        </select>
+                    </div>
+
+                    <br />
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-warning">Actualizar</button>
+                    <a asp-page="/Location/Location_List" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Regresar
+                    </a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</section>
+

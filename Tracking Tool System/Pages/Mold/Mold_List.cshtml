@@ -1,0 +1,282 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Mold.Mold_ListModel
+
+@{
+    ViewData["Title"] = "Moldes";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Lista de Moldes</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+
+            <div class="card-header">           
+
+                <div class="card-tools">
+                    <a asp-page="/Mold/CreateMold" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Agregar nuevo molde
+                    </a>
+                    <a id="editBtn"
+                           class="btn btn-warning btn-sm @(Model.SelectedMoldID.HasValue ? "" : "disabled")"
+                           href="@(Model.SelectedMoldID.HasValue ? $"/Mold/EditMold?id={Model.SelectedMoldID}" : "#")">
+                        <i class="fas fa-edit"></i> Editar molde
+                    </a>
+                </div>
+                <a asp-page="/Index"
+                   class="btn btn-secondary">
+                    <i class="fas fa-arrow-left mr-1"></i>
+                    Regresar
+                </a>
+
+            </div>
+
+            <div class="card-body">
+                <form method="get" id="filterForm" class="mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Buscar Molde</label>
+
+                            <input type="text"
+                                   id="searchMold"
+                                   class="form-control"
+                                   placeholder="Digite el número de molde..." />
+                        </div>
+                    </div>
+                </form>
+
+                <div class="table-scroll-container">
+
+                    <div class="horizontal-scroll">
+                        <div class="horizontal-scroll-content"></div>
+                    </div>
+                    <div class="table-responsive table-scroll">
+                        <table class="table table-bordered table-striped table-sm2 text-nowrap">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>Numero de molde</th>
+                                    <th>Descripcion del molde</th>
+                                    <th>Numero de activo</th>
+                                    <th>Estado del molde</th>
+                                    <th>Ubicacion</th>
+                                    <th>Cant de cavidades</th>
+                                    <th>Cant de cavidades bloquedas</th>
+                                    <th>Planos</th>
+                                    <th>Tiene contador</th>
+                                    <th>Tipo de contador</th>
+                                    <th>Es de tres placas</th>
+                                    <th>Contador inicial</th>
+                                    <th>25% de los repuestos</th>
+                                    <th>Tuvo reparaciones</th>
+                                    <th>Rechazo de calidad</th>
+                                    <th>Tipo de colada</th>
+                                    <th>Tipo de actuador</th>
+                                    <th>Tipo de categorizacion</th>
+                                    <th>Criticidad</th>
+                                    <th>Tipo de gate</th>
+                                    <th>Fecha de creación</th>
+                                    <th>Creado por:</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>                       
+                                @foreach (var mold in Model.GridList)
+                                {
+                                <tr onclick="selectRow(@mold.MoldID, '@mold.MoldNumber')" style="cursor:pointer;">
+                                    <td>@mold.MoldNumber</td>
+                                    <td>@mold.MoldDescription</td>
+                                    <td>@mold.MoldAssetNumber</td>
+                                    <td>@mold.MoldStatus</td>
+                                    <td>@mold.MoldOrigin</td>
+                                    <td>@mold.CavityQty</td>
+                                    <td>@mold.BlockCavityQty</td>
+                                    <td>@mold.DigitalPlane</td>
+                                    <td>@mold.HaveCounter</td>
+                                    <td>@mold.CounterType</td>
+                                    <td>@mold.ThreeLayer</td>
+                                    <td>@mold.InitialCount</td>
+                                    <td>@mold.Percentage_Spares_available</td>
+                                    <td>
+                                        @if (mold.Last_Reparir_12_Months == "Si")
+                                        {
+                                            <button type="button"
+                                                    class="btn btn-sm btn-warning btn-show-comment"
+                                                    data-title="Comentario de reparación"
+                                                    data-comment="@mold.Comment_Last_Reparir_12_Months"
+                                                    title="Ver comentario">
+                                                <i class="fas fa-comment-alt"></i> Sí         
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                                <span>No</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (mold.Quality_Issue == "Si")
+                                        {
+                                            <button type="button"
+                                                    class="btn btn-sm btn-danger btn-show-comment"
+                                                    data-title="Comentario de rechazo de Calidad"
+                                                    data-comment="@mold.Comment_Quality_Issue"
+                                                    title="Ver comentario">
+                                                  <i class="fas fa-comment-alt"></i> Sí
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <span>No</span>
+                                        }
+                                    </td>
+                                    <td>@mold.CastingType</td>
+                                    <td>@mold.ActuatorType</td>
+                                    <td>@mold.CategorizationType</td>
+                                    <td>@mold.CriticallyType</td>
+                                    <td>@mold.GateType</td>
+                                    <td>@mold.DateCreation?.ToString("MM-dd-yyyy")</td>
+                                    <td>@mold.CreatedBy</td>
+                                </tr>
+                                }                        
+                            </tbody>
+
+                        </table>
+                        <div class="modal fade"
+                             id="commentModal"
+                             tabindex="-1"
+                             role="dialog"
+                             aria-labelledby="commentModalTitle"
+                             aria-hidden="true">
+
+                            <div class="modal-dialog modal-dialog-centered modal-lg"
+                                 role="document">
+
+                                <div class="modal-content">
+
+                                    <div class="modal-header bg-info">
+                                        <h5 class="modal-title"
+                                            id="commentModalTitle">
+                                            Comentario
+                                        </h5>
+
+                                        <button type="button"
+                                                class="close"
+                                                data-dismiss="modal"
+                                                aria-label="Cerrar">
+
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                        <div class="form-group">
+                                            <label>Detalle registrado</label>
+
+                                            <textarea id="commentModalText"
+                                                      class="form-control"
+                                                      rows="6"
+                                                      readonly></textarea>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal-footer">
+
+                                        <button type="button"
+                                                class="btn btn-secondary"
+                                                data-dismiss="modal">
+                                            Cerrar
+                                        </button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+    const searchInput = document.getElementById("searchMold");
+
+    searchInput.addEventListener("keyup", function () {
+        filterMolds(this.value);
+    });
+
+    function filterMolds(value) {
+        value = value.toLowerCase();
+
+        document.querySelectorAll("tbody tr").forEach(function (row) {
+            let moldNumber = row.cells[0].innerText.toLowerCase();
+            row.style.display = moldNumber.includes(value) ? "" : "none";
+        });
+    }
+
+    function selectRow(id, moldNumber) {
+        document.querySelectorAll("tbody tr")
+            .forEach(r => r.classList.remove("table-primary"));
+
+        event.currentTarget.classList.add("table-primary");
+
+        searchInput.value = moldNumber;
+
+        let editBtn = document.getElementById("editBtn");
+        editBtn.classList.remove("disabled");
+        editBtn.href = "/Mold/EditMold?id=" + id;
+    }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const commentButtons =
+            document.querySelectorAll(".btn-show-comment");
+
+        const modalTitle =
+            document.getElementById("commentModalTitle");
+
+        const modalText =
+            document.getElementById("commentModalText");
+
+        commentButtons.forEach(function (button) {
+
+            button.addEventListener("click", function (event) {
+
+                event.stopPropagation();
+
+                const title =
+                    this.getAttribute("data-title");
+
+                const comment =
+                    this.getAttribute("data-comment");
+
+                modalTitle.textContent =
+                    title || "Comentario";
+
+                modalText.value =
+                    comment && comment.trim() !== ""
+                        ? comment
+                        : "No se registró un comentario.";
+
+                $("#commentModal").modal("show");
+            });
+        });
+
+    });
+</script>

@@ -1,0 +1,212 @@
+﻿@page
+@model Tracking_Tool_System.Pages.PartMaintenance.EditPartMaintenanceModel
+
+@{
+    ViewData["Title"] = "Editar repuesto asignado";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Editar repuesto asignado</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Modificar repuesto de mantenimiento</h3>
+            </div>
+
+            <form method="post" id="editPartMaintenanceForm">
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="PartMaintenanceID" />
+                    <input type="hidden" asp-for="OrderNum" />
+
+                    <div class="form-group">
+                        <label>Número de Orden PM</label>
+                        <input asp-for="OrderNum"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Número de parte</label>
+
+                        <input asp-for="ItemNumber"
+                               class="form-control"
+                               readonly />
+
+                        <input asp-for="ItemNumberID"
+                               type="hidden" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <input asp-for="ItemDescription"
+                               id="ItemDescription"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Inventario Total</label>
+                        <input asp-for="TotalQtyOnHand"
+                               id="TotalQtyOnHand"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Localidad</label>
+                        <select asp-for="LocationID"
+                                id="LocationID"
+                                class="form-control select2">
+                            <option value="">Seleccione una localidad</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Disponible en la Localidad</label>
+                        <input asp-for="LocationQtyOnHand"
+                               id="LocationQtyOnHand"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cantidad a Rebajar</label>
+                        <input asp-for="QtyAsigned"
+                               id="QtyAsigned"
+                               class="form-control" />
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-save"></i> Actualizar
+                    </button>
+
+                    <a asp-page="/PartMaintenance/CreatePartMaintenance"
+                       asp-route-orderNum="@Model.OrderNum"
+                       class="btn btn-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Regresar
+                    </a>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(function () {
+
+            let selectedLocationID = '@Model.LocationID';
+
+            
+
+            $('#LocationID').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Seleccione una localidad',
+                allowClear: true,
+                width: '100%'
+            });
+
+            function loadItemBOH(itemNumberID, locationToSelect) {
+
+                $('#ItemDescription').val('');
+                $('#TotalQtyOnHand').val('');
+                $('#LocationQtyOnHand').val('');
+                $('#LocationID').empty();
+                $('#LocationID').append('<option value="">Seleccione una localidad</option>');
+
+                if (!itemNumberID) {
+                    return;
+                }
+
+                $.ajax({
+                    url: '?handler=ItemBOH',
+                    type: 'GET',
+                    data: { itemNumberID: itemNumberID },
+                    success: function (data) {
+
+                        if (!data || data.length === 0) {
+                            return;
+                        }
+
+                        $('#ItemDescription').val(data[0].itemDescription || data[0].ItemDescription || '');
+
+                        let totalQty = 0;
+
+                        $.each(data, function (i, item) {
+
+                            let locationID = item.locationID || item.LocationID;
+                            let locationNumber = item.locationNumber || item.LocationNumber;
+                            let qtyOnHand = parseInt(item.qtyOnHand || item.QtyOnHand || 0);
+
+                            totalQty += qtyOnHand;
+
+                            if (locationID && locationNumber) {
+                                $('#LocationID').append(
+                                    $('<option>', {
+                                        value: locationID,
+                                        text: locationNumber,
+                                        'data-qty': qtyOnHand
+                                    })
+                                );
+                            }
+                        });
+
+                        $('#TotalQtyOnHand').val(totalQty);
+
+                        if (locationToSelect) {
+                            $('#LocationID').val(locationToSelect).trigger('change');
+                        }
+                    },
+                    error: function (xhr) {
+                        console.log(xhr);
+                    }
+                });
+            }
+
+
+            $('#LocationID').on('change', function () {
+                let qty = $('#LocationID option:selected').data('qty');
+
+                if (qty === undefined || qty === null || qty === '') {
+                    $('#LocationQtyOnHand').val('');
+                    return;
+                }
+
+                $('#LocationQtyOnHand').val(qty);
+            });
+
+            $('#QtyAsigned').on('keyup change', function () {
+                let qtyToAssign = parseInt($(this).val()) || 0;
+                let qtyAvailable = parseInt($('#LocationQtyOnHand').val()) || 0;
+
+                if (qtyToAssign > QtyAsigned) {
+                    alert('La cantidad a rebajar es mayor que el inventario disponible en la localidad.');
+                    $(this).val('');
+                    $(this).focus();
+                }
+            });
+
+            let currentItemNumberID = $('#ItemNumberID').val();
+
+            if (currentItemNumberID) {
+                loadItemBOH(currentItemNumberID, selectedLocationID);
+            }
+
+        });
+    </script>
+}

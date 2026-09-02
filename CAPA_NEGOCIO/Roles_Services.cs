@@ -29,30 +29,18 @@ namespace CAPA_NEGOCIO
 
         //Metodo Get
 
-
         public async Task<IEnumerable<RolEntity>> Get()
-
         {
-
             try
-
             {
-
                 var result = sql.QueryAsync<RolEntity>("sp_Rol_SelectAll");
 
                 return await result;
-
             }
-
             catch (Exception)
-
             {
-
                 throw;
-
             }
-
-
         }
 
         //Metodo GetById
@@ -60,27 +48,19 @@ namespace CAPA_NEGOCIO
         public async Task<RolEntity> GetById(RolEntity entity)
 
         {
-
             try
 
             {
-
                 var result = sql.QueryFirstAsync<RolEntity>("sp_Rol_SelectById", new
 
                 { entity.RolID });
 
                 return await result;
-
             }
-
             catch (Exception)
-
             {
-
                 throw;
-
             }
-
         }
 
         //Metodo Create
@@ -91,7 +71,11 @@ namespace CAPA_NEGOCIO
             {
                 entity.RolDescription,
                 entity.RolType,
-                entity.Status
+                entity.RolStatus,
+                entity.CreatedBy,
+                entity.DateCreation,
+                entity.DateModification,
+                entity.ModifiedBy
             });
 
             return await result;
@@ -102,79 +86,49 @@ namespace CAPA_NEGOCIO
         public async Task<DBEntity> Update(RolEntity entity)
 
         {
-
             try
 
             {
-
                 var result = sql.ExecuteAsync("sp_Rol_Update", new
 
                 {
-
                     entity.RolID,
-
                     entity.RolDescription,
-
-                    entity.Status,
-
-                    entity.DateCreation
-
-                    
+                    entity.RolType,
+                    entity.RolStatus,
+                    entity.DateModification,
+                    entity.ModifiedBy
                 });
 
                 return await result;
-
             }
 
             catch (Exception)
-
             {
-
                 throw;
-
             }
-
         }
 
         //Metodo Delete
-
         public async Task<DBEntity> Delete(RolEntity entity)
 
         {
-
             try
 
             {
-
                 var result = sql.ExecuteAsync("", new
-
                 {
-
                     entity.RolID,
-
-
                 });
 
                 return await result;
-
             }
-
             catch (Exception)
-
             {
-
                 throw;
-
             }
-
         }
-
-
-
-
         #endregion
-
     }
-
 
 }

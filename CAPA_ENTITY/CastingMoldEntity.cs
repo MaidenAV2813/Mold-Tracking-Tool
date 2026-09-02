@@ -4,9 +4,10 @@ using System.Text;
 
 namespace CAPA_ENTITY
 {
-    internal class CastingMoldEntity
+    public class CastingMoldEntity : DBEntity
     {
         public int? CastingID { get; set; }
         public string? CastingType { get; set; }
+        public Boolean CastingStatus { get; set; }
     }
 }

@@ -1,0 +1,57 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Actuator.EditModel
+
+@{
+    ViewData["Title"] = "Editar Actuador";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Modificar Actuador</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Modificar</h3>
+            </div>
+
+            <form method="post">
+                <div class="card-body">
+
+                    <input type="hidden" asp-for="ActuatorID" />
+
+                    <div class="form-group">
+                        <label>Tipo de Actuador</label>
+                        <input asp-for="ActuatorType" class="form-control" disabled />
+                        <input type="hidden" asp-for="ActuatorType" />
+                    </div>        
+
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select asp-for="ActuatorStatus" class="form-control">
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-warning">Actualizar</button>
+                    <a asp-page="/Actuator/Actuator_List" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Regresar
+                    </a>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            </form>
+
+        </div>
+
+    </div>
+</section>

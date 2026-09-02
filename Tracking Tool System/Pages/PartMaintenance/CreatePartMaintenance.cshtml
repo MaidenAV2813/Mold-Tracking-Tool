@@ -1,0 +1,352 @@
+﻿@page
+@model Tracking_Tool_System.Pages.PartMaintenance.CreatePartMaintenanceModel
+
+@{
+    ViewData["Title"] = "Asignación de repuestos a mantenimiento";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Asignación de repuestos a mantenimiento</h1>
+    </div>
+</section>
+<div class="card-header">
+    <a asp-page="/Index"
+       class="btn btn-secondary">
+        <i class="fas fa-arrow-left mr-1"></i>
+        Regresar
+    </a>
+</div>
+<section class="content">
+
+    <div class="container-fluid">
+
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Buscar Orden de Trabajo</h3>
+            </div>
+
+            <form method="post" id="partMaintenanceForm">
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Número de Orden PM</label>
+                                <input asp-for="OrderNum"
+                                       class="form-control"
+                                       placeholder="Digite el número de PM"
+                                       oninput="this.value=this.value.toUpperCase();" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit"
+                                    asp-page-handler="Buscar"
+                                    class="btn btn-primary">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+
+                    @if (Model.WorkOrderInfo != null)
+                    {
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Orden PM</label>
+                                <input class="form-control"
+                                       value="@Model.WorkOrderInfo.WIP_ENTITY_NAME"
+                                       readonly />
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Asset Number</label>
+                                <input class="form-control"
+                                       value="@Model.WorkOrderInfo.ASSET_NUMBER"
+                                       readonly />
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Fecha Completado</label>
+                                <input class="form-control"
+                                       value="@Model.WorkOrderInfo.DATE_COMPLETED?.ToString("MM-dd-yyyy")"
+                                       readonly />
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label>Descripción PM</label>
+                            <input class="form-control"
+                                   value="@Model.WorkOrderInfo.DESCRIPTION"
+                                   readonly />
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Número de Parte</label>
+                                    <select asp-for="ItemNumberID"
+                                            id="ItemNumberID"
+                                            class="form-control select2">
+                                        <option value="">Seleccione un número de parte</option>
+
+                                        @foreach (var item in Model.ItemList)
+                                        {
+                                            <option value="@item.ItemNumberID">
+                                                @item.ItemNumber
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Localidad</label>
+                                    <select asp-for="LocationID"
+                                            id="LocationID"
+                                            class="form-control select2">
+                                        <option value="">Seleccione una localidad</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Descripción del Repuesto</label>
+                                    <textarea asp-for="ItemDescription"
+                                              id="ItemDescription"
+                                              class="form-control"
+                                              rows="2"
+                                              readonly></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Disponible en la Localidad</label>
+                                    <input asp-for="LocationQtyOnHand"
+                                           id="LocationQtyOnHand"
+                                           class="form-control"
+                                           readonly />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Inventario Total</label>
+                                    <input asp-for="TotalQtyOnHand"
+                                           id="TotalQtyOnHand"
+                                           class="form-control"
+                                           readonly />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Cantidad a Rebajar</label>
+                                    <input asp-for="QtyAsigned"
+                                           id="QtyAsigned"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <button type="submit"
+                                    asp-page-handler="Agregar"
+                                    class="btn btn-success btn-block">
+                                <i class="fas fa-plus-circle"></i> Agregar Repuesto
+                            </button>
+                        </div>
+
+                        <hr class="mt-4" />
+
+                        <h4 class="mb-3">
+                            <i class="fas fa-tools"></i>
+                            Cantidad de tipos de repuestos asignados
+                            <span class="badge badge-primary">@Model.PartList.Count</span>
+                        </h4>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm text-nowrap">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th>Número de Parte</th>
+                                        <th>Descripción</th>
+                                        <th>Cantidad</th>
+                                        <th>Fecha Creación</th>
+                                        <th>Creado Por</th>
+                                        <th>Editar</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var part in Model.PartList)
+                                    {
+                                        <tr>
+                                            <td>@part.ItemNumber</td>
+                                            <td>@part.ItemDescription</td>
+                                            <td>@part.QtyAsigned</td>
+                                            <td>@part.DateCreation?.ToString("MM-dd-yyyy HH:mm:ss")</td>
+                                            <td>@part.CreatedBy</td>
+
+                                            <td class="text-center">
+                                                <a asp-page="/PartMaintenance/EditPartMaintenance"
+                                                   asp-route-id="@part.PartMaintenanceID"
+                                                   asp-route-orderNum="@Model.OrderNum"
+                                                   class="btn btn-warning btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+
+                                            <td class="text-center">
+                                                <a asp-page="/PartMaintenance/DeletePartMaintenance"
+                                                   asp-route-id="@part.PartMaintenanceID"
+                                                   asp-route-orderNum="@Model.OrderNum"
+                                                   class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(function () {
+
+            $('#ItemNumberID').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Seleccione o busque un número de parte',
+                allowClear: true,
+                width: '100%'
+            });
+
+            $('#LocationID').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Seleccione una localidad',
+                allowClear: true,
+                width: '100%'
+            });
+
+            $('#ItemNumberID').on('change', function () {
+
+                var itemNumberID = $(this).val();
+
+                $('#ItemDescription').val('');
+                $('#TotalQtyOnHand').val('');
+                $('#LocationQtyOnHand').val('');
+
+                $('#LocationID').empty();
+                $('#LocationID').append('<option value="">Seleccione una localidad</option>');
+                $('#LocationID').val('').trigger('change');
+
+                if (!itemNumberID)
+                    return;
+
+                $.ajax({
+                    url: '?handler=ItemBOH',
+                    type: 'GET',
+                    data: { itemNumberID: itemNumberID },
+                    success: function (data) {
+
+                        if (!data || data.length === 0)
+                            return;
+
+                        $('#ItemDescription').val(data[0].itemDescription || data[0].ItemDescription || '');
+
+                        var totalQty = 0;
+
+                        $.each(data, function (i, item) {
+
+                            var locationID = item.locationID || item.LocationID;
+                            var locationNumber = item.locationNumber || item.LocationNumber;
+                            var qtyOnHand = parseInt(item.qtyOnHand || item.QtyOnHand || 0);
+
+                            totalQty += qtyOnHand;
+
+                            if (locationID && locationNumber) {
+                                $('#LocationID').append(
+                                    $('<option>', {
+                                        value: locationID,
+                                        text: locationNumber,
+                                        'data-qty': qtyOnHand
+                                    })
+                                );
+                            }
+                        });
+
+                        $('#TotalQtyOnHand').val(totalQty);
+                    },
+                    error: function (xhr) {
+                        console.log(xhr);
+                    }
+                });
+
+            });
+
+            $('#LocationID').on('change', function () {
+
+                var qty = $('#LocationID option:selected').data('qty');
+
+                if (qty === undefined || qty === null || qty === '') {
+                    $('#LocationQtyOnHand').val('');
+                    return;
+                }
+
+                $('#LocationQtyOnHand').val(qty);
+            });
+
+            $('#QtyAsigned').on('keyup change', function () {
+
+                var qtyToAssign = parseInt($(this).val()) || 0;
+                var qtyAvailable = parseInt($('#LocationQtyOnHand').val()) || 0;
+
+                if (qtyToAssign > qtyAvailable && qtyAvailable > 0) {
+                    alert('La cantidad a rebajar es mayor que el inventario disponible en la localidad.');
+                    $(this).val('');
+                    $(this).focus();
+                }
+            });
+
+                    @if (Model.ItemNumberID == null)
+        {
+                <text>
+                        $('#ItemNumberID').val(null).trigger('change');
+                        $('#LocationID').empty();
+                        $('#LocationID').append('<option value="">Seleccione una localidad</option>');
+                        $('#LocationID').val(null).trigger('change');
+
+                        $('#ItemDescription').val('');
+                        $('#TotalQtyOnHand').val('');
+                        $('#LocationQtyOnHand').val('');
+                        $('#QtyAsigned').val('');
+                </text>
+        }
+        });
+    </script>
+}

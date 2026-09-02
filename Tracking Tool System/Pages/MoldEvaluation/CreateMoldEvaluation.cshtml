@@ -1,0 +1,363 @@
+﻿@page
+@model Tracking_Tool_System.Pages.MoldEvaluation.CreateMoldEvaluationModel
+
+@{
+    ViewData["Title"] = "Nueva evaluación de molde";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Nueva evaluación de molde</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-primary">
+
+            <div class="card-header">
+                <h3 class="card-title">
+                    Información de la evaluación
+                </h3>
+            </div>
+
+            <form method="post">
+
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger">
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+
+                                <label>Molde</label>
+
+                                <select asp-for="MoldID"
+                                        id="MoldID"
+                                        class="form-control select2">
+
+                                    <option value="">
+                                        Seleccione el molde
+                                    </option>
+
+                                    @foreach (var mold in Model.MoldList)
+                                    {
+                                        <option value="@mold.MoldID">
+                                            @mold.MoldNumber
+                                        </option>
+                                    }
+
+                                </select>
+
+                                <span asp-validation-for="MoldID"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+
+                                <label>Fecha de evaluación</label>
+
+                                <input asp-for="DateEvaluation"
+                                       id="DateEvaluation"
+                                       type="date"
+                                       class="form-control" />
+
+                                <span asp-validation-for="DateEvaluation"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+
+                                <label>Próxima evaluación</label>
+
+                                <input asp-for="NextEvaluationDate"
+                                       id="NextEvaluationDate"
+                                       type="date"
+                                       class="form-control"
+                                       readonly />
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+
+                                    <label>Evaluación general</label>
+
+                                    <div class="input-group">
+
+                                        <input type="text"
+                                               id="GeneralScoreDisplay"
+                                               class="form-control text-center font-weight-bold"
+                                               value="@(Model.GeneralScore?.ToString("0.00") ?? "0.00")"
+                                               readonly />
+
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                %
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+                                    <small class="form-text text-muted">
+                                        Promedio de las partes evaluadas. Los valores N/A no se incluyen.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <h5>Partes del molde</h5>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-striped table-sm">
+
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>Parte</th>
+
+                                    <th style="width:180px;">
+                                        Estado
+                                    </th>
+
+                                    <th>
+                                        Observación
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @for (int i = 0;
+                                    i < Model.EvaluationParts.Count;
+                                    i++)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @Model.EvaluationParts[i].Parts
+
+                                            <input asp-for="EvaluationParts[i].MoldEvaPartID"
+                                                   type="hidden" />
+
+                                            <input asp-for="EvaluationParts[i].Parts"
+                                                   type="hidden" />
+                                        </td>
+
+                                        <td>
+                                            <select asp-for="EvaluationParts[i].Score"
+                                                    class="form-control score-select">
+
+                                                <option value="">
+                                                    N/A
+                                                </option>
+
+                                                @foreach (var score in Model.ScoreOptions)
+                                                {
+                                                    <option value="@score">
+                                                        @score%
+                                                    </option>
+                                                }
+
+                                            </select>
+                                        </td>
+
+                                        <td>
+                                            <input asp-for="EvaluationParts[i].Observation"
+                                                   class="form-control observation-input"
+                                                   maxlength="500"
+                                                   placeholder="Observación opcional" />
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="fas fa-save"></i>
+                        Guardar evaluación
+
+                    </button>
+
+                    <a asp-page="/MoldEvaluation/MoldEvaluation_List"
+                       class="btn btn-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Regresar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+
+    <script>
+        $(function () {
+
+            $('#MoldID').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Seleccione o busque el molde',
+                allowClear: true,
+                width: '100%'
+            });
+
+            function calcularProximaEvaluacion() {
+
+                const fecha = $('#DateEvaluation').val();
+
+                if (!fecha) {
+                    $('#NextEvaluationDate').val('');
+                    return;
+                }
+
+                const partes = fecha.split('-');
+
+                const year = parseInt(partes[0]) + 1;
+                const month = partes[1];
+                const day = partes[2];
+
+                $('#NextEvaluationDate').val(
+                    year + '-' + month + '-' + day
+                );
+            }
+
+            calcularProximaEvaluacion();
+
+            $('#DateEvaluation').on('change', function () {
+                calcularProximaEvaluacion();
+            });
+
+                    function aplicarColorEvaluacionGeneral(promedio, tieneValores) {
+
+            const input = $('#GeneralScoreDisplay');
+
+            input.removeClass(
+                'bg-success bg-info bg-warning bg-danger bg-secondary ' +
+                'text-white text-dark'
+            );
+
+            if (!tieneValores) {
+                input.addClass('bg-secondary text-white');
+                return;
+            }
+
+            if (promedio >= 90) {
+                input.addClass('bg-success text-white');
+            }
+            else if (promedio >= 80) {
+                input.addClass('bg-info text-white');
+            }
+            else if (promedio >= 70) {
+                input.addClass('bg-warning text-dark');
+            }
+            else {
+                input.addClass('bg-danger text-white');
+            }
+        }
+
+        function calcularEvaluacionGeneral() {
+
+            const scores = [];
+
+            $('.score-select').each(function () {
+
+                const value = $(this).val();
+
+                if (value !== '') {
+                    scores.push(parseFloat(value));
+                }
+            });
+
+            if (scores.length === 0) {
+
+                $('#GeneralScoreDisplay').val('0.00');
+
+                aplicarColorEvaluacionGeneral(0, false);
+
+                return;
+            }
+
+            const total = scores.reduce(function (sum, value) {
+                return sum + value;
+            }, 0);
+
+            const promedio = total / scores.length;
+
+            $('#GeneralScoreDisplay').val(
+                promedio.toFixed(2)
+            );
+
+            aplicarColorEvaluacionGeneral(
+                promedio,
+                true
+            );
+        }
+
+            $('.score-select').on('change', function () {
+
+                const score = $(this).val();
+
+                const row = $(this).closest('tr');
+
+                const observation = row.find(
+                    '.observation-input'
+                );
+
+                if (score === '') {
+                    observation.val('');
+                    observation.prop('disabled', true);
+                }
+                else {
+                    observation.prop('disabled', false);
+                }
+                calcularEvaluacionGeneral();
+            });
+
+            $('.score-select').trigger('change');
+
+            calcularEvaluacionGeneral();
+
+        });
+    </script>
+
+}

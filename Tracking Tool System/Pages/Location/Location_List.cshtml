@@ -1,0 +1,108 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Location.Location_ListModel
+
+@{
+    ViewData["Title"] = "Localidades";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Lista de Localidades</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-header">
+                
+
+                <div class="card-tools">
+                    <a asp-page="/Location/CreateLocation" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Agregar nueva localidad
+                    </a>
+                    <a id="editBtn" class="btn btn-warning btn-sm disabled">
+                        <i class="fas fa-edit"></i> Editar Localidad
+                    </a>
+                </div>
+                <a asp-page="/Index"
+                   class="btn btn-secondary">
+                    <i class="fas fa-arrow-left mr-1"></i>
+                    Regresar
+                </a>
+            </div>
+
+            <div class="card-body">
+
+                <form method="get" id="filterForm" class="mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Buscar Localidad</label>
+
+                            <input type="text"
+                                   id="searchLocation"
+                                   class="form-control"
+                                   placeholder="Digite el número de localidad..." 
+                                   oninput="this.value = this.value.toUpperCase();"/>
+                        </div>
+                    </div>
+                </form>
+
+                <table class="table table-bordered table-striped">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Localidad</th>
+                            <th>Estado</th>
+                            <th>Fecha de creación</th>                           
+                        </tr>
+                    </thead>
+
+                    <tbody>                       
+                            @foreach (var locator in Model.GridList)
+                            {
+                            <tr onclick="selectRow(@locator.LocationID,'@locator.LocationNumber')" style="cursor:pointer;">
+                                    <td>@locator.LocationNumber</td>
+                                    <td>@locator.LocationStatus</td>
+                                    <td>@locator.DateCreation?.ToString("MM-dd-yyyy")</td>
+                                </tr>
+                            }                        
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    const searchInput = document.getElementById("searchLocation");
+
+    searchInput.addEventListener("keyup", function () {
+        filterLocation(this.value);
+    });
+
+    function filterLocation(value) {
+        value = value.toLowerCase();
+
+        document.querySelectorAll("tbody tr").forEach(function (row) {
+            let LocationNumber = row.cells[0].innerText.toLowerCase();
+            row.style.display = LocationNumber.includes(value) ? "" : "none";
+        });
+    }
+
+    function selectRow(id, LocationNumber) {
+        document.querySelectorAll("tbody tr")
+            .forEach(r => r.classList.remove("table-primary"));
+
+        event.currentTarget.classList.add("table-primary");
+
+        searchInput.value = LocationNumber;
+
+        let editBtn = document.getElementById("editBtn");
+        editBtn.classList.remove("disabled");
+        editBtn.href = "/Location/EditLocation?id=" + id;
+    }
+</script>

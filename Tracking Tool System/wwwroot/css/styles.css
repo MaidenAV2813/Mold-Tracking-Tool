@@ -11699,3 +11699,33 @@ body {
   font-size: 0.75rem;
   border-radius: 0.25rem !important;
 }
+
+.part-number {
+    color: inherit;
+    font-weight: bold;
+}
+
+.part-description {
+    color: inherit;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-wrapper,
+.container-fluid,
+main {
+    flex: 1;
+}
+
+.main-footer {
+    margin-top: auto;
+}

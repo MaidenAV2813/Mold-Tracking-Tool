@@ -1,0 +1,122 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Xml;
+using System.Threading.Tasks;
+using CAPA_ENTITY;
+using CAPA_DATOS;
+
+
+
+
+namespace CAPA_NEGOCIO
+{
+    public class Casting_Services : ICasting_Services
+
+    {
+
+        private readonly IDataAccess sql;
+
+        public Casting_Services(IDataAccess _sql)
+
+        {
+
+            sql = _sql;
+
+        }
+
+        //Metodo Get
+
+        public async Task<IEnumerable<CastingMoldEntity>> Get()
+        {
+            try
+            {
+                var result = sql.QueryAsync<CastingMoldEntity>("sp_Casting_List");
+
+                return await result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        //Metodo GetById
+
+        public async Task<CastingMoldEntity?> GetById(CastingMoldEntity entity)
+        {
+            var result = await sql.QueryFirstAsync<CastingMoldEntity>("sp_Casting_GetById",
+                new
+                {
+                    CastingID = entity.CastingID
+                });
+
+            return result;
+        }
+
+        //Metodo Create
+
+        public async Task<DBEntity> Create(CastingMoldEntity entity)
+        {
+            var result = sql.ExecuteAsync("sp_Casting_Insert", new
+            {
+                entity.CastingType,
+                entity.CreatedBy,
+                entity.DateCreation,
+                entity.DateModification,
+                entity.ModifiedBy,
+                entity.CastingStatus
+            });
+
+            return await result;
+        }
+
+        //Metodo Update
+
+        public async Task<DBEntity> Update(CastingMoldEntity entity)
+
+        {
+            try
+
+            {
+                var result = sql.ExecuteAsync("sp_Casting_Update", new
+
+                {
+                    entity.CastingID,
+                    entity.CastingStatus,
+                    entity.DateModification,
+                    entity.ModifiedBy
+                });
+
+                return await result;
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        //Metodo Delete
+        //public async Task<DBEntity> Delete(CastingMoldEntity entity)
+
+        //{
+        //    try
+
+        //    {
+        //        var result = sql.ExecuteAsync("sp_Casting_DeleteByGateID", new
+        //        {
+        //            entity.CastingID,
+        //        });
+
+        //        return await result;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
+        
+    }
+
+}

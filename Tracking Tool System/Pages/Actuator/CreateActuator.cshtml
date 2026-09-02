@@ -1,0 +1,50 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Actuator.CreateActuatorModel
+@{
+	ViewData["Title"] = "Crear tipo de Actuador";
+}
+<section class="content-header">
+    <div class="container-fluid">
+         <h1>Crear tipo de Actuador</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Información de Actuador</h3>
+            </div>
+
+            <form method="post">
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label>Tipo de Actuador</label>
+                        <input asp-for="ActuatorType" class="form-control" placeholder="Ingrese el tipo de actuador" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select asp-for="ActuatorStatus" class="form-control">
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a asp-page="/Actuator/Actuator_List" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Regresar
+                    </a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</section>

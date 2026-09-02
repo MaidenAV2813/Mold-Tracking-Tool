@@ -1,0 +1,312 @@
+﻿@page
+@model Tracking_Tool_System.Pages.ListNumber.EditListNumberModel
+
+@{
+    ViewData["Title"] = "Editar ListNumbers";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+
+        <div class="row mb-2">
+
+            <div class="col-sm-6">
+                <h1>Editar ListNumbers</h1>
+            </div>
+
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+
+                    <li class="breadcrumb-item">
+                        <a asp-page="/Index">
+                            Inicio
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <a asp-page="/ListNumber/ListNumber_List">
+                            ListNumbers
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item active">
+                        Editar
+                    </li>
+
+                </ol>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-warning">
+
+            <div class="card-header">
+
+                <h3 class="card-title">
+                    Asignacion de números de parte del molde
+                    <strong>@Model.MoldNumber</strong>
+                </h3>
+
+            </div>
+
+            <form method="post">
+
+                <input asp-for="MoldID"
+                       type="hidden" />
+
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="alert alert-danger">
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Número de molde</label>
+
+                        <input value="@Model.MoldNumber"
+                               class="form-control"
+                               readonly />
+
+                    </div>
+
+                    <div class="alert alert-info">
+
+                        Puede modificar uno o varios números de parte.
+                        Para cambiar un número, escriba el número completo
+                        y selecciónelo en el resultado de búsqueda.
+
+                    </div>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-striped"
+                               id="ListNumbersEditTable">
+
+                            <thead class="bg-primary text-white">
+
+                                <tr>
+                                    <th style="width: 25%;">
+                                        Número de parte
+                                    </th>
+
+                                    <th>
+                                        Descripción
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                @for (int i = 0;
+                                      i < Model.ListNumbers.Count;
+                                      i++)
+                                {
+                                    <tr>
+
+                                        <td>
+
+                                            <!-- Identificador del registro -->
+                                            <input asp-for="ListNumbers[i].ListNumberID"
+                                                   type="hidden" />
+
+                                            <!-- Molde relacionado -->
+                                            <input asp-for="ListNumbers[i].MoldID"
+                                                   type="hidden" />
+
+                                            <!-- Valor que será enviado al POST -->
+                                            <input asp-for="ListNumbers[i].ListNumber"
+                                                   id="ListNumberValue_@i"
+                                                   type="hidden" />
+
+                                            <!-- Select2 usado para buscar en Oracle -->
+                                            <select id="ListNumberSearch_@i"
+
+                                                    class="form-control listnumber-search"
+                                                    data-index="@i">
+
+                                                @if (!string.IsNullOrWhiteSpace(
+                                                        Model.ListNumbers[i].ListNumber))
+                                                {
+                                                    <option value="@Model.ListNumbers[i].ListNumber"
+                                                            selected>
+
+                                                        @Model.ListNumbers[i].ListNumber
+
+                                                    </option>
+                                                }
+
+                                            </select>
+
+                                            <span asp-validation-for="ListNumbers[i].ListNumber"
+                                                  class="text-danger">
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <textarea asp-for="ListNumbers[i].Description"
+                                                      id="ListNumberDescription_@i"
+                                                      class="form-control"
+                                                      rows="2"
+                                                      readonly>
+                                            </textarea>
+
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="fas fa-save"></i>
+                        Guardar cambios
+
+                    </button>
+
+                    <a asp-page="/ListNumber/ListNumber_List"
+                       asp-route-SelectedMoldID="@Model.MoldID"
+                       class="btn btn-secondary">
+
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Regresar
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(function () {
+
+            $('.listnumber-search').each(function () {
+
+                const selectElement = $(this);
+                const index = selectElement.data('index');
+
+                selectElement.select2({
+                    theme: 'bootstrap4',
+                    placeholder:
+                        'Digite el número de parte completo...',
+                    minimumInputLength: 4,
+                    allowClear: false,
+                    width: '100%',
+
+                    ajax: {
+                        url:
+                            '/ListNumber/EditListNumber' +
+                            '?handler=SearchListNumbers',
+
+                        dataType: 'json',
+                        delay: 800,
+                        cache: false,
+
+                        data: function (params) {
+                            return {
+                                term: $.trim(params.term || '')
+                            };
+                        },
+
+                        processResults: function (data) {
+
+                            if (data.error) {
+                                console.error(data.error);
+                            }
+
+                            return {
+                                results: data.results || []
+                            };
+                        },
+
+                        error: function (
+                            xhr,
+                            status,
+                            error
+                        ) {
+                            console.error(
+                                'Error al consultar Oracle:',
+                                error
+                            );
+                        }
+                    },
+
+                    templateResult: function (item) {
+
+                        if (item.loading) {
+                            return item.text;
+                        }
+
+                        const container = $(`
+                        <div>
+                            <div class="font-weight-bold part-number"></div>
+                            <div class="small"></div>
+                        </div>
+                        `);
+
+                        container.find('.part-number')
+                            .text(item.text || '');
+
+                        container.find('.part-description')
+                            .text(item.description || '');
+
+                        return container;
+                    },
+
+                    templateSelection: function (item) {
+                        return item.text || item.id || '';
+                    }
+                });
+
+                /*
+                 * Cuando se selecciona otro número de parte,
+                 * actualiza los campos correspondientes a esa fila.
+                 */
+                selectElement.on(
+                    'select2:select',
+                    function (e) {
+
+                        const data = e.params.data;
+
+                        $('#ListNumberValue_' + index)
+                            .val(data.id || '');
+
+                        $('#ListNumberDescription_' + index)
+                            .val(data.description || '');
+                    }
+                );
+
+            });
+
+        });
+    </script>
+}

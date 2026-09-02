@@ -1,0 +1,559 @@
+﻿@page
+@model Tracking_Tool_System.Pages.Reports.ReportMoldModel
+
+@{
+    ViewData["Title"] = "Reporte de Moldes";
+}
+
+<div class="container-fluid">
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-file-alt mr-2"></i>
+                Reporte de Moldes
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <form method="get" id="reportForm">
+
+                <input type="hidden"
+                       name="runReport"
+                       value="true" />
+
+                <input type="hidden"
+                       asp-for="MoldID"
+                       id="MoldID" />
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group position-relative">
+
+                            <label for="MoldSearch">
+                                Molde
+                            </label>
+
+                            <input type="text"
+                                   id="MoldSearch"
+                                   name="MoldNumber"
+                                   value="@Model.MoldNumber"
+                                   class="form-control"
+                                   autocomplete="off"
+                                   placeholder="Digite el número de molde" />
+
+                            <small class="form-text text-muted">
+                                Digite el número de molde y seleccione una opción.
+                                Déjelo vacío para consultar todos.
+                            </small>
+
+                            <div id="moldSearchResults"
+                                 class="list-group position-absolute w-100 shadow"
+                                 style="
+                                z-index: 2000;
+                                display: none;
+                                max-height: 250px;
+                                overflow-y: auto;
+                                ">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+
+                            <label asp-for="MoldStatus">
+                                Estado
+                            </label>
+
+                            <select asp-for="MoldStatus"
+                                    class="form-control">
+                                <option value="">Todos</option>
+                                <option value="Activo">Activo</option>
+                                <option value="Inactivo">Inactivo</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 d-flex align-items-end">
+                        <div class="form-group d-flex">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                                Ejecutar reporte
+                            </button>
+
+                            <a asp-page="/Reports/ReportMold"
+                               class="btn btn-secondary ml-3">
+                                <i class="fas fa-eraser"></i>
+                                Limpiar
+                            </a>
+
+                            <a asp-page="/Index"
+                               class="btn btn-danger ml-3">
+                                <i class="fas fa-arrow-left mr-1"></i>
+                                Regresar
+                            </a>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-triangle mr-2"></i>
+            @Model.ErrorMessage
+        </div>
+    }
+
+    @if (Model.ReportExecuted)
+    {
+        <div class="card">
+
+            <div class="card-header">
+                <h3 class="card-title">
+                    Resultado del reporte
+                </h3>
+
+                <div class="card-tools d-flex align-items-center">
+
+                    @if (Model.ReportList.Count > 0)
+                    {
+                        <a asp-page="/Reports/ReportMold"
+                           asp-page-handler="Export"
+                           asp-route-MoldID="@Model.MoldID"
+                           asp-route-MoldNumber="@Model.MoldNumber"
+                           asp-route-MoldStatus="@Model.MoldStatus"
+                           class="btn btn-success btn-sm mr-3">
+
+                            <i class="fas fa-file-excel mr-1"></i>
+                            Exportar Excel
+
+                        </a>
+                    }
+
+                    <span class="badge badge-primary">
+                        @Model.ReportList.Count registro(s)
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                @if (Model.ReportList.Count == 0)
+                {
+                    <div class="alert alert-warning mb-0">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        No se encontraron moldes con los filtros seleccionados.
+                    </div>
+                }
+                else
+                {
+                    <div id="topScrollbar"
+                         style="overflow-x: auto; overflow-y: hidden;">
+                        <div id="topScrollbarContent"
+                             style="height: 1px;">
+                        </div>
+                    </div>
+
+                    <div id="tableScrollbar"
+                         class="table-responsive">
+
+                        <table class="table table-bordered table-striped table-hover"
+                               id="reportMoldTable"
+                               style="min-width: 2600px;">
+
+                            <thead class="thead-dark">
+                                <tr>
+
+                                    <th style="min-width:150px;">Número de molde</th>
+                                    <th>Descripción</th>
+                                    <th>Número de activo</th>
+                                    <th>Estado</th>
+                                    <th>Origen</th>
+                                    <th>Plano digital</th>
+                                    <th>Criticidad</th>
+                                    <th>Gate</th>
+                                    <th>Colada</th>
+                                    <th>Actuador</th>
+                                    <th>Categorización</th>
+                                    <th>Cavidades</th>
+                                    <th>Cavidades bloqueadas</th>
+                                    <th>Tiene contador</th>
+                                    <th>Tipo de contador</th>
+                                    <th>Tres placas</th>
+                                    <th>Conteo inicial</th>
+                                    <th>Repuestos disponibles</th>
+                                    <th>Reparación últimos 12 meses</th>
+                                    <th>Comentario reparación</th>
+                                    <th>Rechazo de calidad</th>
+                                    <th>Comentario calidad</th>
+                                    <th>Creado por</th>
+                                    <th>Fecha creación</th>
+                                    <th>Modificado por</th>
+                                    <th>Fecha modificación</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model.ReportList)
+                                {
+                                    <tr>
+
+                                        <td style="min-width:150px;">@item.MoldNumber</td>
+                                        <td>@item.MoldDescription</td>
+                                        <td>@item.MoldAssetNumber</td>
+                                        <td>@item.MoldStatus</td>
+                                        <td>@item.MoldOrigin</td>
+                                        <td>@item.DigitalPlane</td>
+                                        <td>@item.CriticallyType</td>
+                                        <td>@item.GateType</td>
+                                        <td>@item.CastingType</td>
+                                        <td>@item.ActuatorType</td>
+                                        <td>@item.CategorizationType</td>
+                                        <td>@item.CavityQty</td>
+                                        <td>@item.BlockCavityQty</td>
+                                        <td>@item.HaveCounter</td>
+                                        <td>@item.CounterType</td>
+                                        <td>@item.ThreeLayer</td>
+                                        <td>@item.InitialCount</td>
+                                        <td>@item.Percentage_Spares_available</td>
+                                        <td>@item.Last_Reparir_12_Months</td>
+                                        <td>@item.Comment_Last_Reparir_12_Months</td>
+                                        <td>@item.Quality_Issue</td>
+                                        <td>@item.Comment_Quality_Issue</td>
+                                        <td>@item.CreatedBy</td>
+
+                                        <td>
+                                            @(item.DateCreation?.ToString("MM-dd-yyyy HH:mm:ss"))
+                                        </td>
+
+                                        <td>@item.ModifiedBy</td>
+
+                                        <td>
+                                            @(item.DateModification?.ToString("MM-dd-yyyy HH:mm:ss"))
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                }
+
+            </div>
+        </div>
+    }
+
+</div>
+
+@section Scripts
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const moldSearch =
+                document.getElementById("MoldSearch");
+
+            const moldID =
+                document.getElementById("MoldID");
+
+            const resultsContainer =
+                document.getElementById("moldSearchResults");
+
+            const reportForm =
+                document.getElementById("reportForm");
+
+            let searchTimer = null;
+
+            if (!moldSearch || !moldID || !resultsContainer) {
+                console.error(
+                    "No se encontraron los controles del buscador de moldes."
+                );
+
+                return;
+            }
+
+            moldSearch.addEventListener("input", function () {
+
+                const term = moldSearch.value.trim();
+
+                // Al escribir nuevamente se elimina la selección anterior.
+                moldID.value = "";
+
+                clearTimeout(searchTimer);
+
+                if (term.length < 1) {
+                    hideResults();
+                    return;
+                }
+
+                resultsContainer.innerHTML =
+                    '<div class="list-group-item text-muted">'
+                    + 'Buscando...'
+                    + '</div>';
+
+                resultsContainer.style.display = "block";
+
+                searchTimer = setTimeout(function () {
+                    searchMolds(term);
+                }, 300);
+            });
+
+            async function searchMolds(term) {
+
+                try {
+                    const handlerUrl =
+                        '@Url.Page("/Reports/ReportMold", "SearchMolds")';
+
+                    const separator =
+                        handlerUrl.includes("?") ? "&" : "?";
+
+                    const url =
+                        handlerUrl
+                        + separator
+                        + "term="
+                        + encodeURIComponent(term);
+
+                    console.log("URL del buscador:", url);
+
+                    const response = await fetch(url, {
+                        method: "GET",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    });
+
+                    const responseText =
+                        await response.text();
+
+                    console.log(
+                        "Estado de respuesta:",
+                        response.status
+                    );
+
+                    console.log(
+                        "Contenido de respuesta:",
+                        responseText
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(
+                            responseText
+                            || "Error al buscar los moldes."
+                        );
+                    }
+
+                    const molds = responseText
+                        ? JSON.parse(responseText)
+                        : [];
+
+                    resultsContainer.innerHTML = "";
+
+                    if (!Array.isArray(molds)
+                        || molds.length === 0) {
+
+                        resultsContainer.innerHTML =
+                            '<div class="list-group-item text-muted">'
+                            + 'No se encontraron moldes.'
+                            + '</div>';
+
+                        resultsContainer.style.display = "block";
+
+                        return;
+                    }
+
+                    molds.forEach(function (mold) {
+
+                        const option =
+                            document.createElement("button");
+
+                        option.type = "button";
+
+                        option.className =
+                            "list-group-item "
+                            + "list-group-item-action "
+                            + "text-left";
+
+                        const moldNumber =
+                            mold.moldNumber || "";
+
+                        const description =
+                            mold.description || "";
+
+                        option.innerHTML =
+                            "<strong>"
+                            + escapeHtml(moldNumber)
+                            + "</strong>"
+                            + (
+                                description
+                                    ? "<br><small class='text-muted'>"
+                                      + escapeHtml(description)
+                                      + "</small>"
+                                    : ""
+                            );
+
+                        option.addEventListener(
+                            "click",
+                            function () {
+
+                                moldID.value = mold.id;
+                                moldSearch.value = moldNumber;
+
+                                hideResults();
+
+                                console.log(
+                                    "Molde seleccionado:",
+                                    mold.id,
+                                    moldNumber
+                                );
+                            }
+                        );
+
+                        resultsContainer.appendChild(option);
+                    });
+
+                    resultsContainer.style.display = "block";
+                }
+                catch (error) {
+
+                    console.error(
+                        "Error buscando moldes:",
+                        error
+                    );
+
+                    resultsContainer.innerHTML =
+                        '<div class="list-group-item text-danger">'
+                        + 'Error al consultar los moldes.'
+                        + '</div>';
+
+                    resultsContainer.style.display = "block";
+                }
+            }
+
+            function hideResults() {
+                resultsContainer.innerHTML = "";
+                resultsContainer.style.display = "none";
+            }
+
+            function escapeHtml(value) {
+                const div = document.createElement("div");
+
+                div.textContent = value || "";
+
+                return div.innerHTML;
+            }
+
+            document.addEventListener(
+                "click",
+                function (event) {
+
+                    if (
+                        !moldSearch.contains(event.target)
+                        &&
+                        !resultsContainer.contains(event.target)
+                    ) {
+                        hideResults();
+                    }
+                }
+            );
+
+            if (reportForm) {
+                reportForm.addEventListener(
+                    "submit",
+                    function (event) {
+
+                        const typedText =
+                            moldSearch.value.trim();
+
+                        /*
+                         * Si escribió algo pero no seleccionó
+                         * un molde de la lista, evita ejecutar
+                         * accidentalmente el reporte de todos.
+                         */
+                        if (typedText !== ""
+                            && moldID.value === "") {
+
+                            event.preventDefault();
+
+                            alert(
+                                "Debe seleccionar el molde "
+                                + "desde la lista de resultados."
+                            );
+
+                            moldSearch.focus();
+                        }
+                    }
+                );
+            }
+
+            /*
+             * Sincronización de barras horizontales.
+             */
+            const topScrollbar =
+                document.getElementById("topScrollbar");
+
+            const topScrollbarContent =
+                document.getElementById(
+                    "topScrollbarContent"
+                );
+
+            const tableScrollbar =
+                document.getElementById("tableScrollbar");
+
+            const reportTable =
+                document.getElementById("reportMoldTable");
+
+            if (
+                topScrollbar
+                && topScrollbarContent
+                && tableScrollbar
+                && reportTable
+            ) {
+                topScrollbarContent.style.width =
+                    reportTable.scrollWidth + "px";
+
+                topScrollbar.addEventListener(
+                    "scroll",
+                    function () {
+
+                        tableScrollbar.scrollLeft =
+                            topScrollbar.scrollLeft;
+                    }
+                );
+
+                tableScrollbar.addEventListener(
+                    "scroll",
+                    function () {
+
+                        topScrollbar.scrollLeft =
+                            tableScrollbar.scrollLeft;
+                    }
+                );
+
+                window.addEventListener(
+                    "resize",
+                    function () {
+
+                        topScrollbarContent.style.width =
+                            reportTable.scrollWidth + "px";
+                    }
+                );
+            }
+        });
+    </script>
+}

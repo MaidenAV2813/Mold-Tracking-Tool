@@ -1,0 +1,329 @@
+﻿@page
+@model Tracking_Tool_System.Pages.ListNumber.CreateListNumberModel
+
+@{
+    ViewData["Title"] = "Asignar ListNumber a un molde";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Asignar ListNumber a un molde</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card card-primary">
+
+            <div class="card-header">
+                <h3 class="card-title">
+                    ListNumber por Molde
+                </h3>
+            </div>
+
+            <form method="post">
+
+                <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger">
+                    </div>
+
+                    <!-- Guarda el JSON con número de parte y descripción -->
+                    <input asp-for="SelectedListNumbersData"
+                           id="SelectedListNumbersData"
+                           type="hidden" />
+
+                    <div class="form-group">
+                        <label asp-for="MoldID">
+                            MoldNumber
+                        </label>
+
+                        <select asp-for="MoldID"
+                                id="MoldID"
+                                class="form-control select2">
+
+                            <option value="">
+                                Seleccione el molde
+                            </option>
+
+                            @foreach (var mold in Model.Mold)
+                            {
+                                <option value="@mold.MoldID">
+                                    @mold.MoldNumber
+                                </option>
+                            }
+
+                        </select>
+
+                        <span asp-validation-for="MoldID"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label asp-for="SelectedListNumbers">
+                            ListNumbers
+                        </label>
+
+                        <select asp-for="SelectedListNumbers"
+                                id="SelectedListNumbers"
+                                class="form-control"
+                                multiple="multiple">
+                        </select>
+
+                        <span asp-validation-for="SelectedListNumbers"
+                              class="text-danger">
+                        </span>
+
+                        <small class="form-text text-muted">
+                            Digite el número de parte completo y selecciónelo
+                            en la lista de resultados.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ListNumberDescription">
+                            Descripción del número de parte seleccionado
+                        </label>
+
+                        <input id="ListNumberDescription"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Números de parte seleccionados</label>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm"
+                                   id="SelectedPartsTable">
+
+                                <thead>
+                                    <tr>
+                                        <th>Número de parte</th>
+                                        <th>Descripción</th>
+                                        <th>Tipo</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr id="NoSelectedPartsRow">
+                                        <td colspan="3"
+                                            class="text-center text-muted">
+                                            No hay números de parte seleccionados.
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Guardar
+                    </button>
+
+                    <a asp-page="/ListNumber/ListNumber_List"
+                       class="btn btn-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Regresar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(function () {
+
+            /*
+             * Arreglo que almacena los números de parte con su descripción.
+             * Este contenido se envía al PageModel mediante el campo oculto.
+             */
+            let selectedParts = [];
+
+            function updateHiddenField() {
+                $('#SelectedListNumbersData')
+                    .val(JSON.stringify(selectedParts));
+            }
+
+            function updateSelectedPartsTable() {
+                const tbody = $('#SelectedPartsTable tbody');
+
+                tbody.empty();
+
+                if (selectedParts.length === 0) {
+                    tbody.append(`
+                        <tr id="NoSelectedPartsRow">
+                            <td colspan="3"
+                                class="text-center text-muted">
+                                No hay números de parte seleccionados.
+                            </td>
+                        </tr>
+                    `);
+
+                    return;
+                }
+
+                selectedParts.forEach(function (part) {
+                    tbody.append(`
+                        <tr data-part="${escapeHtml(part.listNumber)}">
+                            <td>${escapeHtml(part.listNumber)}</td>
+                            <td>${escapeHtml(part.description)}</td>
+                            <td>${escapeHtml(part.itemType)}</td>
+                        </tr>
+                    `);
+                });
+            }
+
+            function escapeHtml(value) {
+                return $('<div>')
+                    .text(value || '')
+                    .html();
+            }
+
+            $('#MoldID').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Seleccione el número de molde',
+                allowClear: true,
+                width: '100%'
+            });
+
+            $('#SelectedListNumbers').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Digite el número de parte completo...',
+                minimumInputLength: 4,
+                width: '100%',
+                closeOnSelect: true,
+
+                ajax: {
+                    url: '/ListNumber/CreateListNumber?handler=SearchListNumbers',
+                    dataType: 'json',
+                    delay: 800,
+                    cache: false,
+
+                    data: function (params) {
+                        return {
+                            term: $.trim(params.term || '')
+                        };
+                    },
+
+                    processResults: function (data) {
+                        if (data.error) {
+                            console.error(data.error);
+                        }
+
+                        return {
+                            results: data.results || []
+                        };
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.error(
+                            'Error consultando el número de parte:',
+                            error
+                        );
+                    }
+                },
+
+                templateResult: function (item) {
+                    if (item.loading) {
+                        return item.text;
+                    }
+
+                    const container = $(`
+                        <div>
+                            <strong></strong>
+                            <div class="small"></div>
+                        </div>
+                    `);
+
+                    container
+                        .find('strong')
+                        .text(item.text || '');
+
+                    return container;
+                },
+
+                templateSelection: function (item) {
+                    return item.text || item.id || '';
+                }
+            });
+
+            $('#SelectedListNumbers').on(
+                'select2:select',
+                function (e) {
+
+                    const data = e.params.data;
+
+                    $('#ListNumberDescription')
+                        .val(data.description || '');
+
+                    const exists = selectedParts.some(
+                        function (part) {
+                            return part.listNumber === data.id;
+                        }
+                    );
+
+                    if (!exists) {
+                        selectedParts.push({
+                            listNumber: data.id || '',
+                            description: data.description || '',
+                            itemType: data.itemType || ''
+                        });
+                    }
+
+                    updateHiddenField();
+                    updateSelectedPartsTable();
+                }
+            );
+
+            $('#SelectedListNumbers').on(
+                'select2:unselect',
+                function (e) {
+
+                    const data = e.params.data;
+
+                    selectedParts = selectedParts.filter(
+                        function (part) {
+                            return part.listNumber !== data.id;
+                        }
+                    );
+
+                    if (selectedParts.length === 0) {
+                        $('#ListNumberDescription').val('');
+                    } else {
+                        const lastPart =
+                            selectedParts[selectedParts.length - 1];
+
+                        $('#ListNumberDescription')
+                            .val(lastPart.description || '');
+                    }
+
+                    updateHiddenField();
+                    updateSelectedPartsTable();
+                }
+            );
+
+            updateHiddenField();
+            updateSelectedPartsTable();
+        });
+    </script>
+}

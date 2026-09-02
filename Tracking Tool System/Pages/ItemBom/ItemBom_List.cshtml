@@ -1,0 +1,136 @@
+﻿@page
+@model Tracking_Tool_System.Pages.ItemBom.ItemBom_ListModel
+
+@{
+    ViewData["Title"] = "Numeros de Parte de repuestos";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <h1>Lista de partes de repuestos</h1>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-header">
+                
+
+                <div class="card-tools">
+                    <a asp-page="/ItemBom/CreateItemBom" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Agregar un nuevo numero de parte
+                    </a>
+                    <a id="editBtn" class="btn btn-warning btn-sm disabled">
+                        <i class="fas fa-edit"></i> Editar configuracion de numero de parte
+                    </a>
+                </div>
+                <a asp-page="/Index"
+                   class="btn btn-secondary">
+                    <i class="fas fa-arrow-left mr-1"></i>
+                    Regresar
+                </a>
+            </div>
+
+            <div class="card-body">
+
+                <form method="get" id="filterForm" class="mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Buscar numero de parte</label>
+
+                            <input type="text"
+                                   id="searchpart"
+                                   class="form-control"
+                                   placeholder="Digite el número de parte..." 
+                                   oninput="this.value = this.value.toUpperCase();"/>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="table-scroll-container">
+
+                    <div class="horizontal-scroll">
+                        <div class="horizontal-scroll-content"></div>
+                    </div>
+
+                    <div class="table-responsive table-scroll">
+                    <table class="table table-bordered table-striped table-sm2 text-nowrap">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>Número de parte</th>
+                                <th>Número de molde asignado</th>
+                                <th>Descripción</th>
+                                <th>Costo unitario</th>
+                                <th>Mínimo de inventario</th>
+                                <th>Máximo de inventario</th>
+                                <th>Parte del suplidor</th>
+                                <th>Suplidor</th>
+                                <th>Unidad de medida</th>
+                                <th>Criticidad</th>
+                                <th>Estado</th>
+                                <th>Plano</th>
+                                <th>Fecha de creación</th>                           
+                            </tr>
+                        </thead>
+
+                        <tbody>                       
+                                @foreach (var part in Model.GridList)
+                                {
+                                <tr onclick="selectRow(@part.ItemNumberID,'@part.ItemNumber')" style="cursor:pointer;">
+                                    <td>@part.ItemNumber</td>
+                                    <td>@part.MoldNumber</td>
+                                    <td>@part.ItemDescription</td>
+                                    <td>@part.ItemCost</td>
+                                    <td>@part.ItemInvMin</td>
+                                    <td>@part.ItemInvMax</td>
+                                    <td>@part.ItemSupplierNumber</td>
+                                    <td>@part.ActualSupplier</td>
+                                    <td>@part.UOM</td>
+                                    <td>@part.ItemCritically</td>
+                                    <td>@part.ItemStatus</td>
+                                    <td>@part.Plano</td>
+                                    <td>@part.DateCreation?.ToString("MM-dd-yyyy")</td>
+                                </tr>
+                                }                        
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    const searchInput = document.getElementById("searchpart");
+
+    searchInput.addEventListener("keyup", function () {
+        filterpart(this.value);
+    });
+
+    function filterpart(value) {
+        value = value.toLowerCase();
+
+        document.querySelectorAll("tbody tr").forEach(function (row) {
+            let ItemNumber = row.cells[0].innerText.toLowerCase();
+            row.style.display = ItemNumber.includes(value) ? "" : "none";
+        });
+    }
+
+    function selectRow(id, ItemNumber) {
+        document.querySelectorAll("tbody tr")
+            .forEach(r => r.classList.remove("table-primary"));
+
+        event.currentTarget.classList.add("table-primary");
+
+        searchInput.value = ItemNumber;
+
+        let editBtn = document.getElementById("editBtn");
+        editBtn.classList.remove("disabled");
+        editBtn.href = "/ItemBom/EditItemBom?id=" + id;
+    }
+</script>
